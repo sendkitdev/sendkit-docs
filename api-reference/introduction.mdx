@@ -1,33 +1,86 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: "Introduction"
+description: "The SendKit API lets you send transactional emails with a simple REST API."
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+## Base URL
 
-## Welcome
+The SendKit API is available at:
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
-
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+```
+https://api.sendkit.dev/v1
+```
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+All API requests require a Bearer token in the `Authorization` header. You can create API keys from the [dashboard](https://app.sendkit.dev/api-keys).
+
+```bash
+Authorization: Bearer sk_your_api_key
+```
+
+<Warning>
+  Keep your API key secret. Do not expose it in client-side code or public repositories.
+</Warning>
+
+## Rate limiting
+
+API requests are rate limited per team based on your plan. When you exceed the limit, the API returns a `429` status code with a `Retry-After` header indicating how many seconds to wait.
+
+### Send email — `POST /emails`
+
+| Plan | Rate limit | Monthly quota |
+|------|-----------|---------------|
+| Free | 60 req/min | 3,000 emails |
+| 10K | 120 req/min | 10,000 emails |
+| 25K | 120 req/min | 25,000 emails |
+| 50K | 300 req/min | 50,000 emails |
+| 75K | 300 req/min | 75,000 emails |
+| 100K | 600 req/min | 100,000 emails |
+| 150K | 600 req/min | 150,000 emails |
+| 250K | 600 req/min | 250,000 emails |
+| 500K | 1,200 req/min | 500,000 emails |
+| 750K | 1,200 req/min | 750,000 emails |
+| 1M | 1,200 req/min | 1,000,000 emails |
+| 2M | 1,200 req/min | 2,000,000 emails |
+| 5M | 1,200 req/min | 5,000,000 emails |
+
+### Validate email — `POST /emails/validate`
+
+Fixed at **60 requests per minute** for all plans.
+
+### Rate limit error response
 
 ```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
+{
+  "name": "rate_limit_exceeded",
+  "message": "Rate limit exceeded. Please retry after 30 seconds."
+}
 ```
+
+## Errors
+
+The API uses conventional HTTP status codes. All error responses include a `name` and `message` field.
+
+| Status | Description |
+|--------|-------------|
+| `200` | Success |
+| `401` | Missing or invalid API key |
+| `422` | Validation error (invalid parameters, unverified domain, etc.) |
+| `429` | Rate limit exceeded |
+
+```json
+{
+  "name": "validation_error",
+  "message": "The from address domain is not verified."
+}
+```
+
+### Common validation errors
+
+| Error message | Cause |
+|--------------|-------|
+| The from address domain is not verified. | The domain in the `from` address is not verified in your account. |
+| The following email addresses are suppressed: ... | One or more recipients are on the suppression list. |
+| Monthly email quota exceeded. | Your team has reached its monthly sending limit. |
+| Sending is paused for this account. | Sending has been paused for your account. Contact support. |

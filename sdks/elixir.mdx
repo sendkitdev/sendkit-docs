@@ -1,0 +1,38 @@
+---
+title: "Elixir"
+description: "Send emails from Elixir using the SendKit SDK."
+---
+
+## Install
+
+Add to your `mix.exs` dependencies:
+
+```elixir
+def deps do
+  [
+    {:sendkit, "~> 1.0"}
+  ]
+end
+```
+
+Then run:
+
+```bash
+mix deps.get
+```
+
+## Send email
+
+```elixir
+client = SendKit.new("sk_your_api_key")
+
+{:ok, %{"id" => id}} =
+  SendKit.Emails.send(client, %{
+    from: "you@yourdomain.com",
+    to: ["recipient@example.com"],
+    subject: "Hello from SendKit",
+    html: "<h1>Welcome!</h1><p>Your first email with SendKit.</p>"
+  })
+
+IO.puts("Email sent: #{id}")
+```

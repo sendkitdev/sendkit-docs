@@ -1,0 +1,52 @@
+---
+title: "Retries and failures"
+description: "How SendKit handles failed webhook deliveries"
+---
+
+## Retry behavior
+
+When a webhook delivery fails, SendKit automatically retries the request:
+
+SendKit makes up to **3 total attempts** (1 initial + 2 retries) with a 60-second delay between each:
+
+| Attempt | Delay |
+|---------|-------|
+| Initial request | Immediate |
+| 1st retry | 60 seconds after initial failure |
+| 2nd retry (final) | 60 seconds after 1st retry failure |
+
+A delivery is considered failed when:
+- Your endpoint returns a non-2xx status code
+- The request times out (10 second limit)
+- The connection cannot be established
+
+## Automatic pausing
+
+If a webhook accumulates **5 consecutive failures**, SendKit automatically pauses it to prevent unnecessary load on your server. A failure is counted once all 3 attempts for a single delivery are exhausted — individual retry attempts do not count separately. When this happens:
+
+- The webhook status changes to **Paused**
+- The team owner receives an email notification
+- No further deliveries are attempted until you re-enable the webhook
+
+To resume deliveries, go to the webhook settings in your dashboard and change the status back to **Enabled**. This resets the failure counter.
+
+## Best practices
+
+<Tip>
+  Always return a `200` status code as quickly as possible. Process webhook data asynchronously in a background job.
+</Tip>
+
+- **Respond within 10 seconds** — Requests that take longer will time out and count as a failure.
+- **Use HTTPS** — Webhook endpoints must use HTTPS.
+- **Handle duplicates** — Webhooks may be retried, so make your processing idempotent.
+- **Replay events** — Use the replay feature in the dashboard to re-send any past webhook delivery.
+
+## Monitoring
+
+Every webhook delivery is logged with:
+- The full request payload
+- Response status code and body
+- Delivery timestamp or failure timestamp
+- Number of attempts
+
+You can view these logs in real time from the webhook detail page in your dashboard.

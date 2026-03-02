@@ -1,0 +1,147 @@
+---
+title: "Verifying signatures"
+description: "Verify webhook authenticity using HMAC-SHA256 signatures"
+---
+
+Every webhook request includes an `X-Webhook-Signature` header containing an HMAC-SHA256 signature. You should always verify this signature before processing the payload to ensure the request came from SendKit.
+
+## How it works
+
+SendKit signs the JSON payload using your webhook's signing secret:
+
+```
+HMAC-SHA256(JSON payload, signing_secret)
+```
+
+The resulting hex digest is sent in the `X-Webhook-Signature` header.
+
+## Verification examples
+
+<CodeGroup>
+
+```js Node.js
+import crypto from 'crypto';
+import express from 'express';
+
+const app = express();
+
+// Important: use raw body for signature verification
+app.use(express.json({
+  verify: (req, res, buf) => { req.rawBody = buf.toString(); }
+}));
+
+const verify = (rawBody, signature, secret) => {
+  const expected = crypto
+    .createHmac('sha256', secret)
+    .update(rawBody)
+    .digest('hex');
+
+  return crypto.timingSafeEqual(
+    Buffer.from(signature),
+    Buffer.from(expected)
+  );
+};
+
+app.post('/webhooks/sendkit', (req, res) => {
+  const signature = req.headers['x-webhook-signature'];
+  const secret = process.env.SENDKIT_WEBHOOK_SECRET;
+
+  if (!verify(req.rawBody, signature, secret)) {
+    return res.status(401).send('Invalid signature');
+  }
+
+  // Process the event
+  console.log(req.body.type);
+  res.status(200).send('OK');
+});
+```
+
+```php PHP
+$payload = file_get_contents('php://input');
+$signature = $_SERVER['HTTP_X_WEBHOOK_SIGNATURE'];
+$secret = env('SENDKIT_WEBHOOK_SECRET');
+
+$expected = hash_hmac('sha256', $payload, $secret);
+
+if (!hash_equals($expected, $signature)) {
+    http_response_code(401);
+    exit('Invalid signature');
+}
+
+$event = json_decode($payload, true);
+// Process the event
+```
+
+```python Python
+import hmac
+import hashlib
+from flask import Flask, request
+
+app = Flask(__name__)
+
+def verify(raw_body: bytes, signature: str, secret: str) -> bool:
+    expected = hmac.new(
+        secret.encode(),
+        raw_body,
+        hashlib.sha256
+    ).hexdigest()
+
+    return hmac.compare_digest(expected, signature)
+
+@app.route('/webhooks/sendkit', methods=['POST'])
+def webhook():
+    signature = request.headers.get('X-Webhook-Signature')
+    secret = 'your_signing_secret'
+
+    # Important: use raw body, not parsed JSON
+    if not verify(request.get_data(), signature, secret):
+        return 'Invalid signature', 401
+
+    event = request.get_json()
+    # Process the event
+    return 'OK', 200
+```
+
+```go Go
+package main
+
+import (
+    "crypto/hmac"
+    "crypto/sha256"
+    "encoding/hex"
+    "io"
+    "net/http"
+)
+
+func verify(rawBody []byte, signature, secret string) bool {
+    mac := hmac.New(sha256.New, []byte(secret))
+    mac.Write(rawBody)
+    expected := hex.EncodeToString(mac.Sum(nil))
+    return hmac.Equal([]byte(expected), []byte(signature))
+}
+
+func webhookHandler(w http.ResponseWriter, r *http.Request) {
+    // Important: use raw body, not re-serialized JSON
+    rawBody, _ := io.ReadAll(r.Body)
+    signature := r.Header.Get("X-Webhook-Signature")
+    secret := "your_signing_secret"
+
+    if !verify(rawBody, signature, secret) {
+        http.Error(w, "Invalid signature", http.StatusUnauthorized)
+        return
+    }
+
+    // Process the event using rawBody
+    w.WriteHeader(http.StatusOK)
+}
+```
+
+</CodeGroup>
+
+## Rotating secrets
+
+You can rotate your webhook's signing secret at any time from the dashboard. After rotation, use the new secret to verify future deliveries. Previous deliveries will still show the old signature in logs.
+
+<Warning>
+  After rotating a secret, update your application immediately. Requests signed with the old secret will fail verification.
+</Warning>

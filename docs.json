@@ -1,87 +1,127 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "SendKit",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#000000",
+    "light": "#EBECED",
+    "dark": "#0A0C10"
   },
   "favicon": "/favicon.svg",
+  "background": {
+    "color": {
+      "light": "#FFFFFF",
+      "dark": "#000000"
+    }
+  },
   "navigation": {
-    "tabs": [
+    "anchors": [
       {
-        "tab": "Guides",
+        "anchor": "Documentation",
+        "icon": "book-open",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "Getting Started",
             "pages": [
-              "index",
-              "quickstart",
-              "development"
+              "index"
             ]
           },
           {
-            "group": "Customization",
+            "group": "SDKs",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
-            ]
-          },
-          {
-            "group": "Writing content",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
-            "group": "AI tools",
-            "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+              "sdks/node",
+              "sdks/php",
+              "sdks/laravel",
+              "sdks/python",
+              "sdks/ruby",
+              "sdks/go",
+              "sdks/java",
+              "sdks/rust",
+              "sdks/elixir",
+              "sdks/dotnet"
             ]
           }
         ]
       },
       {
-        "tab": "API reference",
+        "anchor": "API Reference",
+        "icon": "code",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "Overview",
             "pages": [
               "api-reference/introduction"
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "Emails",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "api-reference/endpoint/send-email"
+            ]
+          }
+        ]
+      },
+      {
+        "anchor": "Webhook Events",
+        "icon": "bolt",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "webhooks/introduction",
+              "webhooks/event-types",
+              "webhooks/retries",
+              "webhooks/signatures"
+            ]
+          },
+          {
+            "group": "Emails",
+            "pages": [
+              "webhooks/events/email-bounced",
+              "webhooks/events/email-clicked",
+              "webhooks/events/email-complained",
+              "webhooks/events/email-delivered",
+              "webhooks/events/email-delivery-delayed",
+              "webhooks/events/email-failed",
+              "webhooks/events/email-opened",
+              "webhooks/events/email-sent"
+            ]
+          },
+          {
+            "group": "Contacts",
+            "pages": [
+              "webhooks/events/contact-created",
+              "webhooks/events/contact-updated",
+              "webhooks/events/contact-deleted"
+            ]
+          }
+        ]
+      },
+      {
+        "anchor": "Knowledge Base",
+        "icon": "book",
+        "groups": [
+          {
+            "group": "Knowledge Base",
+            "pages": [
+              "knowledge-base/introduction"
+            ]
+          }
+        ]
+      },
+      {
+        "anchor": "Changelog",
+        "icon": "clock-rotate-left",
+        "groups": [
+          {
+            "group": "March 2026",
+            "pages": [
+              "changelog/2026/march-2"
             ]
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
+    ]
   },
   "logo": {
     "light": "/logo/light.svg",
@@ -90,33 +130,32 @@
   "navbar": {
     "links": [
       {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "label": "Sign in",
+        "href": "https://app.sendkit.dev/login"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "label": "Get Started",
+      "href": "https://app.sendkit.dev/register"
     }
   },
   "contextual": {
     "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "x": "https://x.com/sendkitdev",
+      "github": "https://github.com/sendkitdev"
     }
   }
 }

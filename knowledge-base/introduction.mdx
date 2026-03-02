@@ -1,32 +1,66 @@
 ---
-title: 'Knowledge Base'
-description: 'Example section for showcasing API endpoints'
+title: "Introduction"
+description: "Learn the fundamentals of SendKit and how to send your first email"
+icon: "book"
 ---
 
-<Note>
-  Introduction to SendKit Knowledge Base
-</Note>
+## What is SendKit?
 
-## Welcome
+SendKit is an email delivery platform built for developers. It provides a simple API to send transactional and marketing emails at scale, with built-in deliverability tools, analytics, and team management.
 
-SendKit is a powerful platform for managing your email campaigns. This knowledge base provides comprehensive documentation to help you get started and make the most of our features.
+## Key features
 
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+<Columns cols={2}>
+  <Card title="Email API" icon="code">
+    Send emails with a single API call. Supports HTML, plain text, and attachments.
+  </Card>
+  <Card title="Domain verification" icon="globe">
+    Verify your sending domains with SPF, DKIM, and DMARC records to maximize deliverability.
+  </Card>
+  <Card title="Analytics" icon="chart-mixed">
+    Track opens, clicks, bounces, and complaints in real time.
+  </Card>
+  <Card title="Team management" icon="users">
+    Invite team members and manage API keys with role-based access.
+  </Card>
+</Columns>
 
-## Authentication
+## How it works
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+<Steps>
+  <Step title="Create an account">
+    Sign up at [app.sendkit.dev](https://app.sendkit.dev) and create your team.
+  </Step>
+  <Step title="Add and verify a domain">
+    Add your sending domain and configure the DNS records to verify ownership.
+  </Step>
+  <Step title="Generate an API key">
+    Create an API key from the dashboard to authenticate your requests.
+  </Step>
+  <Step title="Send your first email">
+    Use the API to send an email. Here's a quick example:
 
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
-```
+    ```bash
+    curl -X POST https://api.sendkit.dev/v1/emails \
+      -H "Authorization: Bearer YOUR_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "from": "hello@yourdomain.com",
+        "to": "user@example.com",
+        "subject": "Hello from SendKit",
+        "html": "<p>Your first email sent with SendKit!</p>"
+      }'
+    ```
+  </Step>
+</Steps>
+
+## Next steps
+
+<Columns cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Get up and running in under 5 minutes.
+  </Card>
+  <Card title="API reference" icon="terminal" href="/api-reference/introduction">
+    Explore the full API documentation.
+  </Card>
+</Columns>

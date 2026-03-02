@@ -1,0 +1,43 @@
+---
+title: "Node.js"
+description: "Send emails from Node.js using the SendKit SDK."
+---
+
+## Install
+
+<CodeGroup>
+
+```bash npm
+npm install @sendkitdev/sdk
+```
+
+```bash yarn
+yarn add @sendkitdev/sdk
+```
+
+```bash pnpm
+pnpm add @sendkitdev/sdk
+```
+
+</CodeGroup>
+
+## Send email
+
+```typescript
+import { SendKit } from '@sendkitdev/sdk';
+
+const sendkit = new SendKit('sk_your_api_key');
+
+const { data, error } = await sendkit.emails.send({
+  from: 'you@yourdomain.com',
+  to: 'recipient@example.com',
+  subject: 'Hello from SendKit',
+  html: '<h1>Welcome!</h1><p>Your first email with SendKit.</p>',
+});
+
+if (error) {
+  console.error(error);
+} else {
+  console.log('Email sent:', data.id);
+}
+```

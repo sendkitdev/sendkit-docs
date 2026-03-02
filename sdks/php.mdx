@@ -1,0 +1,27 @@
+---
+title: "PHP"
+description: "Send emails from PHP using the SendKit SDK."
+---
+
+## Install
+
+```bash
+composer require sendkit/sendkit-php
+```
+
+## Send email
+
+```php
+use SendKit\SendKit;
+
+$client = SendKit::client('sk_your_api_key');
+
+$response = $client->emails()->send([
+    'from' => 'you@yourdomain.com',
+    'to' => 'recipient@example.com',
+    'subject' => 'Hello from SendKit',
+    'html' => '<h1>Welcome!</h1><p>Your first email with SendKit.</p>',
+]);
+
+echo $response['id'];
+```

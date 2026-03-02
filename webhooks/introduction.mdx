@@ -1,0 +1,50 @@
+---
+title: "Introduction"
+description: "Receive real-time notifications about email and contact events via webhooks"
+---
+
+Webhooks allow your application to receive real-time HTTP notifications when events occur in SendKit. Instead of polling the API, SendKit pushes event data to your endpoint as it happens.
+
+## How it works
+
+<Steps>
+  <Step title="Register a webhook endpoint">
+    Provide an HTTPS URL where SendKit will send event notifications.
+  </Step>
+  <Step title="Choose your events">
+    Subscribe to specific events (e.g. `email.delivered`) or use the wildcard `*` to receive all events.
+  </Step>
+  <Step title="Receive and verify">
+    SendKit sends a `POST` request with a JSON payload and an HMAC-SHA256 signature for verification.
+  </Step>
+</Steps>
+
+## Payload format
+
+Every webhook delivery is a `POST` request with a JSON body:
+
+```json
+{
+  "type": "email.delivered",
+  "data": {
+    "email_id": "em_abc123",
+    "from": "hello@yourdomain.com",
+    "to": "user@example.com",
+    "subject": "Welcome to SendKit"
+  },
+  "created_at": "2026-03-02T12:00:00+00:00"
+}
+```
+
+## Available events
+
+SendKit supports two categories of events:
+
+| Category | Events |
+|----------|--------|
+| **Email** | `email.sent`, `email.delivered`, `email.bounced`, `email.complained`, `email.opened`, `email.clicked`, `email.failed`, `email.delivery_delayed` |
+| **Contact** | `contact.created`, `contact.updated`, `contact.deleted` |
+
+<Card title="Event reference" icon="list" href="/webhooks/events">
+  See the full list of events with payload examples.
+</Card>

@@ -1,0 +1,33 @@
+---
+title: "contact.deleted"
+sidebarTitle: "contact.deleted"
+icon: "/images/icons/dot-red.svg"
+description: "Triggered when a contact is deleted"
+---
+
+## When it triggers
+
+This event fires when a contact is permanently deleted from your account.
+
+## Payload
+
+```json
+{
+  "type": "contact.deleted",
+  "data": {
+    "contact_id": "ct_abc123",
+    "email": "user@example.com"
+  },
+  "created_at": "2026-03-02T13:00:00+00:00"
+}
+```
+
+## Payload fields
+
+<ResponseField name="contact_id" type="string">
+  Unique identifier of the contact.
+</ResponseField>
+
+<ResponseField name="email" type="string">
+  Contact's email address.
+</ResponseField>

@@ -1,0 +1,27 @@
+---
+title: "Python"
+description: "Send emails from Python using the SendKit SDK."
+---
+
+## Install
+
+```bash
+pip install sendkit
+```
+
+## Send email
+
+```python
+from sendkit import SendKit
+
+client = SendKit("sk_your_api_key")
+
+result = client.emails.send(
+    from_="you@yourdomain.com",
+    to="recipient@example.com",
+    subject="Hello from SendKit",
+    html="<h1>Welcome!</h1><p>Your first email with SendKit.</p>",
+)
+
+print(result["id"])
+```

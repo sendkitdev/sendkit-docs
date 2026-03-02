@@ -1,0 +1,27 @@
+---
+title: "Event Types"
+description: "All webhook event types supported by SendKit"
+---
+
+SendKit sends webhook events for both email and contact activity. Each event includes a JSON payload with event-specific data.
+
+## Email events
+
+| Event | Description |
+|-------|-------------|
+| <img src="/images/icons/dot-gray.svg" style={{display: 'inline', verticalAlign: 'middle', marginRight: '6px'}} /> `email.sent` | Email was accepted and sent to the recipient's mail server |
+| <img src="/images/icons/dot-green.svg" style={{display: 'inline', verticalAlign: 'middle', marginRight: '6px'}} /> `email.delivered` | Email was successfully delivered to the recipient's inbox |
+| <img src="/images/icons/dot-blue.svg" style={{display: 'inline', verticalAlign: 'middle', marginRight: '6px'}} /> `email.opened` | Recipient opened the email |
+| <img src="/images/icons/dot-purple.svg" style={{display: 'inline', verticalAlign: 'middle', marginRight: '6px'}} /> `email.clicked` | Recipient clicked a link in the email |
+| <img src="/images/icons/dot-red.svg" style={{display: 'inline', verticalAlign: 'middle', marginRight: '6px'}} /> `email.bounced` | Email permanently rejected by the recipient's mail server |
+| <img src="/images/icons/dot-yellow.svg" style={{display: 'inline', verticalAlign: 'middle', marginRight: '6px'}} /> `email.complained` | Recipient marked the email as spam |
+| <img src="/images/icons/dot-red.svg" style={{display: 'inline', verticalAlign: 'middle', marginRight: '6px'}} /> `email.failed` | Email failed to send |
+| <img src="/images/icons/dot-gray.svg" style={{display: 'inline', verticalAlign: 'middle', marginRight: '6px'}} /> `email.delivery_delayed` | Email delivery was temporarily delayed |
+
+## Contact events
+
+| Event | Description |
+|-------|-------------|
+| <img src="/images/icons/dot-green.svg" style={{display: 'inline', verticalAlign: 'middle', marginRight: '6px'}} /> `contact.created` | A new contact was created |
+| <img src="/images/icons/dot-blue.svg" style={{display: 'inline', verticalAlign: 'middle', marginRight: '6px'}} /> `contact.updated` | A contact's details were updated |
+| <img src="/images/icons/dot-red.svg" style={{display: 'inline', verticalAlign: 'middle', marginRight: '6px'}} /> `contact.deleted` | A contact was deleted |

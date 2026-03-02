@@ -1,0 +1,52 @@
+---
+title: "Laravel"
+description: "Integrate SendKit with Laravel using the official package."
+---
+
+## Install
+
+```bash
+composer require sendkit/sendkit-laravel
+```
+
+## Configure
+
+Add your API key to your `.env` file:
+
+```bash .env
+SENDKIT_API_KEY=sk_your_api_key
+```
+
+## Send email
+
+### Using the SendKit facade
+
+```php
+use SendKit\Laravel\Facades\SendKit;
+
+$response = SendKit::emails()->send([
+    'from' => 'you@yourdomain.com',
+    'to' => 'recipient@example.com',
+    'subject' => 'Hello from SendKit',
+    'html' => '<h1>Welcome!</h1><p>Your first email with SendKit.</p>',
+]);
+
+echo $response['id'];
+```
+
+### Using the Laravel Mail driver
+
+SendKit integrates with Laravel's built-in Mail system. Set the mailer in your `.env`:
+
+```bash .env
+MAIL_MAILER=sendkit
+```
+
+Then send emails using Laravel's standard `Mail` facade:
+
+```php
+use App\Mail\WelcomeEmail;
+use Illuminate\Support\Facades\Mail;
+
+Mail::to('recipient@example.com')->send(new WelcomeEmail());
+```

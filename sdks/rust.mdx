@@ -1,0 +1,35 @@
+---
+title: "Rust"
+description: "Send emails from Rust using the SendKit SDK."
+---
+
+## Install
+
+Add to your `Cargo.toml`:
+
+```toml
+[dependencies]
+sendkit = "1"
+tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
+```
+
+## Send email
+
+```rust
+use sendkit::{SendKit, SendEmailParams};
+
+#[tokio::main]
+async fn main() {
+    let client = SendKit::new("sk_your_api_key").unwrap();
+
+    let response = client.emails.send(&client, &SendEmailParams {
+        from: "you@yourdomain.com".into(),
+        to: vec!["recipient@example.com".into()],
+        subject: "Hello from SendKit".into(),
+        html: Some("<h1>Welcome!</h1><p>Your first email with SendKit.</p>".into()),
+        ..Default::default()
+    }).await.unwrap();
+
+    println!("Email sent: {}", response.id);
+}
+```

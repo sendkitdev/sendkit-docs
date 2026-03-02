@@ -1,0 +1,35 @@
+---
+title: "Ruby"
+description: "Send emails from Ruby using the SendKit SDK."
+---
+
+## Install
+
+<CodeGroup>
+
+```bash gem
+gem install sendkit
+```
+
+```ruby Gemfile
+gem "sendkit"
+```
+
+</CodeGroup>
+
+## Send email
+
+```ruby
+require "sendkit"
+
+client = SendKit::Client.new("sk_your_api_key")
+
+result = client.emails.send(
+  from: "you@yourdomain.com",
+  to: "recipient@example.com",
+  subject: "Hello from SendKit",
+  html: "<h1>Welcome!</h1><p>Your first email with SendKit.</p>"
+)
+
+puts result["id"]
+```

@@ -1,0 +1,28 @@
+---
+title: ".NET"
+description: "Send emails from C# and .NET using the SendKit SDK."
+---
+
+## Install
+
+```bash
+dotnet add package SendKit
+```
+
+## Send email
+
+```csharp
+using SendKit;
+
+var client = new SendKitClient("sk_your_api_key");
+
+var response = await client.Emails.SendAsync(new SendEmailParams
+{
+    From = "you@yourdomain.com",
+    To = ["recipient@example.com"],
+    Subject = "Hello from SendKit",
+    Html = "<h1>Welcome!</h1><p>Your first email with SendKit.</p>"
+});
+
+Console.WriteLine($"Email sent: {response.Id}");
+```

@@ -1,0 +1,48 @@
+---
+title: "email.clicked"
+sidebarTitle: "email.clicked"
+icon: "/images/icons/dot-purple.svg"
+description: "Triggered when the recipient clicks a link in the email"
+---
+
+## When it triggers
+
+This event fires when the recipient clicks a link in the email. Click tracking works by rewriting links through a tracking redirect.
+
+## Payload
+
+```json
+{
+  "type": "email.clicked",
+  "data": {
+    "email_id": "em_abc123",
+    "from": "hello@yourdomain.com",
+    "to": "user@example.com",
+    "subject": "Welcome to SendKit",
+    "created_at": "2026-03-02T12:06:00+00:00"
+  },
+  "created_at": "2026-03-02T12:06:00+00:00"
+}
+```
+
+## Payload fields
+
+<ResponseField name="email_id" type="string">
+  Unique identifier of the email.
+</ResponseField>
+
+<ResponseField name="from" type="string">
+  Sender email address.
+</ResponseField>
+
+<ResponseField name="to" type="string">
+  Recipient email address.
+</ResponseField>
+
+<ResponseField name="subject" type="string">
+  Email subject line.
+</ResponseField>
+
+<ResponseField name="created_at" type="string">
+  ISO 8601 timestamp of when the email was created.
+</ResponseField>
