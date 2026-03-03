@@ -24,7 +24,7 @@ func main() {
     client, _ := sendkit.NewClient("sk_your_api_key")
 
     resp, _ := client.Emails.Send(context.Background(), &sendkit.SendEmailParams{
-        From:    "you@yourdomain.com",
+        From:    "Your Name <you@yourdomain.com>",
         To:      []string{"recipient@example.com"},
         Subject: "Hello from SendKit",
         HTML:    "<h1>Welcome!</h1><p>Your first email with SendKit.</p>",

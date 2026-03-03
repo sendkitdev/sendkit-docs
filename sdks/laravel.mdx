@@ -25,7 +25,7 @@ SENDKIT_API_KEY=sk_your_api_key
 use SendKit\Laravel\Facades\SendKit;
 
 $response = SendKit::emails()->send([
-    'from' => 'you@yourdomain.com',
+    'from' => 'Your Name <you@yourdomain.com>',
     'to' => 'recipient@example.com',
     'subject' => 'Hello from SendKit',
     'html' => '<h1>Welcome!</h1><p>Your first email with SendKit.</p>',

@@ -29,7 +29,7 @@ import { SendKit } from '@sendkitdev/sdk';
 const sendkit = new SendKit('sk_your_api_key');
 
 const { data, error } = await sendkit.emails.send({
-  from: 'you@yourdomain.com',
+  from: 'Your Name <you@yourdomain.com>',
   to: 'recipient@example.com',
   subject: 'Hello from SendKit',
   html: '<h1>Welcome!</h1><p>Your first email with SendKit.</p>',

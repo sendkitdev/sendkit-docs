@@ -23,7 +23,7 @@ async fn main() {
     let client = SendKit::new("sk_your_api_key").unwrap();
 
     let response = client.emails.send(&client, &SendEmailParams {
-        from: "you@yourdomain.com".into(),
+        from: "Your Name <you@yourdomain.com>".into(),
         to: vec!["recipient@example.com".into()],
         subject: "Hello from SendKit".into(),
         html: Some("<h1>Welcome!</h1><p>Your first email with SendKit.</p>".into()),

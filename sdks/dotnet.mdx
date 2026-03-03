@@ -18,7 +18,7 @@ var client = new SendKitClient("sk_your_api_key");
 
 var response = await client.Emails.SendAsync(new SendEmailParams
 {
-    From = "you@yourdomain.com",
+    From = "Your Name <you@yourdomain.com>",
     To = ["recipient@example.com"],
     Subject = "Hello from SendKit",
     Html = "<h1>Welcome!</h1><p>Your first email with SendKit.</p>"

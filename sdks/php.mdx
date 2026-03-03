@@ -17,7 +17,7 @@ use SendKit\SendKit;
 $client = SendKit::client('sk_your_api_key');
 
 $response = $client->emails()->send([
-    'from' => 'you@yourdomain.com',
+    'from' => 'Your Name <you@yourdomain.com>',
     'to' => 'recipient@example.com',
     'subject' => 'Hello from SendKit',
     'html' => '<h1>Welcome!</h1><p>Your first email with SendKit.</p>',

@@ -103,9 +103,8 @@
         "properties": {
           "from": {
             "type": "string",
-            "format": "email",
-            "description": "Sender email address. Must belong to a verified domain.",
-            "example": "hello@yourdomain.com"
+            "description": "Sender email address. Must belong to a verified domain. Accepts plain email or with display name.",
+            "example": "Your Name <hello@yourdomain.com>"
           },
           "to": {
             "type": "string",

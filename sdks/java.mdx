@@ -32,7 +32,7 @@ SendKit client = new SendKit("sk_your_api_key");
 
 Emails.SendEmailResponse response = client.emails().send(
     new Emails.SendEmailParams(
-        "you@yourdomain.com",
+        "Your Name <you@yourdomain.com>",
         List.of("recipient@example.com"),
         "Hello from SendKit"
     ).html("<h1>Welcome!</h1><p>Your first email with SendKit.</p>")
