@@ -900,58 +900,6 @@
         }
       }
     },
-    "/emails/mime": {
-      "post": {
-        "operationId": "sendMimeEmail",
-        "summary": "Send a MIME email",
-        "tags": [
-          "Emails"
-        ],
-        "description": "Send an email using a raw MIME message. Useful for forwarding or sending pre-built email messages.",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SendMimeEmailRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Email created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SendEmailResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized \u2014 missing or invalid API key",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/emails/validate": {
       "post": {
         "operationId": "validateEmail",
@@ -1889,32 +1837,6 @@
             "format": "email",
             "description": "The email address to suppress.",
             "example": "blocked@example.com"
-          }
-        }
-      },
-      "SendMimeEmailRequest": {
-        "type": "object",
-        "required": [
-          "envelope_from",
-          "envelope_to",
-          "raw_message"
-        ],
-        "properties": {
-          "envelope_from": {
-            "type": "string",
-            "description": "The sender email address or formatted as \"Name <email>\".",
-            "example": "sender@example.com"
-          },
-          "envelope_to": {
-            "type": "string",
-            "format": "email",
-            "description": "The recipient email address.",
-            "example": "recipient@example.com"
-          },
-          "raw_message": {
-            "type": "string",
-            "description": "The raw MIME message content. Maximum 37.5 MB.",
-            "example": "From: sender@example.com\r\nTo: recipient@example.com\r\nSubject: Hello\r\nContent-Type: text/plain\r\n\r\nHello World"
           }
         }
       },

@@ -63,7 +63,6 @@
             "group": "Emails",
             "pages": [
               "api-reference/endpoint/send-email",
-              "api-reference/endpoint/send-mime-email",
               "api-reference/endpoint/validate-email"
             ]
           },
