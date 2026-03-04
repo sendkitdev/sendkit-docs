@@ -949,12 +949,6 @@
       "Contact": {
         "type": "object",
         "properties": {
-          "object": {
-            "type": "string",
-            "enum": ["contact"],
-            "description": "Object type identifier.",
-            "example": "contact"
-          },
           "id": {
             "type": "string",
             "format": "uuid",
@@ -1215,12 +1209,6 @@
       "List": {
         "type": "object",
         "properties": {
-          "object": {
-            "type": "string",
-            "enum": ["list"],
-            "description": "Object type identifier.",
-            "example": "list"
-          },
           "id": {
             "type": "string",
             "format": "uuid",
@@ -1249,11 +1237,6 @@
       "ListSummary": {
         "type": "object",
         "properties": {
-          "object": {
-            "type": "string",
-            "enum": ["list"],
-            "example": "list"
-          },
           "id": {
             "type": "string",
             "format": "uuid",
@@ -1325,12 +1308,6 @@
       "Property": {
         "type": "object",
         "properties": {
-          "object": {
-            "type": "string",
-            "enum": ["property"],
-            "description": "Object type identifier.",
-            "example": "property"
-          },
           "id": {
             "type": "string",
             "format": "uuid",
