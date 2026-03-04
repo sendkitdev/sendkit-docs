@@ -20,7 +20,9 @@
       "post": {
         "operationId": "sendEmail",
         "summary": "Send an email",
-        "tags": ["Emails"],
+        "tags": [
+          "Emails"
+        ],
         "description": "Send a transactional email to a recipient. The `from` address must belong to a verified domain in your account. You must provide either `html` or `text` (or both).",
         "requestBody": {
           "required": true,
@@ -44,7 +46,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized — missing or invalid API key",
+            "description": "Unauthorized \u2014 missing or invalid API key",
             "content": {
               "application/json": {
                 "schema": {
@@ -92,7 +94,9 @@
       "post": {
         "operationId": "upsertContact",
         "summary": "Upsert a contact",
-        "tags": ["Contacts"],
+        "tags": [
+          "Contacts"
+        ],
         "description": "Create a new contact or update an existing one if a contact with the same email already exists (upsert). You can optionally attach the contact to lists and set property values inline.",
         "requestBody": {
           "required": true,
@@ -106,7 +110,7 @@
         },
         "responses": {
           "201": {
-            "description": "Contact created or updated successfully",
+            "description": "New contact created",
             "content": {
               "application/json": {
                 "schema": {
@@ -120,22 +124,26 @@
           },
           "422": {
             "$ref": "#/components/responses/ValidationError"
+          },
+          "200": {
+            "description": "Existing contact updated (upsert)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Contact"
+                }
+              }
+            }
           }
         }
       },
       "get": {
         "operationId": "listContacts",
         "summary": "List contacts",
-        "tags": ["Contacts"],
-        "description": "Retrieve a paginated list of contacts for your team. Results are ordered by creation date, newest first.",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/PerPage"
-          },
-          {
-            "$ref": "#/components/parameters/Page"
-          }
+        "tags": [
+          "Contacts"
         ],
+        "description": "Retrieve a paginated list of contacts for your team. Results are ordered by creation date, newest first.",
         "responses": {
           "200": {
             "description": "A paginated list of contacts",
@@ -157,7 +165,9 @@
       "get": {
         "operationId": "getContact",
         "summary": "Get a contact",
-        "tags": ["Contacts"],
+        "tags": [
+          "Contacts"
+        ],
         "description": "Retrieve a single contact by ID, including their lists and property values.",
         "parameters": [
           {
@@ -193,7 +203,9 @@
       "patch": {
         "operationId": "updateContact",
         "summary": "Update a contact",
-        "tags": ["Contacts"],
+        "tags": [
+          "Contacts"
+        ],
         "description": "Update a contact's fields. Only the provided fields will be updated. You can also sync lists and properties inline.",
         "parameters": [
           {
@@ -242,8 +254,10 @@
       "delete": {
         "operationId": "deleteContact",
         "summary": "Delete a contact",
-        "tags": ["Contacts"],
-        "description": "Delete a contact by ID. This is a soft delete — the contact will no longer appear in API responses.",
+        "tags": [
+          "Contacts"
+        ],
+        "description": "Delete a contact by ID. This is a soft delete \u2014 the contact will no longer appear in API responses.",
         "parameters": [
           {
             "name": "id",
@@ -273,7 +287,9 @@
       "post": {
         "operationId": "createList",
         "summary": "Create a list",
-        "tags": ["Lists"],
+        "tags": [
+          "Lists"
+        ],
         "description": "Create a new contact list for your team.",
         "requestBody": {
           "required": true,
@@ -307,16 +323,10 @@
       "get": {
         "operationId": "listLists",
         "summary": "List all lists",
-        "tags": ["Lists"],
-        "description": "Retrieve a paginated list of all contact lists for your team.",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/PerPage"
-          },
-          {
-            "$ref": "#/components/parameters/Page"
-          }
+        "tags": [
+          "Lists"
         ],
+        "description": "Retrieve a paginated list of all contact lists for your team.",
         "responses": {
           "200": {
             "description": "A paginated list of lists",
@@ -338,7 +348,9 @@
       "get": {
         "operationId": "getList",
         "summary": "Get a list",
-        "tags": ["Lists"],
+        "tags": [
+          "Lists"
+        ],
         "description": "Retrieve a single contact list by ID.",
         "parameters": [
           {
@@ -374,7 +386,9 @@
       "patch": {
         "operationId": "updateList",
         "summary": "Update a list",
-        "tags": ["Lists"],
+        "tags": [
+          "Lists"
+        ],
         "description": "Update a contact list's name.",
         "parameters": [
           {
@@ -423,7 +437,9 @@
       "delete": {
         "operationId": "deleteList",
         "summary": "Delete a list",
-        "tags": ["Lists"],
+        "tags": [
+          "Lists"
+        ],
         "description": "Delete a contact list by ID. Contacts in the list are not deleted.",
         "parameters": [
           {
@@ -446,6 +462,19 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "description": "Conflict \u2014 list is used by active campaigns or automations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "message": "This list is used by active campaigns and cannot be deleted."
+                }
+              }
+            }
           }
         }
       }
@@ -454,7 +483,9 @@
       "post": {
         "operationId": "addContactToLists",
         "summary": "Add a contact to lists",
-        "tags": ["Contacts"],
+        "tags": [
+          "Contacts"
+        ],
         "description": "Add a contact to one or more lists. Lists that the contact already belongs to will be ignored.",
         "parameters": [
           {
@@ -503,7 +534,9 @@
       "get": {
         "operationId": "listContactLists",
         "summary": "List a contact's lists",
-        "tags": ["Contacts"],
+        "tags": [
+          "Contacts"
+        ],
         "description": "Retrieve a paginated list of lists that a contact belongs to.",
         "parameters": [
           {
@@ -515,12 +548,6 @@
               "format": "uuid"
             },
             "description": "The contact ID."
-          },
-          {
-            "$ref": "#/components/parameters/PerPage"
-          },
-          {
-            "$ref": "#/components/parameters/Page"
           }
         ],
         "responses": {
@@ -547,7 +574,9 @@
       "delete": {
         "operationId": "removeContactFromList",
         "summary": "Remove a contact from a list",
-        "tags": ["Contacts"],
+        "tags": [
+          "Contacts"
+        ],
         "description": "Remove a contact from a specific list. The contact itself is not deleted.",
         "parameters": [
           {
@@ -588,7 +617,9 @@
       "post": {
         "operationId": "createProperty",
         "summary": "Create a property",
-        "tags": ["Properties"],
+        "tags": [
+          "Properties"
+        ],
         "description": "Create a new contact property for your team. Properties define custom fields that can be set on contacts.",
         "requestBody": {
           "required": true,
@@ -622,16 +653,10 @@
       "get": {
         "operationId": "listProperties",
         "summary": "List all properties",
-        "tags": ["Properties"],
-        "description": "Retrieve a paginated list of all contact properties for your team.",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/PerPage"
-          },
-          {
-            "$ref": "#/components/parameters/Page"
-          }
+        "tags": [
+          "Properties"
         ],
+        "description": "Retrieve a paginated list of all contact properties for your team.",
         "responses": {
           "200": {
             "description": "A paginated list of properties",
@@ -653,7 +678,9 @@
       "patch": {
         "operationId": "updateProperty",
         "summary": "Update a property",
-        "tags": ["Properties"],
+        "tags": [
+          "Properties"
+        ],
         "description": "Update a contact property's key, type, or fallback value.",
         "parameters": [
           {
@@ -702,7 +729,9 @@
       "delete": {
         "operationId": "deleteProperty",
         "summary": "Delete a property",
-        "tags": ["Properties"],
+        "tags": [
+          "Properties"
+        ],
         "description": "Delete a contact property by ID. All associated property values on contacts will also be removed.",
         "parameters": [
           {
@@ -725,6 +754,148 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "description": "Conflict \u2014 property is used in segment filters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "message": "This property is used in segment filters and cannot be deleted."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/suppressions": {
+      "post": {
+        "operationId": "createSuppression",
+        "summary": "Add to suppression list",
+        "tags": [
+          "Suppressions"
+        ],
+        "description": "Add an email address to the suppression list. Suppressed emails will not receive any emails. If the email already exists, the existing entry is returned. The email is normalized to lowercase.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSuppressionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Suppression entry created or already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Suppression"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized \u2014 missing or invalid API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "listSuppressions",
+        "summary": "List suppressions",
+        "tags": [
+          "Suppressions"
+        ],
+        "description": "Retrieve a paginated list of all suppressed email addresses.",
+        "responses": {
+          "200": {
+            "description": "A paginated list of suppression entries",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedSuppressions"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized \u2014 missing or invalid API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/suppressions/{id}": {
+      "delete": {
+        "operationId": "deleteSuppression",
+        "summary": "Remove from suppression list",
+        "tags": [
+          "Suppressions"
+        ],
+        "description": "Remove an email address from the suppression list. This allows the email to receive emails again.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The suppression entry ID.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Suppression entry removed successfully"
+          },
+          "401": {
+            "description": "Unauthorized \u2014 missing or invalid API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Suppression entry not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -738,32 +909,9 @@
         "description": "API key from your SendKit dashboard. Pass it as a Bearer token in the Authorization header."
       }
     },
-    "parameters": {
-      "PerPage": {
-        "name": "per_page",
-        "in": "query",
-        "schema": {
-          "type": "integer",
-          "minimum": 1,
-          "maximum": 100,
-          "default": 25
-        },
-        "description": "Number of items per page. Defaults to 25, maximum 100."
-      },
-      "Page": {
-        "name": "page",
-        "in": "query",
-        "schema": {
-          "type": "integer",
-          "minimum": 1,
-          "default": 1
-        },
-        "description": "Page number. Defaults to 1."
-      }
-    },
     "responses": {
       "Unauthorized": {
-        "description": "Unauthorized — missing or invalid API key",
+        "description": "Unauthorized \u2014 missing or invalid API key",
         "content": {
           "application/json": {
             "schema": {
@@ -789,7 +937,7 @@
         }
       },
       "ValidationError": {
-        "description": "Validation error — invalid or missing parameters",
+        "description": "Validation error \u2014 invalid or missing parameters",
         "content": {
           "application/json": {
             "schema": {
@@ -805,7 +953,11 @@
     "schemas": {
       "SendEmailRequest": {
         "type": "object",
-        "required": ["from", "to", "subject"],
+        "required": [
+          "from",
+          "to",
+          "subject"
+        ],
         "properties": {
           "from": {
             "type": "string",
@@ -841,7 +993,9 @@
               "format": "email"
             },
             "description": "Carbon copy recipients.",
-            "example": ["cc@example.com"]
+            "example": [
+              "cc@example.com"
+            ]
           },
           "bcc": {
             "type": "array",
@@ -850,7 +1004,9 @@
               "format": "email"
             },
             "description": "Blind carbon copy recipients.",
-            "example": ["bcc@example.com"]
+            "example": [
+              "bcc@example.com"
+            ]
           },
           "reply_to": {
             "type": "array",
@@ -859,7 +1015,9 @@
               "format": "email"
             },
             "description": "Reply-to email addresses.",
-            "example": ["support@yourdomain.com"]
+            "example": [
+              "support@yourdomain.com"
+            ]
           },
           "headers": {
             "type": "object",
@@ -882,7 +1040,7 @@
             "type": "string",
             "format": "date-time",
             "description": "Schedule the email for future delivery. Must be a future ISO 8601 timestamp.",
-            "example": "2026-03-05T10:30:00Z"
+            "example": "2026-03-05 10:30:00"
           },
           "attachments": {
             "type": "array",
@@ -896,7 +1054,10 @@
       },
       "Tag": {
         "type": "object",
-        "required": ["name", "value"],
+        "required": [
+          "name",
+          "value"
+        ],
         "properties": {
           "name": {
             "type": "string",
@@ -914,7 +1075,10 @@
       },
       "Attachment": {
         "type": "object",
-        "required": ["filename", "content"],
+        "required": [
+          "filename",
+          "content"
+        ],
         "properties": {
           "filename": {
             "type": "string",
@@ -962,17 +1126,26 @@
             "example": "john@example.com"
           },
           "first_name": {
-            "type": ["string", "null"],
+            "type": [
+              "string",
+              "null"
+            ],
             "description": "The contact's first name.",
             "example": "John"
           },
           "last_name": {
-            "type": ["string", "null"],
+            "type": [
+              "string",
+              "null"
+            ],
             "description": "The contact's last name.",
             "example": "Doe"
           },
           "user_id": {
-            "type": ["string", "null"],
+            "type": [
+              "string",
+              "null"
+            ],
             "description": "An external user identifier from your application.",
             "example": "ext_123"
           },
@@ -1003,13 +1176,13 @@
             "type": "string",
             "format": "date-time",
             "description": "When the contact was created.",
-            "example": "2026-03-03T10:00:00+00:00"
+            "example": "2026-03-03 10:00:00"
           },
           "updated_at": {
             "type": "string",
             "format": "date-time",
             "description": "When the contact was last updated.",
-            "example": "2026-03-03T10:00:00+00:00"
+            "example": "2026-03-03 10:00:00"
           }
         }
       },
@@ -1022,7 +1195,10 @@
             "example": 1
           },
           "from": {
-            "type": ["integer", "null"],
+            "type": [
+              "integer",
+              "null"
+            ],
             "description": "The index of the first item on the current page.",
             "example": 1
           },
@@ -1037,7 +1213,10 @@
             "example": 25
           },
           "to": {
-            "type": ["integer", "null"],
+            "type": [
+              "integer",
+              "null"
+            ],
             "description": "The index of the last item on the current page.",
             "example": 25
           },
@@ -1057,22 +1236,34 @@
         "type": "object",
         "properties": {
           "first": {
-            "type": ["string", "null"],
+            "type": [
+              "string",
+              "null"
+            ],
             "description": "URL to the first page.",
             "example": "https://api.sendkit.dev/v1/contacts?page=1"
           },
           "last": {
-            "type": ["string", "null"],
+            "type": [
+              "string",
+              "null"
+            ],
             "description": "URL to the last page.",
             "example": "https://api.sendkit.dev/v1/contacts?page=3"
           },
           "prev": {
-            "type": ["string", "null"],
+            "type": [
+              "string",
+              "null"
+            ],
             "description": "URL to the previous page, or null if on the first page.",
             "example": null
           },
           "next": {
-            "type": ["string", "null"],
+            "type": [
+              "string",
+              "null"
+            ],
             "description": "URL to the next page, or null if on the last page.",
             "example": "https://api.sendkit.dev/v1/contacts?page=2"
           }
@@ -1097,7 +1288,9 @@
       },
       "UpsertContactRequest": {
         "type": "object",
-        "required": ["email"],
+        "required": [
+          "email"
+        ],
         "properties": {
           "email": {
             "type": "string",
@@ -1107,19 +1300,28 @@
             "example": "john@example.com"
           },
           "first_name": {
-            "type": ["string", "null"],
+            "type": [
+              "string",
+              "null"
+            ],
             "maxLength": 255,
             "description": "The contact's first name.",
             "example": "John"
           },
           "last_name": {
-            "type": ["string", "null"],
+            "type": [
+              "string",
+              "null"
+            ],
             "maxLength": 255,
             "description": "The contact's last name.",
             "example": "Doe"
           },
           "user_id": {
-            "type": ["string", "null"],
+            "type": [
+              "string",
+              "null"
+            ],
             "maxLength": 255,
             "description": "An external user identifier from your application.",
             "example": "ext_123"
@@ -1137,12 +1339,17 @@
               "format": "uuid"
             },
             "description": "List IDs to attach the contact to. Replaces existing list memberships.",
-            "example": ["550e8400-e29b-41d4-a716-446655440000"]
+            "example": [
+              "550e8400-e29b-41d4-a716-446655440000"
+            ]
           },
           "properties": {
             "type": "object",
             "additionalProperties": {
-              "type": ["string", "null"]
+              "type": [
+                "string",
+                "null"
+              ]
             },
             "description": "Property values to set on the contact. Keys must match existing property keys.",
             "example": {
@@ -1163,19 +1370,28 @@
             "example": "john@example.com"
           },
           "first_name": {
-            "type": ["string", "null"],
+            "type": [
+              "string",
+              "null"
+            ],
             "maxLength": 255,
             "description": "The contact's first name.",
             "example": "John"
           },
           "last_name": {
-            "type": ["string", "null"],
+            "type": [
+              "string",
+              "null"
+            ],
             "maxLength": 255,
             "description": "The contact's last name.",
             "example": "Doe"
           },
           "user_id": {
-            "type": ["string", "null"],
+            "type": [
+              "string",
+              "null"
+            ],
             "maxLength": 255,
             "description": "An external user identifier from your application.",
             "example": "ext_123"
@@ -1192,12 +1408,17 @@
               "format": "uuid"
             },
             "description": "List IDs to attach the contact to. Replaces existing list memberships.",
-            "example": ["550e8400-e29b-41d4-a716-446655440000"]
+            "example": [
+              "550e8400-e29b-41d4-a716-446655440000"
+            ]
           },
           "properties": {
             "type": "object",
             "additionalProperties": {
-              "type": ["string", "null"]
+              "type": [
+                "string",
+                "null"
+              ]
             },
             "description": "Property values to set on the contact. Keys must match existing property keys.",
             "example": {
@@ -1224,13 +1445,13 @@
             "type": "string",
             "format": "date-time",
             "description": "When the list was created.",
-            "example": "2026-03-03T10:00:00+00:00"
+            "example": "2026-03-03 10:00:00"
           },
           "updated_at": {
             "type": "string",
             "format": "date-time",
             "description": "When the list was last updated.",
-            "example": "2026-03-03T10:00:00+00:00"
+            "example": "2026-03-03 10:00:00"
           }
         }
       },
@@ -1245,6 +1466,16 @@
           "name": {
             "type": "string",
             "example": "Newsletter"
+          },
+          "created_at": {
+            "type": "string",
+            "description": "When the list was created.",
+            "example": "2026-03-03 10:00:00"
+          },
+          "updated_at": {
+            "type": "string",
+            "description": "When the list was last updated.",
+            "example": "2026-03-03 10:00:00"
           }
         }
       },
@@ -1267,7 +1498,9 @@
       },
       "CreateListRequest": {
         "type": "object",
-        "required": ["name"],
+        "required": [
+          "name"
+        ],
         "properties": {
           "name": {
             "type": "string",
@@ -1279,7 +1512,9 @@
       },
       "UpdateListRequest": {
         "type": "object",
-        "required": ["name"],
+        "required": [
+          "name"
+        ],
         "properties": {
           "name": {
             "type": "string",
@@ -1291,7 +1526,9 @@
       },
       "AddContactToListsRequest": {
         "type": "object",
-        "required": ["list_ids"],
+        "required": [
+          "list_ids"
+        ],
         "properties": {
           "list_ids": {
             "type": "array",
@@ -1301,7 +1538,10 @@
               "format": "uuid"
             },
             "description": "IDs of the lists to add the contact to.",
-            "example": ["550e8400-e29b-41d4-a716-446655440000", "660e8400-e29b-41d4-a716-446655440000"]
+            "example": [
+              "550e8400-e29b-41d4-a716-446655440000",
+              "660e8400-e29b-41d4-a716-446655440000"
+            ]
           }
         }
       },
@@ -1321,12 +1561,19 @@
           },
           "type": {
             "type": "string",
-            "enum": ["string", "number", "date"],
+            "enum": [
+              "string",
+              "number",
+              "date"
+            ],
             "description": "The data type of the property.",
             "example": "string"
           },
           "fallback_value": {
-            "type": ["string", "null"],
+            "type": [
+              "string",
+              "null"
+            ],
             "description": "Default value used when a contact doesn't have this property set.",
             "example": "N/A"
           },
@@ -1334,13 +1581,13 @@
             "type": "string",
             "format": "date-time",
             "description": "When the property was created.",
-            "example": "2026-03-03T10:00:00+00:00"
+            "example": "2026-03-03 10:00:00"
           },
           "updated_at": {
             "type": "string",
             "format": "date-time",
             "description": "When the property was last updated.",
-            "example": "2026-03-03T10:00:00+00:00"
+            "example": "2026-03-03 10:00:00"
           }
         }
       },
@@ -1363,7 +1610,10 @@
       },
       "CreatePropertyRequest": {
         "type": "object",
-        "required": ["key", "type"],
+        "required": [
+          "key",
+          "type"
+        ],
         "properties": {
           "key": {
             "type": "string",
@@ -1373,12 +1623,19 @@
           },
           "type": {
             "type": "string",
-            "enum": ["string", "number", "date"],
+            "enum": [
+              "string",
+              "number",
+              "date"
+            ],
             "description": "The data type of the property.",
             "example": "string"
           },
           "fallback_value": {
-            "type": ["string", "null"],
+            "type": [
+              "string",
+              "null"
+            ],
             "maxLength": 1000,
             "description": "Default value used when a contact doesn't have this property set.",
             "example": "N/A"
@@ -1396,12 +1653,19 @@
           },
           "type": {
             "type": "string",
-            "enum": ["string", "number", "date"],
+            "enum": [
+              "string",
+              "number",
+              "date"
+            ],
             "description": "The data type of the property.",
             "example": "string"
           },
           "fallback_value": {
-            "type": ["string", "null"],
+            "type": [
+              "string",
+              "null"
+            ],
             "maxLength": 1000,
             "description": "Default value used when a contact doesn't have this property set.",
             "example": "N/A"
@@ -1420,6 +1684,78 @@
             "type": "string",
             "description": "Human-readable error message.",
             "example": "The from address domain is not verified."
+          }
+        }
+      },
+      "Suppression": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier for the suppression entry."
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "The suppressed email address."
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "manual",
+              "bounce",
+              "complaint"
+            ],
+            "description": "The reason the email was suppressed."
+          },
+          "created_at": {
+            "type": "string",
+            "description": "When the entry was created.",
+            "example": "2026-03-03 10:00:00"
+          },
+          "updated_at": {
+            "type": "string",
+            "description": "When the entry was last updated.",
+            "example": "2026-03-03 10:00:00"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "reason",
+          "created_at",
+          "updated_at"
+        ]
+      },
+      "PaginatedSuppressions": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Suppression"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/PaginationLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta"
+          }
+        }
+      },
+      "CreateSuppressionRequest": {
+        "type": "object",
+        "required": [
+          "email"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "The email address to suppress.",
+            "example": "blocked@example.com"
           }
         }
       }
