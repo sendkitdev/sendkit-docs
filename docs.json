@@ -58,6 +58,38 @@
             "pages": [
               "api-reference/endpoint/send-email"
             ]
+          },
+          {
+            "group": "Contacts",
+            "pages": [
+              "api-reference/endpoint/create-contact",
+              "api-reference/endpoint/list-contacts",
+              "api-reference/endpoint/get-contact",
+              "api-reference/endpoint/update-contact",
+              "api-reference/endpoint/delete-contact",
+              "api-reference/endpoint/add-contacts-to-list",
+              "api-reference/endpoint/list-contacts-in-list",
+              "api-reference/endpoint/remove-contact-from-list"
+            ]
+          },
+          {
+            "group": "Lists",
+            "pages": [
+              "api-reference/endpoint/create-list",
+              "api-reference/endpoint/list-lists",
+              "api-reference/endpoint/get-list",
+              "api-reference/endpoint/update-list",
+              "api-reference/endpoint/delete-list"
+            ]
+          },
+          {
+            "group": "Properties",
+            "pages": [
+              "api-reference/endpoint/create-property",
+              "api-reference/endpoint/list-properties",
+              "api-reference/endpoint/update-property",
+              "api-reference/endpoint/delete-property"
+            ]
           }
         ]
       },
@@ -124,8 +156,8 @@
     ]
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "light": "/logo/light.png",
+    "dark": "/logo/dark.png"
   },
   "navbar": {
     "links": [
