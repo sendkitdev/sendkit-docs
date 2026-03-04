@@ -90,6 +90,14 @@
               "api-reference/endpoint/update-property",
               "api-reference/endpoint/delete-property"
             ]
+          },
+          {
+            "group": "Suppressions",
+            "pages": [
+              "api-reference/endpoint/create-suppression",
+              "api-reference/endpoint/list-suppressions",
+              "api-reference/endpoint/delete-suppression"
+            ]
           }
         ]
       },
