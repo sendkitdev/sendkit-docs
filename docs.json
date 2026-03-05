@@ -200,6 +200,7 @@
             "group": "Sending",
             "pages": [
               "knowledge-base/senders",
+              "knowledge-base/templates",
               "knowledge-base/suppression-list",
               "knowledge-base/campaigns",
               "knowledge-base/automations"

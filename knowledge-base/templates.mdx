@@ -1,0 +1,148 @@
+---
+title: "Templates"
+description: "Design reusable email templates with a visual editor and dynamic personalization."
+icon: "palette"
+---
+
+## What are templates?
+
+Templates are reusable email designs that you use in campaigns, automations, and test sends. Instead of writing HTML from scratch every time, you build a template once and reuse it wherever you need it.
+
+Each template stores the subject line, sender, HTML body, and plain text version — along with any personalization variables.
+
+## Creating a template
+
+Go to **Templates** and click **Create Template**. A new draft template is created with a default name, and you're taken straight to the editor.
+
+## The editor
+
+SendKit uses a visual editor where you type and format content directly — no HTML knowledge needed. Type `/` to open the command menu and insert any block.
+
+### Available blocks
+
+<CardGroup cols={2}>
+  <Card title="Text">
+    Paragraph, Heading 1–3, Bullet list, Numbered list, Quote, Code block, Link
+  </Card>
+  <Card title="Media">
+    Image (upload), YouTube embed, X/Twitter embed
+  </Card>
+  <Card title="Layout">
+    Button (CTA), Divider, Section, Social links
+  </Card>
+  <Card title="Utility">
+    Raw HTML, Variable
+  </Card>
+</CardGroup>
+
+### Auto-save
+
+The editor saves automatically as you type. You'll see a save indicator in the header — no need to manually save.
+
+### Template settings
+
+In the editor sidebar, you can configure:
+
+| Field | Description |
+|-------|-------------|
+| **Name** | Internal name for organizing templates (recipients don't see this) |
+| **Subject** | Email subject line. Supports variables like `{{FIRST_NAME}}` |
+| **From** | Select a [sender](/knowledge-base/senders) to use as the "from" address |
+| **Reply-To** | Optional reply-to email address |
+
+## Personalization variables
+
+Templates support dynamic variables that are replaced with each recipient's data when the email is sent.
+
+### Built-in variables
+
+| Variable | Replaced with |
+|----------|--------------|
+| `{{EMAIL}}` | Contact's email address |
+| `{{FIRST_NAME}}` | Contact's first name |
+| `{{LAST_NAME}}` | Contact's last name |
+| `{{FULL_NAME}}` | First and last name combined |
+| `{{USER_ID}}` | Contact's user ID |
+
+### Custom variables
+
+Any [property](/knowledge-base/properties) you create is automatically available as a variable. For example, a property with key `company_name` becomes `{{COMPANY_NAME}}`.
+
+### Fallback values
+
+Each variable can have a fallback value — used when the contact doesn't have that data set. For example, `{{FIRST_NAME}}` with fallback `"there"` renders as "Hello, there" for contacts without a first name.
+
+<Note>
+  Variables work in both the **subject line** and the **template body**. You can add up to 50 variables per template.
+</Note>
+
+## Publishing
+
+Templates have two statuses:
+
+| Status | Description |
+|--------|-------------|
+| **Draft** | Work in progress. Can be edited freely but cannot be used in campaigns |
+| **Published** | Ready to use. Can be selected when creating campaigns and automations |
+
+Click **Publish** in the editor header to change a draft to published. You can unpublish at any time.
+
+## Preview and test
+
+### Preview
+
+The template detail page has three tabs:
+
+- **Preview** — Rendered HTML as recipients will see it
+- **HTML** — Raw HTML source code with copy button
+- **Plain Text** — Auto-generated plain text version
+
+### Send a test email
+
+Click **Send test email** from the template detail page or editor. Enter a recipient email (defaults to your own) and optionally fill in variable values to see how personalization looks.
+
+<Info>
+  Test emails have "[Test]" prefixed to the subject line so you can easily identify them in your inbox.
+</Info>
+
+## Duplicating a template
+
+Click **Duplicate** from the template dropdown menu. A copy is created with "(Copy)" appended to the name. The duplicate starts as a **Draft** regardless of the original's status.
+
+All content, variables, and settings are copied — except images and the sender selection.
+
+## Deleting a template
+
+A template can only be deleted if it's **not used by any campaign**. Remove it from all campaigns first.
+
+<Note>
+  Only **Draft** templates that aren't referenced by campaigns can be deleted. Deleted templates are soft-deleted — the data is preserved for email history.
+</Note>
+
+## Images
+
+You can upload images directly in the editor. Images are stored and served by SendKit — no need for external hosting. Maximum file size is **5 MB** per image.
+
+## Using templates in campaigns and automations
+
+When creating a [campaign](/knowledge-base/campaigns) or an [automation](/knowledge-base/automations) email step, you select a published template. The template's subject, sender, and body are used, with variables replaced per contact at send time.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need to know HTML?">
+    No. The visual editor lets you build emails by typing and using the slash command menu. For advanced users, you can insert raw HTML blocks if needed.
+  </Accordion>
+  <Accordion title="Can I edit a template after it's used in a campaign?">
+    Yes, but changes won't affect emails that were already sent. Sent emails store a snapshot of the template at the time of sending.
+  </Accordion>
+  <Accordion title="Is a plain text version generated automatically?">
+    Yes. SendKit automatically generates a plain text version from your HTML content. You don't need to create it manually.
+  </Accordion>
+  <Accordion title="How many templates can I create?">
+    There's no limit. Create as many templates as you need.
+  </Accordion>
+  <Accordion title="Can I use the same template in multiple campaigns?">
+    Yes. Templates are reusable — you can select the same template for any number of campaigns and automations.
+  </Accordion>
+</AccordionGroup>
