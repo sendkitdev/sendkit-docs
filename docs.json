@@ -155,6 +155,12 @@
             ]
           },
           {
+            "group": "Analytics",
+            "pages": [
+              "knowledge-base/metrics"
+            ]
+          },
+          {
             "group": "Domains",
             "pages": [
               "knowledge-base/domains",

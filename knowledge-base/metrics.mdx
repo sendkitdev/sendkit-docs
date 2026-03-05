@@ -1,0 +1,204 @@
+---
+title: "Metrics"
+description: "Understand your email performance with real-time analytics and reputation monitoring."
+icon: "chart-line"
+---
+
+## Overview
+
+The Metrics dashboard gives you a real-time view of your email sending performance. It tracks every email from the moment it's sent through delivery, opens, clicks, bounces, and complaints — helping you understand what's working and catch problems early.
+
+## Filtering
+
+You can narrow your metrics using two filters:
+
+- **Domain** — View metrics for a specific domain or all domains combined
+- **Date range** — Select a custom time period. The available range depends on your plan's data retention policy
+
+## Email metrics
+
+These are the six core metrics tracked for every email you send.
+
+### Sent
+
+The total number of emails created and dispatched through SendKit — via API, campaigns, or automations. This is the base metric used as the denominator for all rate calculations.
+
+### Delivered
+
+Emails that were successfully accepted by the recipient's mail server. An email counts as delivered if the receiving server confirmed receipt.
+
+<Note>
+  "Delivered" means the email reached the server, not necessarily the inbox. It could still land in spam depending on content and sender reputation.
+</Note>
+
+**Includes:** Emails that were later opened or clicked — since delivery always happens before engagement.
+
+### Opened
+
+Emails where the recipient opened the message. Opens are detected via a small tracking pixel embedded in the email.
+
+<Warning>
+  Open tracking must be enabled on your [domain configuration](/knowledge-base/domains#open-tracking). Many email clients block tracking pixels, so open rates are typically underreported. Use this metric as a directional signal, not an exact count.
+</Warning>
+
+**Includes:** Emails that were later clicked — since opening always happens before clicking.
+
+### Clicked
+
+Emails where the recipient clicked at least one link. Clicks are tracked by routing links through SendKit before redirecting to the original URL.
+
+<Note>
+  Click tracking must be enabled on your [domain configuration](/knowledge-base/domains#click-tracking).
+</Note>
+
+### Bounced
+
+Emails that were rejected by the recipient's mail server. This typically happens when:
+
+- The email address doesn't exist
+- The recipient's mailbox is full
+- The receiving server blocked the email
+
+Bounces directly affect your [sender reputation](#reputation). A high bounce rate signals to mail providers that you're sending to invalid addresses.
+
+### Complained
+
+Emails where the recipient marked the message as spam. This is the most damaging metric for your reputation.
+
+<Warning>
+  Keep your complaint rate below **0.1%**. Even a small number of complaints can trigger warnings or pause your sending. Always include an easy unsubscribe option and only send to contacts who expect your emails.
+</Warning>
+
+## Rate metrics
+
+Rates give you a percentage view of your performance, making it easier to compare across different time periods and sending volumes.
+
+### Deliverability rate
+
+The percentage of sent emails that were successfully delivered.
+
+| | |
+|---|---|
+| **Formula** | (Delivered ÷ Sent) × 100% |
+| **Healthy range** | Above 95% |
+| **What affects it** | Invalid addresses, blocklists, authentication issues, content filters |
+
+A high deliverability rate means your emails are reaching recipients. If this drops, check for bounces and review your [suppression list](/knowledge-base/suppression-list).
+
+### Bounce rate
+
+The percentage of sent emails that bounced.
+
+| | |
+|---|---|
+| **Formula** | (Bounced ÷ Sent) × 100% |
+| **Warning threshold** | 5% |
+| **Critical threshold** | 10% |
+| **What affects it** | Invalid addresses, stale contact lists, blocklists |
+
+<Info>
+  Use [email validation](/knowledge-base/email-validation) before sending to clean your contact list and reduce bounces.
+</Info>
+
+### Complaint rate
+
+The percentage of sent emails that were marked as spam by recipients.
+
+| | |
+|---|---|
+| **Formula** | (Complained ÷ Sent) × 100% |
+| **Warning threshold** | 0.1% |
+| **Critical threshold** | 0.5% |
+| **What affects it** | Unwanted emails, missing unsubscribe link, misleading content, sending to unengaged contacts |
+
+This is the most important rate to monitor. Mail providers like Gmail and Outlook heavily penalize senders with high complaint rates.
+
+## Reputation
+
+The reputation badge in the top-right corner gives you an at-a-glance view of your sending health based on the **last 24 hours**:
+
+| Status | Meaning |
+|--------|---------|
+| **Healthy** | Bounce rate below 5% and complaint rate below 0.1%. Everything is normal |
+| **Warning** | Bounce rate between 5–10% or complaint rate between 0.1–0.5%. Take action to improve |
+| **Paused** | Bounce rate above 10% or complaint rate above 0.5%. Sending is paused to protect your reputation |
+
+<Note>
+  Reputation is only evaluated when you've sent at least 200 emails in the last 24 hours. Below that volume, the status remains **Healthy**.
+</Note>
+
+### What to do if your reputation degrades
+
+<AccordionGroup>
+  <Accordion title="Warning status">
+    - Review recent bounces and remove invalid addresses
+    - Check if you're sending to contacts who haven't opted in
+    - Make sure your unsubscribe link is visible and working
+    - Consider slowing down your sending volume
+  </Accordion>
+  <Accordion title="Paused status">
+    - Sending is temporarily paused to protect your domain
+    - Clean your contact list immediately — remove bounced and unengaged contacts
+    - Review your [suppression list](/knowledge-base/suppression-list) for patterns
+    - Once you've addressed the issues, your reputation will recover as your 24-hour metrics improve
+  </Accordion>
+</AccordionGroup>
+
+## Charts
+
+### Email activity chart
+
+The main area chart shows daily trends for all six metrics overlaid on the same timeline. Use it to:
+
+- Spot sudden drops in deliverability
+- Identify spikes in bounces or complaints after a campaign
+- See engagement trends (opens and clicks) over time
+
+### Bounce and complaint charts
+
+Two dedicated charts below the main chart give you a focused view of bounces and complaints separately. These are the metrics that matter most for reputation, so they get their own visualization.
+
+## Trend indicators
+
+Each metric card shows a percentage change comparing the **first half** of your selected period to the **second half**. For example, if you're viewing 14 days, it compares the first 7 days to the last 7.
+
+- **Green arrow up** — Metric increased (good for sent, delivered, opened, clicked)
+- **Red arrow up** — Metric increased (bad for bounced, complained)
+- **Green arrow down** — Metric decreased (good for bounced, complained)
+- **Red arrow down** — Metric decreased (bad for sent, delivered, opened, clicked)
+
+## How metrics are tracked
+
+SendKit tracks the **final state** of each email. Every email goes through a progression:
+
+```
+Sent → Delivered → Opened → Clicked
+```
+
+If an email is opened and then clicked, it counts as **clicked** (the most advanced state). This means:
+
+- **Delivered** includes emails that were opened or clicked
+- **Opened** includes emails that were clicked
+- **Clicked** is the most specific engagement metric
+
+Negative outcomes (bounced, complained, failed) are also final states — an email can only end in one state.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Why is my open rate low?">
+    Many email clients (Apple Mail, Gmail) block tracking pixels by default or pre-fetch images in ways that don't count as opens. Open rates are always underreported. Focus on click rates for a more reliable engagement signal.
+  </Accordion>
+  <Accordion title="What's the difference between bounced and failed?">
+    A bounce means the recipient's mail server rejected the email (e.g., address doesn't exist). A failure means the email couldn't be sent at all (e.g., invalid configuration, domain not verified).
+  </Accordion>
+  <Accordion title="How often is the dashboard updated?">
+    Metrics update in real time. As new email events come in, the dashboard refreshes automatically — no need to reload the page.
+  </Accordion>
+  <Accordion title="Why don't my numbers add up to 100%?">
+    Metrics are cumulative, not exclusive. A delivered email can also be opened, and an opened email can also be clicked. Each metric includes the more advanced states.
+  </Accordion>
+  <Accordion title="How far back can I see metrics?">
+    The available date range depends on your plan's data retention policy. Check your plan details for the exact retention period.
+  </Accordion>
+</AccordionGroup>
