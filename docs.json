@@ -170,19 +170,30 @@
           {
             "group": "DNS Providers",
             "pages": [
+              "knowledge-base/route53",
+              "knowledge-base/bluehost",
               "knowledge-base/cloudflare",
+              "knowledge-base/digitalocean",
               "knowledge-base/dreamhost",
+              "knowledge-base/dynadot",
               "knowledge-base/gandi",
               "knowledge-base/godaddy",
+              "knowledge-base/google-cloud-dns",
               "knowledge-base/hetzner",
               "knowledge-base/hostinger",
+              "knowledge-base/hover",
               "knowledge-base/ionos",
+              "knowledge-base/name-com",
               "knowledge-base/namecheap",
+              "knowledge-base/netlify",
+              "knowledge-base/ovhcloud",
               "knowledge-base/porkbun",
-              "knowledge-base/route53",
+              "knowledge-base/registro-br",
+              "knowledge-base/siteground",
               "knowledge-base/squarespace",
               "knowledge-base/strato",
-              "knowledge-base/vercel"
+              "knowledge-base/vercel",
+              "knowledge-base/wix"
             ]
           },
           {

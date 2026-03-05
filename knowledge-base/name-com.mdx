@@ -1,0 +1,128 @@
+---
+title: "Name.com"
+description: "Learn how to verify your domain on SendKit using Name.com DNS."
+---
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+1. A [SendKit account](https://app.sendkit.dev/register) with a domain added
+2. Access to your [Name.com account](https://www.name.com/account)
+3. Your domain's DNS records from the SendKit domain detail page
+
+## Add DNS records
+
+Log in to Name.com, go to **My Domains**, click your domain, then select **DNS Records**. Click **Add Record** for each of the following.
+
+### 1. DKIM record
+
+<Steps>
+  <Step title="Add a new record">
+    Select **TXT** from the type dropdown.
+  </Step>
+  <Step title="Set the host">
+    In the **Host** field, enter `sendkit._domainkey`.
+  </Step>
+  <Step title="Set the answer">
+    In the **Answer** field, paste the full DKIM value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Leave TTL as `300` (default) and click **Add Record**.
+  </Step>
+</Steps>
+
+| Name.com field | SendKit value |
+|---------------|---------------|
+| Type | `TXT` |
+| Host | `sendkit._domainkey` |
+| Answer | Your DKIM value from SendKit |
+| TTL | `300` |
+
+### 2. SPF record
+
+<Steps>
+  <Step title="Add a new record">
+    Select **TXT** from the type dropdown.
+  </Step>
+  <Step title="Set the host">
+    In the **Host** field, enter `send`.
+  </Step>
+  <Step title="Set the answer">
+    In the **Answer** field, paste the SPF value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Leave TTL as `300` and click **Add Record**.
+  </Step>
+</Steps>
+
+| Name.com field | SendKit value |
+|---------------|---------------|
+| Type | `TXT` |
+| Host | `send` |
+| Answer | Your SPF value from SendKit |
+| TTL | `300` |
+
+### 3. MX record
+
+<Steps>
+  <Step title="Add a new record">
+    Select **MX** from the type dropdown.
+  </Step>
+  <Step title="Set the host">
+    In the **Host** field, enter `send`.
+  </Step>
+  <Step title="Set the answer">
+    In the **Answer** field, paste the MX value from your SendKit domain detail page.
+  </Step>
+  <Step title="Set priority">
+    Set **Priority** to `10`.
+  </Step>
+  <Step title="Save">
+    Leave TTL as `300` and click **Add Record**.
+  </Step>
+</Steps>
+
+| Name.com field | SendKit value |
+|---------------|---------------|
+| Type | `MX` |
+| Host | `send` |
+| Answer | Your MX value from SendKit |
+| Priority | `10` |
+| TTL | `300` |
+
+### 4. DMARC record (optional)
+
+<Steps>
+  <Step title="Add a new record">
+    Select **TXT** from the type dropdown.
+  </Step>
+  <Step title="Set the host">
+    In the **Host** field, enter `_dmarc`.
+  </Step>
+  <Step title="Set the answer">
+    In the **Answer** field, enter `v=DMARC1; p=none;`.
+  </Step>
+  <Step title="Save">
+    Leave TTL as `300` and click **Add Record**.
+  </Step>
+</Steps>
+
+## Verify your domain
+
+Go back to your [SendKit domain detail page](https://app.sendkit.dev) and click **Refresh**. Name.com uses a low default TTL (300 seconds), so DNS changes typically propagate within a few minutes.
+
+<Info>
+  If verification doesn't succeed immediately, wait a few minutes and try again. SendKit also checks automatically in the background.
+</Info>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Host field appends domain automatically">
+    Name.com automatically appends your domain to the host field. Enter only the subdomain part — e.g., `send` not `send.yourdomain.com`.
+  </Accordion>
+  <Accordion title="Using custom nameservers">
+    If your domain uses nameservers other than Name.com's defaults, manage DNS at your active DNS provider instead.
+  </Accordion>
+</AccordionGroup>

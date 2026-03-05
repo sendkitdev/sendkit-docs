@@ -1,0 +1,129 @@
+---
+title: "Dynadot"
+description: "Learn how to verify your domain on SendKit using Dynadot DNS."
+---
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+1. A [SendKit account](https://app.sendkit.dev/register) with a domain added
+2. Access to your [Dynadot account](https://www.dynadot.com/account)
+3. Your domain's DNS records from the SendKit domain detail page
+
+## Add DNS records
+
+Log in to Dynadot, go to **My Domains > Manage Domains**, click your domain, then select **DNS Settings**. Make sure DNS is set to **Dynadot DNS** and add each of the following records.
+
+### 1. DKIM record
+
+<Steps>
+  <Step title="Add a new record">
+    In the DNS Records section, click **Add DNS Record** and select **TXT**.
+  </Step>
+  <Step title="Set the subdomain">
+    In the **Subdomain** field, enter `sendkit._domainkey`.
+  </Step>
+  <Step title="Set the value">
+    In the **Text** field, paste the full DKIM value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Click **Save DNS**.
+  </Step>
+</Steps>
+
+| Dynadot field | SendKit value |
+|--------------|---------------|
+| Type | `TXT` |
+| Subdomain | `sendkit._domainkey` |
+| Text | Your DKIM value from SendKit |
+
+### 2. SPF record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add DNS Record** and select **TXT**.
+  </Step>
+  <Step title="Set the subdomain">
+    In the **Subdomain** field, enter `send`.
+  </Step>
+  <Step title="Set the value">
+    In the **Text** field, paste the SPF value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Click **Save DNS**.
+  </Step>
+</Steps>
+
+| Dynadot field | SendKit value |
+|--------------|---------------|
+| Type | `TXT` |
+| Subdomain | `send` |
+| Text | Your SPF value from SendKit |
+
+### 3. MX record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add DNS Record** and select **MX**.
+  </Step>
+  <Step title="Set the subdomain">
+    In the **Subdomain** field, enter `send`.
+  </Step>
+  <Step title="Set the mail host">
+    In the **Mail Host** field, paste the MX value from your SendKit domain detail page.
+  </Step>
+  <Step title="Set priority">
+    Set **Distance** (priority) to `10`.
+  </Step>
+  <Step title="Save">
+    Click **Save DNS**.
+  </Step>
+</Steps>
+
+<Note>
+  Dynadot uses "Distance" instead of "Priority" for MX records. They mean the same thing — set it to `10`.
+</Note>
+
+| Dynadot field | SendKit value |
+|--------------|---------------|
+| Type | `MX` |
+| Subdomain | `send` |
+| Mail Host | Your MX value from SendKit |
+| Distance | `10` |
+
+### 4. DMARC record (optional)
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add DNS Record** and select **TXT**.
+  </Step>
+  <Step title="Set the subdomain">
+    In the **Subdomain** field, enter `_dmarc`.
+  </Step>
+  <Step title="Set the value">
+    In the **Text** field, enter `v=DMARC1; p=none;`.
+  </Step>
+  <Step title="Save">
+    Click **Save DNS**.
+  </Step>
+</Steps>
+
+## Verify your domain
+
+Go back to your [SendKit domain detail page](https://app.sendkit.dev) and click **Refresh**. Dynadot DNS changes typically propagate within a few minutes.
+
+<Info>
+  If verification doesn't succeed immediately, wait a few minutes and try again. SendKit also checks automatically in the background.
+</Info>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="DNS Settings shows 'Name Servers' instead">
+    Make sure the DNS type is set to **Dynadot DNS** (not custom nameservers). If you're using external nameservers, manage DNS at that provider instead.
+  </Accordion>
+  <Accordion title="Don't forget to click Save DNS">
+    Dynadot requires you to click **Save DNS** after adding each record. Changes won't take effect until saved.
+  </Accordion>
+</AccordionGroup>

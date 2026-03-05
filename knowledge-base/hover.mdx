@@ -1,0 +1,125 @@
+---
+title: "Hover"
+description: "Learn how to verify your domain on SendKit using Hover DNS."
+---
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+1. A [SendKit account](https://app.sendkit.dev/register) with a domain added
+2. Access to your [Hover account](https://www.hover.com/control_panel)
+3. Your domain's DNS records from the SendKit domain detail page
+
+## Add DNS records
+
+Log in to Hover, go to your domain, then click the **DNS** tab. Click **Add A Record** for each of the following.
+
+### 1. DKIM record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add A Record** and select **TXT** as the type.
+  </Step>
+  <Step title="Set the hostname">
+    In the **Hostname** field, enter `sendkit._domainkey`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, paste the full DKIM value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Click **Add Record**.
+  </Step>
+</Steps>
+
+| Hover field | SendKit value |
+|------------|---------------|
+| Type | `TXT` |
+| Hostname | `sendkit._domainkey` |
+| Value | Your DKIM value from SendKit |
+
+### 2. SPF record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add A Record** and select **TXT**.
+  </Step>
+  <Step title="Set the hostname">
+    In the **Hostname** field, enter `send`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, paste the SPF value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Click **Add Record**.
+  </Step>
+</Steps>
+
+| Hover field | SendKit value |
+|------------|---------------|
+| Type | `TXT` |
+| Hostname | `send` |
+| Value | Your SPF value from SendKit |
+
+### 3. MX record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add A Record** and select **MX**.
+  </Step>
+  <Step title="Set the hostname">
+    In the **Hostname** field, enter `send`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, paste the MX value from your SendKit domain detail page.
+  </Step>
+  <Step title="Set priority">
+    Set **Priority** to `10`.
+  </Step>
+  <Step title="Save">
+    Click **Add Record**.
+  </Step>
+</Steps>
+
+| Hover field | SendKit value |
+|------------|---------------|
+| Type | `MX` |
+| Hostname | `send` |
+| Value | Your MX value from SendKit |
+| Priority | `10` |
+
+### 4. DMARC record (optional)
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add A Record** and select **TXT**.
+  </Step>
+  <Step title="Set the hostname">
+    In the **Hostname** field, enter `_dmarc`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, enter `v=DMARC1; p=none;`.
+  </Step>
+  <Step title="Save">
+    Click **Add Record**.
+  </Step>
+</Steps>
+
+## Verify your domain
+
+Go back to your [SendKit domain detail page](https://app.sendkit.dev) and click **Refresh**. Hover DNS changes typically propagate within 15 minutes.
+
+<Info>
+  If verification doesn't succeed immediately, wait a few minutes and try again. SendKit also checks automatically in the background.
+</Info>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Using Hover with external nameservers">
+    If you've changed your nameservers away from Hover, DNS records must be managed at your active DNS provider. Hover's DNS tab only works when using Hover's default nameservers.
+  </Accordion>
+  <Accordion title="Button says 'Add A Record'">
+    Despite the button label, you can add any record type (TXT, MX, CNAME, etc.) — not just A records. Select the correct type from the dropdown after clicking.
+  </Accordion>
+</AccordionGroup>

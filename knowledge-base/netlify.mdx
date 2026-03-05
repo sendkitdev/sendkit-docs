@@ -1,0 +1,125 @@
+---
+title: "Netlify"
+description: "Learn how to verify your domain on SendKit using Netlify DNS."
+---
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+1. A [SendKit account](https://app.sendkit.dev/register) with a domain added
+2. Access to your [Netlify dashboard](https://app.netlify.com)
+3. Your domain's DNS records from the SendKit domain detail page
+
+## Add DNS records
+
+Log in to Netlify, go to **Domains**, select your domain, then scroll to the **DNS records** section. Click **Add new record** for each of the following.
+
+### 1. DKIM record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add new record** and select **TXT** as the record type.
+  </Step>
+  <Step title="Set the name">
+    In the **Name** field, enter `sendkit._domainkey`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, paste the full DKIM value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Click **Save**.
+  </Step>
+</Steps>
+
+| Netlify field | SendKit value |
+|--------------|---------------|
+| Type | `TXT` |
+| Name | `sendkit._domainkey` |
+| Value | Your DKIM value from SendKit |
+
+### 2. SPF record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add new record** and select **TXT**.
+  </Step>
+  <Step title="Set the name">
+    In the **Name** field, enter `send`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, paste the SPF value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Click **Save**.
+  </Step>
+</Steps>
+
+| Netlify field | SendKit value |
+|--------------|---------------|
+| Type | `TXT` |
+| Name | `send` |
+| Value | Your SPF value from SendKit |
+
+### 3. MX record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add new record** and select **MX**.
+  </Step>
+  <Step title="Set the name">
+    In the **Name** field, enter `send`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, paste the MX value from your SendKit domain detail page.
+  </Step>
+  <Step title="Set priority">
+    Set **Priority** to `10`.
+  </Step>
+  <Step title="Save">
+    Click **Save**.
+  </Step>
+</Steps>
+
+| Netlify field | SendKit value |
+|--------------|---------------|
+| Type | `MX` |
+| Name | `send` |
+| Value | Your MX value from SendKit |
+| Priority | `10` |
+
+### 4. DMARC record (optional)
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add new record** and select **TXT**.
+  </Step>
+  <Step title="Set the name">
+    In the **Name** field, enter `_dmarc`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, enter `v=DMARC1; p=none;`.
+  </Step>
+  <Step title="Save">
+    Click **Save**.
+  </Step>
+</Steps>
+
+## Verify your domain
+
+Go back to your [SendKit domain detail page](https://app.sendkit.dev) and click **Refresh**. Netlify DNS changes typically propagate within a few minutes.
+
+<Info>
+  If verification doesn't succeed immediately, wait a few minutes and try again. SendKit also checks automatically in the background.
+</Info>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Domain not using Netlify DNS">
+    Netlify DNS only works if your domain's nameservers point to Netlify. Check **Domains > your domain > Name servers** to verify. If you use Netlify for hosting but another provider for DNS, add the records there instead.
+  </Accordion>
+  <Accordion title="Cannot edit DNS records">
+    Make sure you have Owner or Admin access to the Netlify team that manages the domain. Collaborators may not have permission to modify DNS records.
+  </Accordion>
+</AccordionGroup>

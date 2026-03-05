@@ -1,0 +1,125 @@
+---
+title: "Bluehost"
+description: "Learn how to verify your domain on SendKit using Bluehost DNS."
+---
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+1. A [SendKit account](https://app.sendkit.dev/register) with a domain added
+2. Access to your [Bluehost account](https://my.bluehost.com)
+3. Your domain's DNS records from the SendKit domain detail page
+
+## Add DNS records
+
+Log in to Bluehost, go to **Domains**, click your domain, then select **DNS**. Click **Add Record** for each of the following.
+
+### 1. DKIM record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add Record** and select **TXT** as the type.
+  </Step>
+  <Step title="Set the host record">
+    In the **Host Record** field, enter `sendkit._domainkey`.
+  </Step>
+  <Step title="Set the value">
+    In the **TXT Value** field, paste the full DKIM value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Leave TTL as the default and click **Save**.
+  </Step>
+</Steps>
+
+| Bluehost field | SendKit value |
+|---------------|---------------|
+| Type | `TXT` |
+| Host Record | `sendkit._domainkey` |
+| TXT Value | Your DKIM value from SendKit |
+
+### 2. SPF record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add Record** and select **TXT**.
+  </Step>
+  <Step title="Set the host record">
+    In the **Host Record** field, enter `send`.
+  </Step>
+  <Step title="Set the value">
+    In the **TXT Value** field, paste the SPF value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Leave TTL as the default and click **Save**.
+  </Step>
+</Steps>
+
+| Bluehost field | SendKit value |
+|---------------|---------------|
+| Type | `TXT` |
+| Host Record | `send` |
+| TXT Value | Your SPF value from SendKit |
+
+### 3. MX record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add Record** and select **MX**.
+  </Step>
+  <Step title="Set the host record">
+    In the **Host Record** field, enter `send`.
+  </Step>
+  <Step title="Set the points to">
+    In the **Points To** field, paste the MX value from your SendKit domain detail page.
+  </Step>
+  <Step title="Set priority">
+    Set **Priority** to `10`.
+  </Step>
+  <Step title="Save">
+    Leave TTL as the default and click **Save**.
+  </Step>
+</Steps>
+
+| Bluehost field | SendKit value |
+|---------------|---------------|
+| Type | `MX` |
+| Host Record | `send` |
+| Points To | Your MX value from SendKit |
+| Priority | `10` |
+
+### 4. DMARC record (optional)
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add Record** and select **TXT**.
+  </Step>
+  <Step title="Set the host record">
+    In the **Host Record** field, enter `_dmarc`.
+  </Step>
+  <Step title="Set the value">
+    In the **TXT Value** field, enter `v=DMARC1; p=none;`.
+  </Step>
+  <Step title="Save">
+    Leave TTL as the default and click **Save**.
+  </Step>
+</Steps>
+
+## Verify your domain
+
+Go back to your [SendKit domain detail page](https://app.sendkit.dev) and click **Refresh**. Bluehost DNS changes can take up to 30 minutes to propagate.
+
+<Info>
+  If verification doesn't succeed immediately, wait a few minutes and try again. SendKit also checks automatically in the background.
+</Info>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Cannot find DNS management">
+    If you're on the new Bluehost dashboard, go to **Domains > My Domains**, click **Manage** next to your domain, then select the **DNS** tab. The layout may vary between the classic and new dashboard.
+  </Accordion>
+  <Accordion title="Using external nameservers">
+    If your domain points to nameservers other than Bluehost's, you need to manage DNS at that provider. Check your nameserver settings in the domain overview.
+  </Accordion>
+</AccordionGroup>

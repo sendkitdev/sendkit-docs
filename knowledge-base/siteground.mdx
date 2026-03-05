@@ -1,0 +1,125 @@
+---
+title: "SiteGround"
+description: "Learn how to verify your domain on SendKit using SiteGround DNS."
+---
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+1. A [SendKit account](https://app.sendkit.dev/register) with a domain added
+2. Access to your [SiteGround Site Tools](https://tools.siteground.com)
+3. Your domain's DNS records from the SendKit domain detail page
+
+## Add DNS records
+
+Log in to SiteGround, go to **Site Tools > Domain > DNS Zone Editor**. Select your domain and add each of the following records.
+
+### 1. DKIM record
+
+<Steps>
+  <Step title="Add a new record">
+    In the DNS Zone Editor, select **TXT** from the record type tabs.
+  </Step>
+  <Step title="Set the name">
+    In the **Name** field, enter `sendkit._domainkey`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, paste the full DKIM value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Click **Create**.
+  </Step>
+</Steps>
+
+| SiteGround field | SendKit value |
+|-----------------|---------------|
+| Type | `TXT` |
+| Name | `sendkit._domainkey` |
+| Value | Your DKIM value from SendKit |
+
+### 2. SPF record
+
+<Steps>
+  <Step title="Add a new record">
+    Select **TXT** from the record type tabs.
+  </Step>
+  <Step title="Set the name">
+    In the **Name** field, enter `send`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, paste the SPF value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Click **Create**.
+  </Step>
+</Steps>
+
+| SiteGround field | SendKit value |
+|-----------------|---------------|
+| Type | `TXT` |
+| Name | `send` |
+| Value | Your SPF value from SendKit |
+
+### 3. MX record
+
+<Steps>
+  <Step title="Add a new record">
+    Select **MX** from the record type tabs.
+  </Step>
+  <Step title="Set the name">
+    In the **Name** field, enter `send`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, paste the MX value from your SendKit domain detail page.
+  </Step>
+  <Step title="Set priority">
+    Set **Priority** to `10`.
+  </Step>
+  <Step title="Save">
+    Click **Create**.
+  </Step>
+</Steps>
+
+| SiteGround field | SendKit value |
+|-----------------|---------------|
+| Type | `MX` |
+| Name | `send` |
+| Value | Your MX value from SendKit |
+| Priority | `10` |
+
+### 4. DMARC record (optional)
+
+<Steps>
+  <Step title="Add a new record">
+    Select **TXT** from the record type tabs.
+  </Step>
+  <Step title="Set the name">
+    In the **Name** field, enter `_dmarc`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, enter `v=DMARC1; p=none;`.
+  </Step>
+  <Step title="Save">
+    Click **Create**.
+  </Step>
+</Steps>
+
+## Verify your domain
+
+Go back to your [SendKit domain detail page](https://app.sendkit.dev) and click **Refresh**. SiteGround DNS changes typically propagate within a few minutes.
+
+<Info>
+  If verification doesn't succeed immediately, wait a few minutes and try again. SendKit also checks automatically in the background.
+</Info>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="DNS Zone Editor not available">
+    The DNS Zone Editor is only available in **Site Tools**, not the older cPanel. Go to [tools.siteground.com](https://tools.siteground.com), select your site, then navigate to **Domain > DNS Zone Editor**.
+  </Accordion>
+  <Accordion title="Domain using external nameservers">
+    If your domain's nameservers don't point to SiteGround, DNS records added here won't take effect. Check your nameserver settings and add records at your active DNS provider.
+  </Accordion>
+</AccordionGroup>

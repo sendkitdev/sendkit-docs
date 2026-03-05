@@ -1,0 +1,132 @@
+---
+title: "OVHcloud"
+description: "Learn how to verify your domain on SendKit using OVHcloud DNS."
+---
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+1. A [SendKit account](https://app.sendkit.dev/register) with a domain added
+2. Access to your [OVHcloud Control Panel](https://www.ovh.com/manager)
+3. Your domain's DNS records from the SendKit domain detail page
+
+## Add DNS records
+
+Log in to OVHcloud, go to **Domain names**, select your domain, then click the **DNS zone** tab. Click **Add an entry** for each of the following.
+
+### 1. DKIM record
+
+<Steps>
+  <Step title="Add a new entry">
+    Click **Add an entry** and select **TXT**.
+  </Step>
+  <Step title="Set the subdomain">
+    In the **Subdomain** field, enter `sendkit._domainkey`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, paste the full DKIM value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Leave TTL as the default and click **Next**, then **Confirm**.
+  </Step>
+</Steps>
+
+| OVHcloud field | SendKit value |
+|---------------|---------------|
+| Type | `TXT` |
+| Subdomain | `sendkit._domainkey` |
+| Value | Your DKIM value from SendKit |
+
+### 2. SPF record
+
+<Steps>
+  <Step title="Add a new entry">
+    Click **Add an entry** and select **TXT**.
+  </Step>
+  <Step title="Set the subdomain">
+    In the **Subdomain** field, enter `send`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, paste the SPF value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Click **Next**, then **Confirm**.
+  </Step>
+</Steps>
+
+<Note>
+  OVHcloud also has a dedicated SPF record type in the wizard. Use the **TXT** type instead — it works the same way and is more straightforward.
+</Note>
+
+| OVHcloud field | SendKit value |
+|---------------|---------------|
+| Type | `TXT` |
+| Subdomain | `send` |
+| Value | Your SPF value from SendKit |
+
+### 3. MX record
+
+<Steps>
+  <Step title="Add a new entry">
+    Click **Add an entry** and select **MX**.
+  </Step>
+  <Step title="Set the subdomain">
+    In the **Subdomain** field, enter `send`.
+  </Step>
+  <Step title="Set the target">
+    In the **Target** field, paste the MX value from your SendKit domain detail page.
+  </Step>
+  <Step title="Set priority">
+    Set **Priority** to `10`.
+  </Step>
+  <Step title="Save">
+    Click **Next**, then **Confirm**.
+  </Step>
+</Steps>
+
+| OVHcloud field | SendKit value |
+|---------------|---------------|
+| Type | `MX` |
+| Subdomain | `send` |
+| Target | Your MX value from SendKit |
+| Priority | `10` |
+
+### 4. DMARC record (optional)
+
+<Steps>
+  <Step title="Add a new entry">
+    Click **Add an entry** and select **TXT**.
+  </Step>
+  <Step title="Set the subdomain">
+    In the **Subdomain** field, enter `_dmarc`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, enter `v=DMARC1; p=none;`.
+  </Step>
+  <Step title="Save">
+    Click **Next**, then **Confirm**.
+  </Step>
+</Steps>
+
+## Verify your domain
+
+Go back to your [SendKit domain detail page](https://app.sendkit.dev) and click **Refresh**. OVHcloud DNS changes can take up to 30 minutes to propagate.
+
+<Info>
+  If verification doesn't succeed immediately, wait a few minutes and try again. SendKit also checks automatically in the background.
+</Info>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="DNS zone vs DNS servers">
+    Make sure you're editing the **DNS zone** tab, not the **DNS servers** tab. The DNS zone is where you add individual records.
+  </Accordion>
+  <Accordion title="OVHcloud adds a trailing dot">
+    OVHcloud automatically appends a trailing dot to record names in the zone view. This is normal DNS notation and won't affect verification.
+  </Accordion>
+  <Accordion title="Using OVHcloud email">
+    The SendKit MX record goes on the `send` subdomain, not your root domain. It won't conflict with OVHcloud's email service or any existing MX records.
+  </Accordion>
+</AccordionGroup>

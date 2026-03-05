@@ -1,0 +1,147 @@
+---
+title: "Google Cloud DNS"
+description: "Learn how to verify your domain on SendKit using Google Cloud DNS."
+---
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+1. A [SendKit account](https://app.sendkit.dev/register) with a domain added
+2. Access to your [Google Cloud Console](https://console.cloud.google.com)
+3. Your domain's DNS records from the SendKit domain detail page
+
+## Add DNS records
+
+Log in to Google Cloud Console, go to **Network services > Cloud DNS**, select your managed zone. Click **Add standard** for each of the following.
+
+### 1. DKIM record
+
+<Steps>
+  <Step title="Create a new record set">
+    Click **Add standard**.
+  </Step>
+  <Step title="Set the DNS name">
+    In the **DNS name** field, enter `sendkit._domainkey`.
+  </Step>
+  <Step title="Select the type">
+    Choose **TXT** from the Resource record type dropdown.
+  </Step>
+  <Step title="Set the value">
+    In the **Routing data** field, paste the DKIM value from SendKit **wrapped in double quotes**.
+  </Step>
+  <Step title="Save">
+    Leave TTL as `3600` and click **Create**.
+  </Step>
+</Steps>
+
+<Warning>
+  Google Cloud DNS requires TXT record values to be enclosed in **double quotes**. If you paste the value without quotes, the record will fail.
+</Warning>
+
+| Cloud DNS field | SendKit value |
+|----------------|---------------|
+| DNS name | `sendkit._domainkey` |
+| Resource record type | `TXT` |
+| Routing data | `"your DKIM value from SendKit"` (with quotes) |
+| TTL | `3600` |
+
+### 2. SPF record
+
+<Steps>
+  <Step title="Create a new record set">
+    Click **Add standard**.
+  </Step>
+  <Step title="Set the DNS name">
+    Enter `send`.
+  </Step>
+  <Step title="Select the type">
+    Choose **TXT**.
+  </Step>
+  <Step title="Set the value">
+    Paste the SPF value from SendKit **wrapped in double quotes**.
+  </Step>
+  <Step title="Save">
+    Leave TTL as `3600` and click **Create**.
+  </Step>
+</Steps>
+
+| Cloud DNS field | SendKit value |
+|----------------|---------------|
+| DNS name | `send` |
+| Resource record type | `TXT` |
+| Routing data | `"your SPF value from SendKit"` (with quotes) |
+| TTL | `3600` |
+
+### 3. MX record
+
+<Steps>
+  <Step title="Create a new record set">
+    Click **Add standard**.
+  </Step>
+  <Step title="Set the DNS name">
+    Enter `send`.
+  </Step>
+  <Step title="Select the type">
+    Choose **MX**.
+  </Step>
+  <Step title="Set the value">
+    Enter the priority followed by the MX value: `10 your-mx-value-from-sendkit.`
+  </Step>
+  <Step title="Save">
+    Leave TTL as `3600` and click **Create**.
+  </Step>
+</Steps>
+
+<Note>
+  In Cloud DNS, MX records combine the priority and value in one field. Enter `10` followed by a space, then the MX value from SendKit with a trailing dot (e.g., `10 feedback-smtp.us-east-2.amazonses.com.`).
+</Note>
+
+| Cloud DNS field | SendKit value |
+|----------------|---------------|
+| DNS name | `send` |
+| Resource record type | `MX` |
+| Routing data | `10 your-mx-value-from-sendkit.` |
+| TTL | `3600` |
+
+### 4. DMARC record (optional)
+
+<Steps>
+  <Step title="Create a new record set">
+    Click **Add standard**.
+  </Step>
+  <Step title="Set the DNS name">
+    Enter `_dmarc`.
+  </Step>
+  <Step title="Select the type">
+    Choose **TXT**.
+  </Step>
+  <Step title="Set the value">
+    Enter `"v=DMARC1; p=none;"` (with quotes).
+  </Step>
+  <Step title="Save">
+    Leave TTL as `3600` and click **Create**.
+  </Step>
+</Steps>
+
+## Verify your domain
+
+Go back to your [SendKit domain detail page](https://app.sendkit.dev) and click **Refresh**. Google Cloud DNS changes typically propagate within a few minutes.
+
+<Info>
+  If verification doesn't succeed immediately, wait a few minutes and try again. SendKit also checks automatically in the background.
+</Info>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="TXT record values need quotes">
+    Google Cloud DNS requires all TXT values to be wrapped in double quotes. If verification fails, check that your records include the quotes.
+  </Accordion>
+  <Accordion title="MX record needs a trailing dot">
+    Cloud DNS uses fully qualified domain names. Add a trailing dot (`.`) at the end of the MX value.
+  </Accordion>
+  <Accordion title="Managed zone not found">
+    Make sure you've created a managed zone for your domain and that your domain's nameservers point to the ones listed in the zone details (e.g., `ns-cloud-a1.googledomains.com`).
+  </Accordion>
+</AccordionGroup>

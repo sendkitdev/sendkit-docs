@@ -1,0 +1,131 @@
+---
+title: "Wix"
+description: "Learn how to verify your domain on SendKit using Wix DNS."
+---
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+1. A [SendKit account](https://app.sendkit.dev/register) with a domain added
+2. Access to your [Wix account](https://www.wix.com/account/domains)
+3. Your domain's DNS records from the SendKit domain detail page
+
+## Add DNS records
+
+Log in to Wix, go to **Account > Domains**, click your domain, then select **DNS Records**. Click **Add Record** for each of the following.
+
+### 1. DKIM record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add Record** and select **TXT** as the record type.
+  </Step>
+  <Step title="Set the host name">
+    In the **Host Name** field, enter `sendkit._domainkey`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, paste the full DKIM value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Leave TTL as `3600` and click **Save**.
+  </Step>
+</Steps>
+
+| Wix field | SendKit value |
+|----------|---------------|
+| Type | `TXT` |
+| Host Name | `sendkit._domainkey` |
+| Value | Your DKIM value from SendKit |
+| TTL | `3600` |
+
+### 2. SPF record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add Record** and select **TXT**.
+  </Step>
+  <Step title="Set the host name">
+    In the **Host Name** field, enter `send`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, paste the SPF value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Leave TTL as `3600` and click **Save**.
+  </Step>
+</Steps>
+
+| Wix field | SendKit value |
+|----------|---------------|
+| Type | `TXT` |
+| Host Name | `send` |
+| Value | Your SPF value from SendKit |
+| TTL | `3600` |
+
+### 3. MX record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add Record** and select **MX**.
+  </Step>
+  <Step title="Set the host name">
+    In the **Host Name** field, enter `send`.
+  </Step>
+  <Step title="Set the points to">
+    In the **Points to** field, paste the MX value from your SendKit domain detail page.
+  </Step>
+  <Step title="Set priority">
+    Set **Priority** to `10`.
+  </Step>
+  <Step title="Save">
+    Leave TTL as `3600` and click **Save**.
+  </Step>
+</Steps>
+
+| Wix field | SendKit value |
+|----------|---------------|
+| Type | `MX` |
+| Host Name | `send` |
+| Points to | Your MX value from SendKit |
+| Priority | `10` |
+| TTL | `3600` |
+
+### 4. DMARC record (optional)
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add Record** and select **TXT**.
+  </Step>
+  <Step title="Set the host name">
+    In the **Host Name** field, enter `_dmarc`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, enter `v=DMARC1; p=none;`.
+  </Step>
+  <Step title="Save">
+    Leave TTL as `3600` and click **Save**.
+  </Step>
+</Steps>
+
+## Verify your domain
+
+Go back to your [SendKit domain detail page](https://app.sendkit.dev) and click **Refresh**. Wix DNS changes can take up to 48 hours to propagate, though most changes are visible within 30 minutes.
+
+<Info>
+  If verification doesn't succeed immediately, wait a few minutes and try again. SendKit also checks automatically in the background.
+</Info>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Domain connected to Wix but DNS managed elsewhere">
+    If your domain is connected to Wix via nameservers from another provider, you need to add the DNS records at that provider instead. Wix DNS management only works when using Wix nameservers.
+  </Accordion>
+  <Accordion title="Cannot find DNS Records section">
+    Go to **Account > Domains** (not the site editor). Click your domain name, then look for the **DNS Records** tab. This is separate from the domain connection settings.
+  </Accordion>
+  <Accordion title="Existing MX records">
+    The SendKit MX record goes on the `send` subdomain. It won't conflict with Wix email or any existing MX records on your root domain.
+  </Accordion>
+</AccordionGroup>

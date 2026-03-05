@@ -1,0 +1,132 @@
+---
+title: "Registro.br"
+description: "Aprenda como verificar seu domínio no SendKit usando o Registro.br."
+---
+
+## Pré-requisitos
+
+Antes de começar, tenha em mãos:
+
+1. Uma [conta no SendKit](https://app.sendkit.dev/register) com um domínio adicionado
+2. Acesso ao [painel do Registro.br](https://registro.br)
+3. Os registros DNS do seu domínio, disponíveis na página de detalhes do domínio no SendKit
+
+## Adicionar registros DNS
+
+Faça login no Registro.br, vá em **Meus Domínios**, clique no seu domínio, depois acesse **DNS > Editar zona**.
+
+### 1. Registro DKIM
+
+<Steps>
+  <Step title="Adicionar novo registro">
+    Clique em **Nova entrada** e selecione o tipo **TXT**.
+  </Step>
+  <Step title="Definir o nome">
+    No campo **Nome**, digite `sendkit._domainkey`.
+  </Step>
+  <Step title="Definir o valor">
+    No campo **Dados**, cole o valor completo do DKIM da página de detalhes do domínio no SendKit.
+  </Step>
+  <Step title="Salvar">
+    Clique em **Adicionar**.
+  </Step>
+</Steps>
+
+| Campo Registro.br | Valor SendKit |
+|-------------------|---------------|
+| Tipo | `TXT` |
+| Nome | `sendkit._domainkey` |
+| Dados | Seu valor DKIM do SendKit |
+
+### 2. Registro SPF
+
+<Steps>
+  <Step title="Adicionar novo registro">
+    Clique em **Nova entrada** e selecione o tipo **TXT**.
+  </Step>
+  <Step title="Definir o nome">
+    No campo **Nome**, digite `send`.
+  </Step>
+  <Step title="Definir o valor">
+    No campo **Dados**, cole o valor SPF da página de detalhes do domínio no SendKit.
+  </Step>
+  <Step title="Salvar">
+    Clique em **Adicionar**.
+  </Step>
+</Steps>
+
+| Campo Registro.br | Valor SendKit |
+|-------------------|---------------|
+| Tipo | `TXT` |
+| Nome | `send` |
+| Dados | Seu valor SPF do SendKit |
+
+### 3. Registro MX
+
+<Steps>
+  <Step title="Adicionar novo registro">
+    Clique em **Nova entrada** e selecione o tipo **MX**.
+  </Step>
+  <Step title="Definir o nome">
+    No campo **Nome**, digite `send`.
+  </Step>
+  <Step title="Definir o servidor de email">
+    No campo **Dados**, cole o valor MX da página de detalhes do domínio no SendKit.
+  </Step>
+  <Step title="Definir prioridade">
+    Defina a **Prioridade** como `10`.
+  </Step>
+  <Step title="Salvar">
+    Clique em **Adicionar**.
+  </Step>
+</Steps>
+
+| Campo Registro.br | Valor SendKit |
+|-------------------|---------------|
+| Tipo | `MX` |
+| Nome | `send` |
+| Dados | Seu valor MX do SendKit |
+| Prioridade | `10` |
+
+### 4. Registro DMARC (opcional)
+
+<Steps>
+  <Step title="Adicionar novo registro">
+    Clique em **Nova entrada** e selecione o tipo **TXT**.
+  </Step>
+  <Step title="Definir o nome">
+    No campo **Nome**, digite `_dmarc`.
+  </Step>
+  <Step title="Definir o valor">
+    No campo **Dados**, digite `v=DMARC1; p=none;`.
+  </Step>
+  <Step title="Salvar">
+    Clique em **Adicionar**.
+  </Step>
+</Steps>
+
+<Note>
+  Após adicionar todos os registros, clique em **Salvar** no topo da página para aplicar as alterações na zona DNS.
+</Note>
+
+## Verificar seu domínio
+
+Volte à [página de detalhes do domínio no SendKit](https://app.sendkit.dev) e clique em **Refresh**. As alterações de DNS no Registro.br geralmente propagam em alguns minutos.
+
+<Info>
+  Se a verificação não funcionar imediatamente, aguarde alguns minutos e tente novamente. O SendKit também verifica automaticamente em segundo plano.
+</Info>
+
+## Solução de problemas
+
+<AccordionGroup>
+  <Accordion title="Zona DNS não está habilitada">
+    O Registro.br só permite editar a zona DNS se o domínio estiver usando os servidores DNS do próprio Registro.br. Se você usa servidores DNS externos (como Cloudflare), adicione os registros lá.
+  </Accordion>
+  <Accordion title="Não consigo salvar a zona">
+    Certifique-se de clicar em **Salvar** no topo da página após adicionar todas as entradas. As alterações só são aplicadas depois de salvar a zona completa.
+  </Accordion>
+  <Accordion title="Registro TXT muito longo">
+    O Registro.br suporta registros TXT longos. Cole o valor completo do DKIM sem quebrar em partes — o sistema aceita o valor inteiro.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,128 @@
+---
+title: "DigitalOcean"
+description: "Learn how to verify your domain on SendKit using DigitalOcean DNS."
+---
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+1. A [SendKit account](https://app.sendkit.dev/register) with a domain added
+2. Access to your [DigitalOcean Control Panel](https://cloud.digitalocean.com)
+3. Your domain's DNS records from the SendKit domain detail page
+
+## Add DNS records
+
+Log in to DigitalOcean, go to **Networking > Domains**, select your domain. Click **Add Record** for each of the following.
+
+### 1. DKIM record
+
+<Steps>
+  <Step title="Select record type">
+    Click the **TXT** tab at the top of the records section.
+  </Step>
+  <Step title="Set the hostname">
+    In the **Hostname** field, enter `sendkit._domainkey`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, paste the full DKIM value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Leave TTL as `3600` and click **Create Record**.
+  </Step>
+</Steps>
+
+| DigitalOcean field | SendKit value |
+|-------------------|---------------|
+| Type | `TXT` |
+| Hostname | `sendkit._domainkey` |
+| Value | Your DKIM value from SendKit |
+| TTL | `3600` |
+
+### 2. SPF record
+
+<Steps>
+  <Step title="Select record type">
+    Click the **TXT** tab.
+  </Step>
+  <Step title="Set the hostname">
+    In the **Hostname** field, enter `send`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, paste the SPF value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Leave TTL as `3600` and click **Create Record**.
+  </Step>
+</Steps>
+
+| DigitalOcean field | SendKit value |
+|-------------------|---------------|
+| Type | `TXT` |
+| Hostname | `send` |
+| Value | Your SPF value from SendKit |
+| TTL | `3600` |
+
+### 3. MX record
+
+<Steps>
+  <Step title="Select record type">
+    Click the **MX** tab.
+  </Step>
+  <Step title="Set the hostname">
+    In the **Hostname** field, enter `send`.
+  </Step>
+  <Step title="Set the mail server">
+    In the **Mail Provider Hostname** field, paste the MX value from your SendKit domain detail page.
+  </Step>
+  <Step title="Set priority">
+    Set **Priority** to `10`.
+  </Step>
+  <Step title="Save">
+    Leave TTL as `3600` and click **Create Record**.
+  </Step>
+</Steps>
+
+| DigitalOcean field | SendKit value |
+|-------------------|---------------|
+| Type | `MX` |
+| Hostname | `send` |
+| Mail Provider Hostname | Your MX value from SendKit |
+| Priority | `10` |
+| TTL | `3600` |
+
+### 4. DMARC record (optional)
+
+<Steps>
+  <Step title="Select record type">
+    Click the **TXT** tab.
+  </Step>
+  <Step title="Set the hostname">
+    In the **Hostname** field, enter `_dmarc`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, enter `v=DMARC1; p=none;`.
+  </Step>
+  <Step title="Save">
+    Leave TTL as `3600` and click **Create Record**.
+  </Step>
+</Steps>
+
+## Verify your domain
+
+Go back to your [SendKit domain detail page](https://app.sendkit.dev) and click **Refresh**. DigitalOcean DNS changes typically propagate within a few minutes.
+
+<Info>
+  If verification doesn't succeed immediately, wait a few minutes and try again. SendKit also checks automatically in the background.
+</Info>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Domain not added to DigitalOcean">
+    You need to add your domain in **Networking > Domains** before you can manage DNS records. Also make sure your domain's nameservers point to DigitalOcean (`ns1.digitalocean.com`, `ns2.digitalocean.com`, `ns3.digitalocean.com`).
+  </Accordion>
+  <Accordion title="MX record trailing dot">
+    DigitalOcean automatically adds a trailing dot to MX hostnames. This is normal and won't affect verification.
+  </Accordion>
+</AccordionGroup>
