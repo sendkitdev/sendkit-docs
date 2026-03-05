@@ -1,0 +1,75 @@
+---
+title: "Properties"
+description: "Add custom fields to your contacts to store any data you need."
+icon: "sliders"
+---
+
+## What are properties?
+
+Properties are custom fields you define to store additional data on your contacts. Out of the box, contacts have email, first name, and last name. Properties let you add anything else — company name, plan type, signup date, credit balance, or whatever your application needs.
+
+## Supported types
+
+| Type | Description | Example values |
+|------|-------------|----------------|
+| **String** | Text field | `"Acme Corp"`, `"pro"`, `"Brazil"` |
+| **Number** | Numeric field | `42`, `99.90`, `1000` |
+| **Date** | Date field | `2026-01-15`, `2025-12-31` |
+
+## Creating a property
+
+Go to **Contacts > Properties** and click **Create Property**.
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| **Key** | Yes | Unique identifier (letters, numbers, underscores). E.g., `company_name` |
+| **Type** | Yes | String, Number, or Date |
+| **Fallback value** | No | Default value used when the property isn't set on a contact |
+
+<Note>
+  Property keys must start with a letter and can only contain letters, numbers, and underscores. Keys are unique per team.
+</Note>
+
+You can also create properties via the [API](/api-reference/endpoint/create-property).
+
+## Setting values on contacts
+
+Each contact can have a value for each property. You can set values from:
+
+- The contact detail page in the dashboard
+- The [API](/api-reference/endpoint/update-contact) when creating or updating a contact
+
+If a property value is not set on a contact, the **fallback value** is used wherever that property is referenced (e.g., in email templates).
+
+## Using properties in segments
+
+Properties can be used as filter conditions in [Segments](/knowledge-base/lists-and-segments). All operators are available — equals, contains, greater than, is set, etc.
+
+For example, you can create a segment for "all contacts where `plan` equals `pro`" or "all contacts where `credits` is greater than `100`".
+
+## Using properties in templates
+
+Properties are available as merge tags in email templates. When the email is sent, the tag is replaced with the contact's value — or the fallback value if not set.
+
+## Deleting a property
+
+A property cannot be deleted if it's used in a segment filter. Remove it from all segment conditions first.
+
+When a property is deleted, all stored values for that property across all contacts are also removed.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="How many properties can I create?">
+    There's no limit. Create as many properties as you need.
+  </Accordion>
+  <Accordion title="What's the fallback value for?">
+    It's the default value used when a contact doesn't have that property set. For example, a `company_name` property with fallback `"there"` could be used in a greeting: "Hello, {{company_name}}" would render as "Hello, there" for contacts without a company set.
+  </Accordion>
+  <Accordion title="Can I change a property's type after creation?">
+    No. The type is fixed at creation. If you need a different type, create a new property and migrate the values.
+  </Accordion>
+  <Accordion title="Are property values included in the API response?">
+    Yes. When fetching a contact via the API, all property values are included in the response.
+  </Accordion>
+</AccordionGroup>

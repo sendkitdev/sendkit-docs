@@ -1,0 +1,98 @@
+---
+title: "Email Validation"
+description: "Verify email addresses before sending to reduce bounces, protect your reputation, and save money."
+icon: "shield-check"
+---
+
+## Why validate emails?
+
+Sending to invalid, disposable, or non-existent email addresses wastes resources and damages your sender reputation. Every bounce counts against you with email providers like Gmail and Outlook.
+
+SendKit's email validation lets you **verify addresses before you send** — catching bad emails before they become bounces.
+
+## What gets checked
+
+Each validation runs multiple checks and returns a confidence level (`HIGH` or `LOW`) for each:
+
+| Check | What it detects |
+|-------|----------------|
+| **Syntax** | Whether the email format is valid (e.g., missing `@`, invalid characters) |
+| **DNS** | Whether the domain has valid MX records that can receive email |
+| **Mailbox** | Whether the specific mailbox exists on the mail server |
+| **Role address** | Whether it's a group address like `info@`, `admin@`, or `support@` |
+| **Disposable** | Whether it's from a disposable/temporary email service like Mailinator or Guerrilla Mail |
+
+## Reading the results
+
+Every validation returns a clear verdict:
+
+- **`is_valid`** — Overall validity (`HIGH` = safe to send, `LOW` = risky)
+- **`should_block`** — Boolean recommendation on whether to block the address
+- **`block_reason`** — If blocked, the specific reason why:
+
+| Block reason | Meaning |
+|-------------|---------|
+| `invalid_syntax` | The email format is malformed |
+| `invalid_dns` | The domain can't receive email |
+| `invalid_mailbox` | The mailbox doesn't exist |
+| `disposable_email` | It's a throwaway address |
+
+## Using validation
+
+### From the dashboard
+
+Go to **Email Validation** in the sidebar, enter an email address, and get instant results. Your validation history is saved so you can review past checks.
+
+### From the API
+
+Validate an email programmatically via the [API](/api-reference/endpoint/validate-email). The response includes all evaluation fields so you can make your own decisions about what to block.
+
+### Automatic validation on send
+
+SendKit also validates recipients automatically when you send an email. If a recipient has invalid syntax, missing DNS, or uses a disposable domain, the email is **blocked before it's sent** — protecting your reputation without any extra code.
+
+<Note>
+  Automatic validation on send uses local checks only (syntax, DNS, disposable). It doesn't consume credits. Credit-based validation via the API or dashboard includes deeper checks like mailbox verification.
+</Note>
+
+## Credits
+
+Each email validation costs **1 credit**. You can purchase credit packages from the dashboard under **Settings > Billing**.
+
+- Credits are shared across your team
+- Validations from both the dashboard and API consume credits
+- If you run out of credits, the API returns a `402` error
+
+### Auto-reload
+
+You can configure auto-reload to automatically purchase more credits when your balance drops below a threshold. Set this up in **Settings > Billing** to avoid interruptions.
+
+## Smart caching
+
+SendKit caches validation results to save credits and speed up repeated lookups:
+
+| Result | Cache duration |
+|--------|---------------|
+| Valid email | 90 days |
+| Invalid email | 180 days |
+| DNS missing | 30 days |
+| Disposable | Forever |
+
+If you validate the same email within the cache window, the cached result is returned instantly at no extra cost.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Does sending an email consume a validation credit?">
+    No. Automatic validation during email sending uses local checks and is free. Only explicit validation requests (via API or dashboard) consume credits.
+  </Accordion>
+  <Accordion title="What's the difference between local and full validation?">
+    Local validation checks syntax, DNS, and disposable status using SendKit's own systems. Full validation (API/dashboard) additionally verifies whether the mailbox actually exists on the mail server, and detects role addresses.
+  </Accordion>
+  <Accordion title="Should I validate every email before sending?">
+    For transactional emails to known users (e.g., password resets), it's usually not necessary — SendKit's automatic checks handle bad addresses. For marketing campaigns or new signups, validating upfront helps reduce bounce rates significantly.
+  </Accordion>
+  <Accordion title="Can I validate emails in bulk?">
+    Currently, the API validates one email per request. You can send multiple requests in parallel for bulk validation.
+  </Accordion>
+</AccordionGroup>

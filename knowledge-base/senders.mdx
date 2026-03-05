@@ -1,0 +1,72 @@
+---
+title: "Senders"
+description: "Learn how to create and manage sender identities for your emails."
+icon: "user"
+---
+
+## What is a sender?
+
+A sender is a reusable identity that represents the "from" address on your emails. Instead of typing the full sender name, email, and reply-to address every time, you create a sender once and use it across campaigns, templates, and automations.
+
+A sender is made up of:
+
+| Field | Example | Description |
+|-------|---------|-------------|
+| **Name** | `Paulo from SendKit` | The display name recipients see in their inbox |
+| **Username** | `paulo` | The local part of the email address (before the @) |
+| **Domain** | `sendkit.dev` | A verified domain from your account |
+| **Reply-to** | `support@sendkit.dev` | Optional. Where replies go if different from the sender address |
+
+This produces a "from" address like: `Paulo from SendKit <paulo@sendkit.dev>`
+
+## Creating a sender
+
+You can create senders from the [SendKit dashboard](https://app.sendkit.dev/senders).
+
+<Steps>
+  <Step title="Verify a domain">
+    You need at least one verified domain before creating a sender. Go to **Domains** and verify your domain with the required DNS records.
+  </Step>
+  <Step title="Create the sender">
+    Go to **Senders** and click **Create Sender**. Fill in the name, username, and select your verified domain. Optionally set a reply-to address.
+  </Step>
+  <Step title="Use it everywhere">
+    Your sender is now available in campaigns, templates, and automations.
+  </Step>
+</Steps>
+
+## Reply-to address
+
+The reply-to field is optional. When set, replies from recipients go to this address instead of the sender address. This is useful when:
+
+- Your sender address is a no-reply address (e.g., `notifications@yourdomain.com`)
+- You want replies to go to a shared inbox (e.g., `support@yourdomain.com`)
+- You use a different address for customer communication
+
+If left empty, replies go directly to the sender address.
+
+## Using senders in the API
+
+When sending emails via the [API](/api-reference/endpoint/send-email), you pass the full "from" address directly — you don't reference a sender by ID. Senders are primarily used in the dashboard for campaigns, templates, and automations.
+
+<Note>
+  The domain in the "from" address must be a verified domain in your account. Emails from unverified domains will be rejected.
+</Note>
+
+## Deleting a sender
+
+A sender can only be deleted if it's not currently used by any campaign or template. If it's in use, you'll need to update those campaigns or templates to use a different sender first.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Can I have multiple senders on the same domain?">
+    Yes. You can create as many senders as you need on the same domain — for example, `support@yourdomain.com`, `notifications@yourdomain.com`, and `marketing@yourdomain.com`.
+  </Accordion>
+  <Accordion title="Can two senders have the same username?">
+    Not on the same domain. Each username must be unique per domain. However, you can use the same username on different domains (e.g., `hello@domain-a.com` and `hello@domain-b.com`).
+  </Accordion>
+  <Accordion title="What characters are allowed in the username?">
+    Letters, numbers, dots, underscores, percent signs, plus signs, and hyphens. For example: `hello`, `no-reply`, `info.team`, `news+updates`.
+  </Accordion>
+</AccordionGroup>

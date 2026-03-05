@@ -1,0 +1,40 @@
+---
+title: "Webhooks"
+description: "Receive real-time notifications about email and contact events as they happen."
+icon: "webhook"
+---
+
+## What are webhooks?
+
+Webhooks let your application receive real-time HTTP notifications when something happens with your emails — a delivery, a bounce, a click, a spam complaint. Instead of polling the API, SendKit pushes events directly to your server.
+
+You configure an endpoint URL, choose which events you care about, and SendKit sends a `POST` request every time one of those events occurs.
+
+## Getting started
+
+Go to **Webhooks** in the dashboard and click **Create Webhook**. You'll need to provide an endpoint URL and select the events you want to receive. SendKit verifies your endpoint is reachable before creating the webhook.
+
+## Key features
+
+- **Signed requests** — Every delivery includes an HMAC-SHA256 signature so you can verify it's from SendKit
+- **Automatic retries** — Failed deliveries are retried up to 3 times with 60-second intervals
+- **Auto-pause** — Webhooks are automatically paused after 5 consecutive failures to protect your server
+- **Event replay** — Re-send any past event from the dashboard for debugging or recovery
+- **Real-time logs** — View every delivery with its payload, response, and status
+
+## Learn more
+
+<Columns cols={2}>
+  <Card title="Introduction" icon="book" href="/webhooks/introduction">
+    How webhooks work and payload format.
+  </Card>
+  <Card title="Event types" icon="list" href="/webhooks/event-types">
+    All available email and contact events.
+  </Card>
+  <Card title="Retries and failures" icon="rotate" href="/webhooks/retries">
+    Retry behavior, auto-pause, and best practices.
+  </Card>
+  <Card title="Verifying signatures" icon="lock" href="/webhooks/signatures">
+    HMAC-SHA256 verification with code examples.
+  </Card>
+</Columns>

@@ -1,0 +1,149 @@
+---
+title: "Automations"
+description: "Build automated email workflows that trigger based on contact activity and run on autopilot."
+icon: "robot"
+---
+
+## What are automations?
+
+Automations are multi-step workflows that send emails, wait, check conditions, and call webhooks — all triggered automatically when contacts enter through a list or segment. Once active, they run on autopilot without any manual intervention.
+
+## Automation lifecycle
+
+| Status | Description |
+|--------|-------------|
+| **Draft** | Being built. You can add, edit, and remove steps freely |
+| **Active** | Running. Contacts are being enrolled and processed |
+| **Paused** | Temporarily stopped. No new contacts are enrolled and processing is halted |
+
+<Note>
+  You can only edit an automation's workflow when it's in **Draft** status. Active automations must be paused first.
+</Note>
+
+## Building a workflow
+
+Automations use a visual graph-based builder. You connect steps together to define the flow contacts go through.
+
+### Step types
+
+<CardGroup cols={2}>
+  <Card title="Trigger" icon="bolt">
+    The entry point. Defines how contacts enter the automation — via a contact list or a segment.
+  </Card>
+  <Card title="Email" icon="envelope">
+    Sends an email using a template. Supports personalization with contact variables and properties.
+  </Card>
+  <Card title="Delay" icon="clock">
+    Pauses the contact for a set amount of time before moving to the next step. Configurable in minutes, hours, or days.
+  </Card>
+  <Card title="Condition" icon="code-branch">
+    Splits the flow based on whether a contact meets a condition. Creates **Yes** and **No** branches.
+  </Card>
+</CardGroup>
+
+### Trigger (entry point)
+
+Every automation starts with a trigger that defines how contacts enter:
+
+| Entry type | How it works |
+|------------|-------------|
+| **Contact list** | Contacts are enrolled automatically when they're added to a specific [list](/knowledge-base/lists-and-segments). Event-driven — happens in real time. |
+| **Segment** | Contacts are enrolled when they match a [segment's](/knowledge-base/lists-and-segments) filter conditions. Checked periodically via scheduled polling. |
+
+### Email steps
+
+Email steps send a message using one of your templates. The template's subject, sender, and body are used, with personalization variables replaced per contact.
+
+All the same [personalization variables](/knowledge-base/campaigns#personalization) from campaigns are available — `{{FIRST_NAME}}`, `{{EMAIL}}`, custom properties, etc.
+
+### Delay steps
+
+Delay steps pause the contact's progression through the workflow. You configure:
+
+- **Duration** — A numeric value
+- **Unit** — Minutes, Hours, or Days
+
+For example, a delay of `3 Days` means the contact waits 3 days before moving to the next step.
+
+### Condition steps
+
+Conditions check whether a contact meets a specific criteria and split the flow into two branches:
+
+- **Yes branch** — Contact meets the condition
+- **No branch** — Contact does not meet the condition
+
+**Available conditions:**
+
+| Condition | What it checks |
+|-----------|---------------|
+| **Email Opened** | Whether the contact opened a specific email step |
+| **Email Not Opened** | Whether the contact has not opened a specific email step |
+| **Email Clicked** | Whether the contact clicked a link in a specific email step |
+| **Email Not Clicked** | Whether the contact has not clicked a link in a specific email step |
+
+This lets you build responsive workflows — for example, send a follow-up only to contacts who didn't open your first email.
+
+## Contact enrollment
+
+When a contact enters an automation, they're tracked individually through each step. You can see:
+
+| Status | Meaning |
+|--------|---------|
+| **Active** | Currently progressing through the workflow |
+| **Completed** | Reached the end of the workflow |
+| **Exited** | Left the automation early (e.g., unsubscribed) |
+| **Failed** | A step failed during processing |
+
+### Re-entry
+
+By default, a contact can only go through an automation once. You can enable **Allow re-entry** to let contacts be enrolled again if they match the trigger conditions a second time.
+
+## Example workflow
+
+Here's a typical onboarding automation:
+
+<Steps>
+  <Step title="Trigger: Contact added to 'New Users' list">
+    A contact is added to your "New Users" list (via API, import, or manually).
+  </Step>
+  <Step title="Email: Welcome message">
+    Immediately sends a welcome email with getting started instructions.
+  </Step>
+  <Step title="Delay: 2 days">
+    Waits 2 days before the next step.
+  </Step>
+  <Step title="Condition: Opened welcome email?">
+    Checks if the contact opened the welcome email.
+  </Step>
+  <Step title="Yes: Send tips email / No: Resend welcome">
+    - **Yes** — Sends an advanced tips email
+    - **No** — Resends the welcome email with a different subject line
+  </Step>
+</Steps>
+
+## Sending limits
+
+Like [campaigns](/knowledge-base/campaigns), automations respect your account's sending limits:
+
+- **[Domain warmup](/knowledge-base/domain-warmup)** — Emails are paused if your daily warmup limit is reached
+- **Monthly quota** — Your plan's monthly email limit is enforced
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Can I edit an active automation?">
+    No. You must pause the automation first, which moves it back to a state where you can modify the workflow. Contacts already in progress will resume when you reactivate.
+  </Accordion>
+  <Accordion title="What happens to in-progress contacts when I pause?">
+    They stay at their current step. When you reactivate, they continue from where they left off.
+  </Accordion>
+  <Accordion title="Can a contact be in multiple automations at once?">
+    Yes. Automations are independent — a contact can be enrolled in as many as they qualify for.
+  </Accordion>
+  <Accordion title="What if a contact unsubscribes mid-automation?">
+    They exit the automation immediately. No further emails are sent.
+  </Accordion>
+  <Accordion title="How fast are automation emails sent?">
+    Each step is processed individually per contact. Emails are dispatched as soon as a contact reaches an email step (after any delays).
+  </Accordion>
+</AccordionGroup>

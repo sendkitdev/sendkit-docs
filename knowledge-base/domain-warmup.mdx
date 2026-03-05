@@ -1,0 +1,101 @@
+---
+title: "Domain Warmup"
+description: "Understand how SendKit automatically warms up new domains to protect your sending reputation."
+icon: "fire"
+---
+
+## What is domain warmup?
+
+When you verify a new domain on SendKit, it doesn't have an established sending reputation with email providers like Gmail, Outlook, or Yahoo. Sending a large volume of emails immediately from a new domain can trigger spam filters and damage your deliverability.
+
+Domain warmup is SendKit's built-in mechanism that **automatically and gradually increases your daily sending limit** over a 14-day period. This gives email providers time to recognize your domain as a legitimate sender.
+
+<Note>
+  You don't need to configure anything. Warmup is fully automatic and starts when you send your first email from a verified domain.
+</Note>
+
+## How it works
+
+1. **You verify your domain** — DNS records are configured and validated.
+2. **You send your first email** — This starts the 14-day warmup clock.
+3. **Daily limits increase automatically** — Each day, SendKit allows more emails from your domain.
+4. **Warmup completes on day 14** — Your domain has no sending limits after the warmup period.
+
+<Info>
+  The warmup clock starts on your **first email sent**, not when you verify the domain. This means you can verify your domain ahead of time without affecting the warmup schedule.
+</Info>
+
+## Warmup schedule
+
+The daily sending limits increase progressively over 14 days:
+
+| Day | Daily limit |
+|-----|-------------|
+| 0–1 | 50 emails |
+| 2 | 100 emails |
+| 3 | 200 emails |
+| 4 | 500 emails |
+| 5–6 | 1,000 emails |
+| 7–9 | 2,000 emails |
+| 10–13 | 5,000 emails |
+| 14+ | No limit |
+
+Daily limits reset at midnight (UTC).
+
+## What happens when you hit the limit?
+
+If you try to send more emails than your current daily limit allows, the API returns a **429 Too Many Requests** response with details about your warmup status:
+
+```json
+{
+  "name": "warmup_limit",
+  "message": "Domain warmup limit reached for example.com. Daily limit: 200 emails. Sent today: 200. Warmup completes on 2026-03-14.",
+  "domain": "example.com",
+  "daily_limit": 200,
+  "emails_sent_today": 200,
+  "warmup_day": 3,
+  "warmup_ends_at": "2026-03-14T00:00:00Z"
+}
+```
+
+Use `warmup_ends_at` to know when your domain will be fully warmed up, and `daily_limit` to plan your sending volume accordingly.
+
+## Warmup and campaigns
+
+When sending a campaign, SendKit respects the warmup limit of each domain. If the limit is reached mid-campaign, the remaining contacts won't receive the email until the next day's limit resets.
+
+Plan your campaign volume around your current warmup day to avoid interruptions.
+
+## Tips for a successful warmup
+
+<Steps>
+  <Step title="Start with engaged recipients">
+    During the first few days, send to recipients who are most likely to open and interact with your emails. Positive engagement signals help build your domain's reputation faster.
+  </Step>
+  <Step title="Avoid cold lists">
+    Don't use purchased or scraped email lists during warmup. High bounce rates and spam complaints during this period can permanently harm your domain's reputation.
+  </Step>
+  <Step title="Monitor your metrics">
+    Keep an eye on your bounce rate and complaint rate in the SendKit dashboard. If either spikes, pause sending and investigate before continuing.
+  </Step>
+  <Step title="Be consistent">
+    Try to send emails every day during the warmup period. Consistent sending patterns signal to email providers that you're a legitimate sender.
+  </Step>
+</Steps>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Can I skip or speed up the warmup?">
+    No. The warmup schedule is enforced automatically to protect your sending reputation. Skipping it would risk your emails being flagged as spam.
+  </Accordion>
+  <Accordion title="Does each domain have its own warmup?">
+    Yes. Each verified domain has an independent warmup period. Adding a new domain starts a fresh 14-day warmup for that domain only.
+  </Accordion>
+  <Accordion title="What if I don't send emails every day?">
+    The warmup is based on calendar days since your first email, not sending days. If you skip a day, the schedule continues — your limits still increase as planned.
+  </Accordion>
+  <Accordion title="Does warmup apply to batch sends?">
+    Yes. Batch sends count against your daily warmup limit. If a batch would exceed the limit, the entire batch is rejected.
+  </Accordion>
+</AccordionGroup>

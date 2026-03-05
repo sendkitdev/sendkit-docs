@@ -1,0 +1,70 @@
+---
+title: "Contacts"
+description: "Manage your recipients with SendKit's contact system — automatic or manual."
+icon: "address-book"
+---
+
+## What are contacts?
+
+Contacts are the people you send emails to. Every recipient in SendKit is stored as a contact with their email address and optional profile information.
+
+You can create contacts manually, via the [API](/api-reference/endpoint/create-contact), or let SendKit do it automatically.
+
+## Automatic contact creation
+
+Every time you send an email through SendKit — via API, campaign, or automation — the recipients (to, cc, bcc) are **automatically saved as contacts**. You don't need to import or pre-register them.
+
+This means your contact list is always up to date with everyone you've ever emailed.
+
+<Note>
+  If a contact with the same email already exists, SendKit skips creation. Emails are normalized to lowercase to prevent duplicates.
+</Note>
+
+## Contact fields
+
+Every contact has the following built-in fields:
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| **Email** | Yes | The contact's email address (unique per team) |
+| **First name** | No | First name |
+| **Last name** | No | Last name |
+| **Subscribed** | Auto | Whether the contact is subscribed to marketing emails |
+
+Need more fields? Use [Properties](/knowledge-base/properties) to add custom attributes like company name, plan type, or signup date.
+
+## Subscription status
+
+Each contact has a subscription toggle. Unsubscribed contacts are excluded from marketing campaigns but can still receive transactional emails via the API.
+
+You can toggle subscription status from the contact detail page or via the [API](/api-reference/endpoint/update-contact).
+
+## Organizing contacts
+
+SendKit gives you two ways to group contacts:
+
+- **[Lists](/knowledge-base/lists-and-segments)** — Static groups you manage manually. Add or remove contacts explicitly.
+- **[Segments](/knowledge-base/lists-and-segments)** — Dynamic groups based on filters. Contacts are included automatically when they match your conditions.
+
+Learn more in [Lists & Segments](/knowledge-base/lists-and-segments).
+
+## Deleting contacts
+
+Contacts are soft-deleted — they're removed from your active contact list but the data is preserved. This ensures email delivery history and analytics remain intact.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need to create contacts before sending emails?">
+    No. SendKit automatically creates contacts from your email recipients. You can also create them manually or via the API if you want to set up contacts before sending.
+  </Accordion>
+  <Accordion title="Are contacts shared across my team?">
+    Yes. Contacts belong to the team, not individual users. All team members see the same contact list.
+  </Accordion>
+  <Accordion title="What happens if I send to the same email twice?">
+    SendKit uses the existing contact — it doesn't create a duplicate. Email addresses are unique per team.
+  </Accordion>
+  <Accordion title="Can I add custom fields to contacts?">
+    Yes. Use [Properties](/knowledge-base/properties) to define custom attributes with different types (text, number, date) and optional fallback values.
+  </Accordion>
+</AccordionGroup>

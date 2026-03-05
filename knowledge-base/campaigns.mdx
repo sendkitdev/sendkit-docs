@@ -1,0 +1,123 @@
+---
+title: "Campaigns"
+description: "Send marketing emails to your audience with targeted campaigns."
+icon: "paper-plane"
+---
+
+## What are campaigns?
+
+Campaigns let you send the same email to a group of contacts — your entire list, a specific list, or a dynamic segment. They're built for marketing and promotional emails like newsletters, product updates, and announcements.
+
+## Campaign lifecycle
+
+Every campaign goes through a clear set of statuses:
+
+| Status | Description |
+|--------|-------------|
+| **Draft** | Being configured. You can edit, preview, and test |
+| **Scheduled** | Set to send at a specific date and time |
+| **Sending** | Currently processing and delivering emails |
+| **Sent** | All emails have been delivered |
+| **Partial sent** | Some emails were sent before a limit was reached (warmup or quota) |
+
+## Creating a campaign
+
+<Steps>
+  <Step title="Name your campaign">
+    Give it an internal name to identify it in the dashboard (recipients don't see this).
+  </Step>
+  <Step title="Choose a template">
+    Select an email template for the campaign body. The template's subject and sender are auto-filled but can be overridden.
+  </Step>
+  <Step title="Select your audience">
+    Choose who receives the campaign:
+    - **All contacts** — Every subscribed contact in your team
+    - **Contact list** — A specific list you've created
+    - **Segment** — A dynamic group based on filter conditions
+  </Step>
+  <Step title="Send or schedule">
+    Send immediately or pick a date and time for scheduled delivery.
+  </Step>
+</Steps>
+
+## Audience targeting
+
+You have three options for choosing recipients:
+
+| Audience type | How it works |
+|---------------|-------------|
+| **All contacts** | Sends to every contact in your team |
+| **Contact list** | Sends to contacts in a specific [list](/knowledge-base/lists-and-segments) |
+| **Segment** | Sends to contacts matching a [segment's](/knowledge-base/lists-and-segments) filter conditions |
+
+In all cases, SendKit automatically excludes:
+- **Unsubscribed contacts** — Contacts who opted out of marketing emails
+- **Suppressed addresses** — Addresses on your [suppression list](/knowledge-base/suppression-list) (bounces, complaints)
+
+## Personalization
+
+Campaigns support dynamic variables that are replaced with each contact's data when the email is sent:
+
+| Variable | Replaced with |
+|----------|--------------|
+| `{{FIRST_NAME}}` | Contact's first name |
+| `{{LAST_NAME}}` | Contact's last name |
+| `{{FULL_NAME}}` | First and last name combined |
+| `{{EMAIL}}` | Contact's email address |
+| `{{USER_ID}}` | Contact's user ID |
+
+Custom [properties](/knowledge-base/properties) are also available as variables. If a variable isn't set for a contact, the property's fallback value is used.
+
+Variables work in the **subject line**, **preview text**, and **template body**.
+
+## Scheduling
+
+Set a `scheduled_at` date and time to send the campaign later. The campaign status changes to **Scheduled** and SendKit automatically sends it at the specified time.
+
+You can cancel a scheduled campaign at any time before it starts sending — it reverts back to **Draft** status.
+
+## Sending limits
+
+Campaigns respect your account's sending limits:
+
+- **[Domain warmup](/knowledge-base/domain-warmup)** — If your domain is still warming up, the campaign pauses when the daily limit is reached. The status becomes **Partial sent**.
+- **Monthly quota** — Your plan's monthly email limit is enforced. The campaign stops if the quota is exceeded.
+
+<Note>
+  If a campaign is partially sent due to limits, the remaining contacts won't receive the email automatically. You may need to create a new campaign for the remaining audience after limits reset.
+</Note>
+
+## Campaign analytics
+
+After sending, the campaign detail page shows real-time stats:
+
+| Metric | What it tracks |
+|--------|---------------|
+| **Recipients** | Total emails created for the campaign |
+| **Sent** | Emails successfully accepted for delivery |
+| **Delivered** | Emails confirmed delivered to inbox |
+| **Opened** | Recipients who opened the email |
+| **Clicked** | Recipients who clicked a link |
+| **Failed** | Emails that permanently failed |
+
+You can also browse individual email deliveries with their status and event history.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Can I edit a campaign after sending?">
+    No. Only campaigns in **Draft** status can be edited. Once a campaign is scheduled or sent, its configuration is locked.
+  </Accordion>
+  <Accordion title="Can I delete a sent campaign?">
+    No. Only **Draft** campaigns can be deleted. Sent campaigns are preserved for analytics and history.
+  </Accordion>
+  <Accordion title="What happens if a contact unsubscribes mid-campaign?">
+    Contacts are checked at processing time. If they unsubscribe before their email is processed, they won't receive it.
+  </Accordion>
+  <Accordion title="Can I send the same campaign twice?">
+    No. Each campaign is sent once. To resend to the same audience, create a new campaign with the same template.
+  </Accordion>
+  <Accordion title="How fast are campaigns sent?">
+    Campaigns are processed in chunks of 500 contacts. Each email is dispatched individually with rate limiting to protect your sender reputation.
+  </Accordion>
+</AccordionGroup>

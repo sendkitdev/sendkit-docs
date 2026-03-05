@@ -1,0 +1,119 @@
+---
+title: "Lists & Segments"
+description: "Two ways to organize your contacts — static lists you manage manually, and dynamic segments that update automatically."
+icon: "filter"
+---
+
+## Two ways to group contacts
+
+SendKit gives you two approaches to organizing contacts. Use them separately or together depending on your needs.
+
+| | Lists | Segments |
+|---|-------|----------|
+| **Type** | Static | Dynamic |
+| **How contacts are added** | Manually (you add/remove them) | Automatically (based on filter conditions) |
+| **Updates** | Only changes when you change it | Updates in real time as contacts match or stop matching |
+| **Best for** | Curated groups, imports, manual targeting | Behavioral targeting, conditional audiences |
+
+## Lists
+
+Lists are static groups of contacts. You explicitly add contacts to a list and remove them when needed. They don't change on their own.
+
+### When to use lists
+
+- Importing a group of contacts from a CSV
+- Organizing contacts by source (e.g., "Webinar Attendees", "Beta Users")
+- Building a fixed audience for a specific campaign
+- Triggering automations when a contact is added
+
+### Creating a list
+
+Go to **Contacts > Lists** and click **Create List**. Give it a name and start adding contacts.
+
+You can add contacts to a list from:
+- The list detail page
+- A contact's detail page
+- The [API](/api-reference/endpoint/add-contacts-to-list)
+
+### Lists and automations
+
+When a contact is added to a list, SendKit can automatically enroll them in active automations that target that list. This is a powerful way to trigger onboarding flows, drip campaigns, or follow-up sequences.
+
+<Note>
+  A list cannot be deleted if it's used by an active campaign or automation. Update those first.
+</Note>
+
+---
+
+## Segments
+
+Segments are dynamic groups defined by filter conditions. Contacts are automatically included when they match your conditions and excluded when they don't. You never manually add or remove contacts from a segment.
+
+### When to use segments
+
+- Targeting contacts based on attributes (e.g., "First name is set")
+- Creating audiences based on custom properties (e.g., "Plan is Pro")
+- Building conditional groups that stay up to date automatically
+- Combining multiple conditions with AND/OR logic
+
+### Creating a segment
+
+Go to **Contacts > Segments** and click **Create Segment**. Then build your filter conditions.
+
+### Filter conditions
+
+Each condition consists of a **field**, an **operator**, and a **value**:
+
+**Available fields:**
+- Built-in: `email`, `first_name`, `last_name`, `unsubscribed`
+- Custom: any [Property](/knowledge-base/properties) you've created
+
+**Available operators:**
+
+| Operator | Works with | Example |
+|----------|-----------|---------|
+| Equals | All types | Email equals `user@example.com` |
+| Not equals | All types | First name not equals `Test` |
+| Contains | Text | Email contains `@gmail.com` |
+| Not contains | Text | Email not contains `noreply` |
+| Starts with | Text | Last name starts with `Mc` |
+| Ends with | Text | Email ends with `.edu` |
+| Greater than | Numbers | Credits greater than `100` |
+| Less than | Numbers | Age less than `30` |
+| Is set | All types | First name is set (not empty) |
+| Is not set | All types | Last name is not set |
+
+### Match logic
+
+Segments support nested groups with AND/OR logic:
+
+- **Match all** — A contact must match every condition group (AND)
+- **Match any** — A contact must match at least one condition group (OR)
+
+Within each group, conditions can also use AND or OR logic. This lets you build sophisticated audiences like:
+
+> (Plan is "Pro" AND Country is "US") OR (Signed up before 2026-01-01)
+
+### Real-time resolution
+
+Segments are resolved dynamically every time they're queried. There's no sync delay — when a contact's data changes, they immediately appear in or disappear from matching segments.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Can a contact be in multiple lists?">
+    Yes. A contact can belong to as many lists as you want.
+  </Accordion>
+  <Accordion title="Can a contact match multiple segments?">
+    Yes. Segments are independent — a contact appears in every segment whose conditions they match.
+  </Accordion>
+  <Accordion title="Can I use both lists and segments in campaigns?">
+    Yes. When creating a campaign, you can target a list or a segment as your audience.
+  </Accordion>
+  <Accordion title="Do segments use custom properties?">
+    Yes. Any [Property](/knowledge-base/properties) you create can be used as a condition in segment filters, with all the same operators.
+  </Accordion>
+  <Accordion title="What happens if I delete a list with contacts?">
+    The contacts are not deleted — only the list and the associations are removed. The contacts remain in your account.
+  </Accordion>
+</AccordionGroup>

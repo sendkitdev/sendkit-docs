@@ -149,9 +149,35 @@
         "icon": "book",
         "groups": [
           {
-            "group": "Knowledge Base",
+            "group": "Getting Started",
             "pages": [
               "knowledge-base/introduction"
+            ]
+          },
+          {
+            "group": "Sending",
+            "pages": [
+              "knowledge-base/senders",
+              "knowledge-base/domain-warmup",
+              "knowledge-base/suppression-list",
+              "knowledge-base/campaigns",
+              "knowledge-base/automations"
+            ]
+          },
+          {
+            "group": "Contacts",
+            "pages": [
+              "knowledge-base/contacts",
+              "knowledge-base/lists-and-segments",
+              "knowledge-base/properties"
+            ]
+          },
+          {
+            "group": "Integrations",
+            "pages": [
+              "knowledge-base/api-keys",
+              "knowledge-base/webhooks",
+              "knowledge-base/email-validation"
             ]
           }
         ]

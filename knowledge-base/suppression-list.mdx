@@ -1,0 +1,89 @@
+---
+title: "Suppression List"
+description: "SendKit automatically manages your suppression list so you never send to bad addresses. Zero configuration required."
+icon: "ban"
+---
+
+## Automatic list hygiene, built in
+
+Most email providers leave bounce handling, complaint tracking, and list cleaning up to you. You have to monitor delivery events, build logic to track failures, update your database, and remember to check before every send.
+
+**SendKit does all of this automatically.** Every bounce, every spam complaint, every unreachable address is tracked and suppressed for you — with zero configuration and zero code. Just send your emails and let SendKit protect your reputation.
+
+<Note>
+  You don't need to build any bounce handling logic. SendKit's suppression list works out of the box for every email you send — via API, campaigns, or automations.
+</Note>
+
+## What SendKit handles for you
+
+### Hard bounces — suppressed instantly
+
+When an email permanently bounces (mailbox doesn't exist, domain is invalid, recipient server permanently rejects), SendKit **immediately and permanently suppresses** that address. You'll never accidentally send to it again.
+
+No webhook handler to build. No database to update. It just works.
+
+### Soft bounces — smart threshold detection
+
+Soft bounces are temporary failures — a full mailbox, a server temporarily down. SendKit doesn't suppress on the first soft bounce. Instead, it tracks them intelligently:
+
+- **1st or 2nd soft bounce** — Address stays active, SendKit keeps trying
+- **3rd soft bounce** — Address is automatically suppressed
+- **Successful delivery after a soft bounce** — Counter resets to zero
+
+This means transient issues don't block legitimate recipients, but consistently unreachable addresses are automatically cleaned up.
+
+### Spam complaints — immediate protection
+
+When a recipient marks your email as spam, SendKit **immediately suppresses** their address. This is critical — continuing to send to people who complained is the fastest way to destroy your sender reputation and land in spam folders.
+
+### Automatic enforcement on every send
+
+Every email you send through SendKit — whether it's a single API call, a batch send, a campaign, or an automation — is automatically checked against your suppression list. Suppressed addresses are blocked before they ever reach the email provider.
+
+You don't need to query the list yourself. SendKit handles it.
+
+## Manual suppressions
+
+You can also manually suppress addresses through the [API](/api-reference/endpoint/create-suppression) or the dashboard. This is useful for:
+
+- Honoring unsubscribe requests
+- Removing known bad addresses before a campaign
+- Proactively blocking addresses you know are invalid
+
+## Suppression reasons
+
+Each entry has a reason so you always know why an address was suppressed:
+
+| Reason | Description | Added by |
+|--------|-------------|----------|
+| `bounce` | Hard bounce, or 3+ soft bounces | Automatic |
+| `complaint` | Recipient marked as spam | Automatic |
+| `manual` | Added via API or dashboard | You |
+
+## Removing a suppression
+
+You can remove an address from the suppression list through the [API](/api-reference/endpoint/delete-suppression) or the dashboard.
+
+<Warning>
+  Be careful when removing addresses suppressed for hard bounces or spam complaints. Sending to them again will likely produce the same result and can damage your reputation.
+</Warning>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need to build any bounce handling logic?">
+    No. That's the point. SendKit handles bounces, complaints, and list hygiene automatically. You just send emails.
+  </Accordion>
+  <Accordion title="Is the suppression list shared across my team?">
+    Yes. The suppression list is per-team. All team members and API keys share the same list.
+  </Accordion>
+  <Accordion title="Do suppressions affect campaigns?">
+    Yes. When sending a campaign, SendKit automatically skips any contacts on the suppression list. These contacts are not counted against your sending volume.
+  </Accordion>
+  <Accordion title="Does removing a suppression guarantee delivery?">
+    No. It only means SendKit will attempt delivery again. If the underlying problem persists (invalid mailbox, full inbox), the address may be re-suppressed automatically.
+  </Accordion>
+  <Accordion title="What if I'm migrating from another provider with my own suppression list?">
+    You can add addresses one at a time through the API. Going forward, SendKit will automatically maintain the list for you.
+  </Accordion>
+</AccordionGroup>
