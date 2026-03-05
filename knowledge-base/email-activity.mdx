@@ -1,0 +1,145 @@
+---
+title: "Email Activity"
+description: "Track every email you send with real-time status updates, filtering, and a detailed event timeline."
+icon: "envelope"
+---
+
+## What is email activity?
+
+The Email Activity page is a real-time log of every email sent through SendKit — via API, campaigns, or automations. You can search, filter, and inspect individual emails to see exactly what happened from send to delivery.
+
+## Email list
+
+The main view shows a paginated list of all emails with:
+
+| Column | Description |
+|--------|-------------|
+| **To** | Recipient email address |
+| **Subject** | Email subject line |
+| **Status** | Current status badge (see [statuses](#statuses) below) |
+| **Domain** | The sending domain used |
+| **Date** | When the email was created |
+
+The list updates in real time — new events appear automatically without refreshing the page.
+
+## Statuses
+
+Each email tracks its **last event**, which represents the most recent (and most advanced) state in its lifecycle.
+
+| Status | Meaning |
+|--------|---------|
+| **Queued** | Email is queued and waiting to be sent |
+| **Sent** | Email was accepted and dispatched for delivery |
+| **Delivered** | Email was successfully delivered to the recipient's mail server |
+| **Opened** | Recipient opened the email (requires [open tracking](/knowledge-base/domains#open-tracking)) |
+| **Clicked** | Recipient clicked a link in the email (requires [click tracking](/knowledge-base/domains#click-tracking)) |
+| **Bounced** | Recipient's mail server rejected the email |
+| **Complained** | Recipient marked the email as spam |
+| **Failed** | Email was permanently rejected before delivery |
+| **Delivery delayed** | Delivery is temporarily delayed and will be retried |
+| **Suppressed** | Email was blocked because the address is on the [suppression list](/knowledge-base/suppression-list) |
+| **Cancelled** | Email was cancelled before being sent |
+
+### Status progression
+
+Statuses follow a priority order. An email only moves forward — it won't go back to a previous state:
+
+```
+Queued → Sent → Delivered → Opened → Clicked
+```
+
+Negative outcomes (bounced, complained, failed) are terminal — they replace the current status.
+
+## Searching and filtering
+
+### Search
+
+Search by recipient email address using the search bar. Results update as you type.
+
+### Date range
+
+Select a custom date range using the date picker. The available range depends on your plan's data retention policy.
+
+### Advanced filters
+
+Click the filter button to open advanced filters:
+
+| Filter | Description |
+|--------|-------------|
+| **Status** | Select one or more statuses (sent, delivered, opened, clicked, bounced, complained, failed, suppressed) |
+| **Domain** | Filter by sending domain |
+| **Campaign** | Filter emails sent from a specific campaign |
+| **Automation** | Filter emails sent from a specific automation |
+
+All filters work together (AND logic). Active filters appear as removable badges below the toolbar.
+
+## Email detail
+
+Click any email to see its full detail page.
+
+### Metadata
+
+The header shows key information about the email:
+
+- **From** — Sender email address
+- **To** — Recipient email address
+- **Template** — Link to the template used (if applicable)
+- **ID** — Unique email identifier (with copy button)
+- **CC / BCC / Reply-To** — If set
+
+### Tags
+
+If the email was sent with tags (via the [API](/api-reference/endpoint/send-email)), they appear as badges. Tags help you categorize and identify emails — for example, `transactional`, `welcome`, or `invoice`.
+
+### Event timeline
+
+A chronological timeline shows every event that occurred for this email, from send to delivery (or failure). Each event includes:
+
+- **Event type** — With a color-coded icon
+- **Timestamp** — When the event occurred
+
+| Event | Icon color | Description |
+|-------|-----------|-------------|
+| **Sent** | Blue | Email dispatched to mail server |
+| **Delivered** | Green | Confirmed delivery to recipient's server |
+| **Opened** | Purple | Recipient opened the email |
+| **Clicked** | Cyan | Recipient clicked a link |
+| **Bounced** | Orange | Email rejected by recipient's server |
+| **Complained** | Red | Marked as spam by recipient |
+| **Failed** | Red | Permanently rejected |
+
+### Email content
+
+Three tabs let you inspect the email body:
+
+- **Preview** — Rendered HTML as the recipient sees it
+- **HTML** — Raw HTML source code with copy button
+- **Plain Text** — Plain text version of the email
+
+## Data retention
+
+Email activity data is retained based on your plan. Older emails are automatically removed after the retention period. The available date range in filters reflects your plan's retention window.
+
+## Real-time updates
+
+Both the email list and detail pages update in real time via WebSocket. When a new event occurs (delivery confirmation, open, click, bounce), you see it immediately — no need to refresh.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Can I resend a failed email?">
+    Not directly from the activity page. You can send the email again via the API or by creating a new campaign targeting the same contact.
+  </Accordion>
+  <Accordion title="Why does an email show as 'Delivered' but not 'Opened'?">
+    Open tracking depends on a tracking pixel being loaded. Many email clients block images by default, so opens are often underreported. The email was delivered — the recipient may have read it without triggering the open event.
+  </Accordion>
+  <Accordion title="What's the difference between 'Failed' and 'Bounced'?">
+    **Failed** means the email was rejected before delivery (e.g., invalid configuration, domain not verified). **Bounced** means the email reached the recipient's server but was rejected (e.g., address doesn't exist, mailbox full).
+  </Accordion>
+  <Accordion title="Can I see the click URL?">
+    Click events are tracked in the event timeline. The specific URL clicked is recorded as part of the event data.
+  </Accordion>
+  <Accordion title="How far back can I see email activity?">
+    The available history depends on your plan's data retention policy. Check your plan details for the exact retention period.
+  </Accordion>
+</AccordionGroup>
