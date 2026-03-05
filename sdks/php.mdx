@@ -25,3 +25,34 @@ $response = $client->emails()->send([
 
 echo $response['id'];
 ```
+
+## Validate email
+
+Validate an email address before sending. Each validation costs credits.
+
+```php
+use SendKit\SendKit;
+
+$client = SendKit::client('sk_your_api_key');
+
+$result = $client->validateEmail('recipient@example.com');
+
+if ($result['should_block']) {
+    // Email should not be used
+    echo $result['block_reason'];
+}
+
+echo $result['is_valid'];           // true or false
+echo $result['evaluations'];        // detailed checks
+```
+
+The `evaluations` array contains:
+
+| Key | Description |
+|-----|-------------|
+| `has_valid_syntax` | Whether the email has valid syntax |
+| `has_valid_dns` | Whether the domain has valid DNS records |
+| `mailbox_exists` | Whether the mailbox exists |
+| `is_role_address` | Whether it's a role address (e.g. info@, admin@) |
+| `is_disposable` | Whether it's a disposable email |
+| `is_random_input` | Whether it appears to be random input |

@@ -50,3 +50,102 @@ use Illuminate\Support\Facades\Mail;
 
 Mail::to('recipient@example.com')->send(new WelcomeEmail());
 ```
+
+## Validate email
+
+Validate an email address before sending. Each validation costs credits.
+
+```php
+use SendKit\Laravel\Facades\SendKit;
+
+$result = SendKit::validateEmail('recipient@example.com');
+
+if ($result['should_block']) {
+    // Email should not be used
+    echo $result['block_reason'];
+}
+
+echo $result['is_valid'];           // true or false
+echo $result['evaluations'];        // detailed checks
+```
+
+The `evaluations` array contains:
+
+| Key | Description |
+|-----|-------------|
+| `has_valid_syntax` | Whether the email has valid syntax |
+| `has_valid_dns` | Whether the domain has valid DNS records |
+| `mailbox_exists` | Whether the mailbox exists |
+| `is_role_address` | Whether it's a role address (e.g. info@, admin@) |
+| `is_disposable` | Whether it's a disposable email |
+| `is_random_input` | Whether it appears to be random input |
+
+## Webhooks
+
+The package automatically registers a `POST /webhook/sendkit` route in your application — no extra setup needed. When SendKit sends a webhook to this endpoint, the package verifies the signature and dispatches a Laravel event you can listen to.
+
+### Add your webhook secret
+
+To verify that incoming webhooks are actually from SendKit, add your webhook secret to `.env`:
+
+```bash .env
+SENDKIT_WEBHOOK_SECRET=your-webhook-secret
+```
+
+You can find your webhook secret in the [SendKit dashboard](https://app.sendkit.com). When a secret is configured, every incoming request is verified using HMAC-SHA256. If the signature doesn't match, the request is rejected with a `403` response.
+
+<Note>
+  If no secret is configured, signature verification is skipped. We strongly recommend always setting a secret in production.
+</Note>
+
+### Customizing the webhook path
+
+By default the webhook listens at `/webhook/sendkit`. You can change this with an environment variable:
+
+```bash .env
+SENDKIT_WEBHOOK_PATH=api/webhooks/sendkit
+```
+
+This will register the route at `POST /api/webhooks/sendkit` instead. Make sure to update the webhook URL in your SendKit dashboard to match.
+
+### Listening for events
+
+When a webhook is received, the package dispatches a Laravel event based on the event type. You can listen for these events anywhere you normally would — in a listener, a service provider, or an `EventServiceProvider`:
+
+```php
+use SendKit\Laravel\Events\EmailDelivered;
+use Illuminate\Support\Facades\Event;
+
+Event::listen(EmailDelivered::class, function ($event) {
+    $emailId = $event->payload['email_id'];
+
+    // Handle the delivered email
+});
+```
+
+Every event has a `payload` property with the webhook data sent by SendKit.
+
+### Available events
+
+| Event class | Webhook type | Triggered when |
+|-------------|-------------|----------------|
+| `EmailSent` | `email.sent` | Email accepted for delivery |
+| `EmailDelivered` | `email.delivered` | Email delivered to recipient |
+| `EmailBounced` | `email.bounced` | Email bounced |
+| `EmailComplained` | `email.complained` | Recipient marked as spam |
+| `EmailOpened` | `email.opened` | Recipient opened the email |
+| `EmailClicked` | `email.clicked` | Recipient clicked a link |
+| `EmailFailed` | `email.failed` | Email failed to send |
+| `EmailDeliveryDelayed` | `email.delivery_delayed` | Delivery is taking longer than usual |
+
+All event classes are in the `SendKit\Laravel\Events` namespace.
+
+### Advanced configuration
+
+For full control over the webhook configuration, publish the config file:
+
+```bash
+php artisan vendor:publish --tag=sendkit-config
+```
+
+This creates a `config/sendkit.php` file where you can customize the webhook path, secret, and other options.
