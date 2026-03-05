@@ -164,7 +164,12 @@
             "group": "Domains",
             "pages": [
               "knowledge-base/domains",
-              "knowledge-base/domain-warmup",
+              "knowledge-base/domain-warmup"
+            ]
+          },
+          {
+            "group": "DNS Providers",
+            "pages": [
               "knowledge-base/cloudflare",
               "knowledge-base/dreamhost",
               "knowledge-base/gandi",
