@@ -1,0 +1,191 @@
+---
+title: "Domains"
+description: "Connect your domain to SendKit to start sending emails with full authentication."
+icon: "globe"
+---
+
+## What are domains?
+
+A domain is the foundation of your sending identity in SendKit. Before you can send any email, you need to add and verify at least one domain. This proves you own the domain and authorizes SendKit to send on your behalf.
+
+For example, if you want to send emails from `hello@acme.com`, you need to add and verify `acme.com`.
+
+## Adding a domain
+
+<Steps>
+  <Step title="Go to Domains">
+    Navigate to **Domains** in the sidebar and click **Add Domain**.
+  </Step>
+  <Step title="Enter your domain name">
+    Type your domain (e.g., `acme.com`). Do not include subdomains or protocols.
+  </Step>
+  <Step title="Select a region">
+    Choose the AWS region closest to your recipients for best performance. This cannot be changed after creation.
+  </Step>
+  <Step title="Configure DNS records">
+    SendKit generates 4 DNS records you need to add at your DNS provider. See [DNS records](#dns-records) below.
+  </Step>
+  <Step title="Verify">
+    After adding the records, click **Refresh** on the domain detail page. Verification usually completes within minutes, but DNS propagation can take up to a few hours.
+  </Step>
+</Steps>
+
+## DNS records
+
+When you add a domain, SendKit generates 4 DNS records. You need to add these at your DNS provider (Cloudflare, AWS Route 53, GoDaddy, etc.).
+
+### DKIM (required)
+
+DKIM cryptographically signs your emails so recipients can verify they haven't been tampered with.
+
+| Field | Value |
+|-------|-------|
+| **Type** | TXT |
+| **Name** | `sendkit._domainkey.yourdomain.com` |
+| **Value** | `v=DKIM1; k=rsa; p=<your-public-key>` |
+| **TTL** | 3600 |
+
+<Note>
+  The DKIM public key is unique to your domain and generated automatically by SendKit. Copy the full value from the domain detail page.
+</Note>
+
+### SPF (required)
+
+SPF tells receiving mail servers that SendKit is authorized to send emails for your domain.
+
+| Field | Value |
+|-------|-------|
+| **Type** | TXT |
+| **Name** | `send.yourdomain.com` |
+| **Value** | `v=spf1 include:amazonses.com ~all` |
+| **TTL** | 3600 |
+
+### MX (required)
+
+The MX record on the `send` subdomain enables bounce and complaint handling.
+
+| Field | Value |
+|-------|-------|
+| **Type** | MX |
+| **Name** | `send.yourdomain.com` |
+| **Value** | `feedback-smtp.<region>.amazonses.com` |
+| **Priority** | 10 |
+| **TTL** | 3600 |
+
+<Note>
+  Replace `<region>` with the AWS region you selected (e.g., `us-east-2`, `sa-east-1`). The exact value is shown on your domain detail page.
+</Note>
+
+### DMARC (optional)
+
+DMARC builds on top of DKIM and SPF to define how receiving servers should handle unauthenticated emails.
+
+| Field | Value |
+|-------|-------|
+| **Type** | TXT |
+| **Name** | `_dmarc.yourdomain.com` |
+| **Value** | `v=DMARC1; p=none;` |
+| **TTL** | 3600 |
+
+<Info>
+  DMARC is not required for verification, but we strongly recommend adding it. It protects your domain from spoofing and improves deliverability.
+</Info>
+
+## Verification
+
+After you add the DNS records at your provider, come back to the domain detail page and click **Refresh**. SendKit checks both your DNS records and the email identity status.
+
+### Statuses
+
+| Status | Meaning |
+|--------|---------|
+| **Not started** | Domain was just added, no verification attempted yet |
+| **Pending** | Verification in progress — DNS records detected but still propagating |
+| **Verified** | All required records confirmed. You can send emails |
+| **Partially verified** | Some records verified, but not all required ones |
+| **Failed** | Required records not found or incorrect |
+
+<Warning>
+  If a verified domain loses its DNS records (e.g., someone removes them), SendKit detects this automatically and disables sending. You'll receive an email notification and need to re-add the records.
+</Warning>
+
+### Automatic checks
+
+You don't need to keep clicking Refresh. SendKit automatically checks pending domains:
+
+- **First 2 hours** — every 10 minutes
+- **2–12 hours** — every 30 minutes
+- **12–72 hours** — every 60 minutes
+
+After 72 hours, automatic checks stop. You can still verify manually at any time.
+
+## Domain configuration
+
+Once added, you can configure tracking and security settings from the **Configuration** tab:
+
+### Click tracking
+
+When enabled, links in your HTML emails are rewritten to pass through SendKit before redirecting to the original URL. This lets you track which recipients clicked which links.
+
+### Open tracking
+
+<Warning>
+  Not recommended. Many email clients block tracking pixels, making open data unreliable. It can also affect deliverability.
+</Warning>
+
+When enabled, a 1x1 transparent pixel is inserted into each email to detect when it's opened.
+
+### TLS mode
+
+| Mode | Behavior |
+|------|----------|
+| **Opportunistic** (default) | Attempts TLS encryption, falls back to unencrypted if the recipient's server doesn't support it |
+| **Enforced** | Requires TLS. If the recipient's server doesn't support TLS, the email is rejected |
+
+## Domains and senders
+
+Domains and [senders](/knowledge-base/senders) work together:
+
+- A domain must be **verified** before you can create senders on it
+- Each sender uses an email address on a verified domain (e.g., `hello@acme.com`)
+- If a domain loses verification, all senders on that domain are disabled until re-verified
+
+## Domain warmup
+
+New domains go through an automatic [warmup period](/knowledge-base/domain-warmup) to build sender reputation. During warmup, daily sending volume is gradually increased over 14 days.
+
+## Deleting a domain
+
+A domain can only be deleted if it has **no senders**. Remove all senders first, then delete the domain from the dropdown menu on the domain detail page.
+
+When a domain is deleted:
+- The domain and its DNS records are removed from SendKit
+- AWS SES resources are cleaned up automatically
+- You can remove the DNS records from your provider
+
+<Note>
+  Deleting a domain does not affect emails that were already sent.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="How many domains can I add?">
+    The number of domains depends on your plan. Check your plan details for the domain limit.
+  </Accordion>
+  <Accordion title="Can I use a subdomain?">
+    Yes. You can add `mail.acme.com` or any subdomain. The DNS records will be generated for that subdomain.
+  </Accordion>
+  <Accordion title="How long does DNS propagation take?">
+    Most DNS providers propagate changes within minutes. In rare cases, it can take up to 24-48 hours depending on your provider and TTL settings.
+  </Accordion>
+  <Accordion title="Do I need to add all 4 DNS records?">
+    DKIM, SPF, and MX are required for verification. DMARC is optional but strongly recommended for better deliverability and domain protection.
+  </Accordion>
+  <Accordion title="What region should I choose?">
+    Choose the region closest to the majority of your recipients. This reduces latency and can improve delivery speed. The region cannot be changed after domain creation.
+  </Accordion>
+  <Accordion title="Can two teams use the same domain?">
+    No. Each domain is unique per team. However, different teams can use different subdomains of the same root domain.
+  </Accordion>
+</AccordionGroup>

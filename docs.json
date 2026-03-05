@@ -155,10 +155,16 @@
             ]
           },
           {
+            "group": "Domains",
+            "pages": [
+              "knowledge-base/domains",
+              "knowledge-base/domain-warmup"
+            ]
+          },
+          {
             "group": "Sending",
             "pages": [
               "knowledge-base/senders",
-              "knowledge-base/domain-warmup",
               "knowledge-base/suppression-list",
               "knowledge-base/campaigns",
               "knowledge-base/automations"
