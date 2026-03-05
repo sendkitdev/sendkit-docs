@@ -20,7 +20,7 @@ For example, if you want to send emails from `hello@acme.com`, you need to add a
     Type your domain (e.g., `acme.com`). Do not include subdomains or protocols.
   </Step>
   <Step title="Select a region">
-    Choose the AWS region closest to your recipients for best performance. This cannot be changed after creation.
+    Choose the region closest to your recipients for best performance. This cannot be changed after creation.
   </Step>
   <Step title="Configure DNS records">
     SendKit generates 4 DNS records you need to add at your DNS provider. See [DNS records](#dns-records) below.
@@ -32,7 +32,7 @@ For example, if you want to send emails from `hello@acme.com`, you need to add a
 
 ## DNS records
 
-When you add a domain, SendKit generates 4 DNS records. You need to add these at your DNS provider (Cloudflare, AWS Route 53, GoDaddy, etc.).
+When you add a domain, SendKit generates 4 DNS records. You need to add these at your DNS provider (Cloudflare, GoDaddy, Namecheap, etc.).
 
 ### DKIM (required)
 
@@ -57,7 +57,7 @@ SPF tells receiving mail servers that SendKit is authorized to send emails for y
 |-------|-------|
 | **Type** | TXT |
 | **Name** | `send.yourdomain.com` |
-| **Value** | `v=spf1 include:amazonses.com ~all` |
+| **Value** | Shown on your domain detail page |
 | **TTL** | 3600 |
 
 ### MX (required)
@@ -68,12 +68,12 @@ The MX record on the `send` subdomain enables bounce and complaint handling.
 |-------|-------|
 | **Type** | MX |
 | **Name** | `send.yourdomain.com` |
-| **Value** | `feedback-smtp.<region>.amazonses.com` |
+| **Value** | Shown on your domain detail page |
 | **Priority** | 10 |
 | **TTL** | 3600 |
 
 <Note>
-  Replace `<region>` with the AWS region you selected (e.g., `us-east-2`, `sa-east-1`). The exact value is shown on your domain detail page.
+  The exact MX value depends on the region you selected. Copy it from your domain detail page.
 </Note>
 
 ### DMARC (optional)
@@ -160,7 +160,7 @@ A domain can only be deleted if it has **no senders**. Remove all senders first,
 
 When a domain is deleted:
 - The domain and its DNS records are removed from SendKit
-- AWS SES resources are cleaned up automatically
+- All associated infrastructure is cleaned up automatically
 - You can remove the DNS records from your provider
 
 <Note>
