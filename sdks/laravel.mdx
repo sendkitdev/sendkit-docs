@@ -19,7 +19,26 @@ SENDKIT_API_KEY=sk_your_api_key
 
 ## Send email
 
+### Using the Laravel Mail driver
+
+SendKit integrates with Laravel's built-in Mail system. Just set the mailer in your `.env`:
+
+```bash .env
+MAIL_MAILER=sendkit
+```
+
+That's it. Send emails using Laravel's standard `Mail` facade as usual:
+
+```php
+use App\Mail\WelcomeEmail;
+use Illuminate\Support\Facades\Mail;
+
+Mail::to('recipient@example.com')->send(new WelcomeEmail());
+```
+
 ### Using the SendKit facade
+
+If you need more control, you can use the SendKit facade directly:
 
 ```php
 use SendKit\Laravel\Facades\SendKit;
@@ -32,23 +51,6 @@ $response = SendKit::emails()->send([
 ]);
 
 echo $response['id'];
-```
-
-### Using the Laravel Mail driver
-
-SendKit integrates with Laravel's built-in Mail system. Set the mailer in your `.env`:
-
-```bash .env
-MAIL_MAILER=sendkit
-```
-
-Then send emails using Laravel's standard `Mail` facade:
-
-```php
-use App\Mail\WelcomeEmail;
-use Illuminate\Support\Facades\Mail;
-
-Mail::to('recipient@example.com')->send(new WelcomeEmail());
 ```
 
 ## Validate email
