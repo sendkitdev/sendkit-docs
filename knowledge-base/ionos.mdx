@@ -1,0 +1,126 @@
+---
+title: "IONOS"
+description: "Learn how to verify your domain on SendKit using IONOS DNS."
+icon: "globe"
+---
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+1. A [SendKit account](https://app.sendkit.dev/register) with a domain added
+2. Access to your [IONOS account](https://my.ionos.com)
+3. Your domain's DNS records from the SendKit domain detail page
+
+## Add DNS records
+
+Log in to IONOS, go to **Domains & SSL**, click your domain, then select **DNS**. Click **Add Record** for each of the following.
+
+### 1. DKIM record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add Record** and select **TXT** as the record type.
+  </Step>
+  <Step title="Set the hostname">
+    In the **Hostname** field, enter `sendkit._domainkey`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, paste the full DKIM value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Click **Save**.
+  </Step>
+</Steps>
+
+| IONOS field | SendKit value |
+|------------|---------------|
+| Type | `TXT` |
+| Hostname | `sendkit._domainkey` |
+| Value | Your DKIM value from SendKit |
+
+### 2. SPF record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add Record** and select **TXT** as the record type.
+  </Step>
+  <Step title="Set the hostname">
+    In the **Hostname** field, enter `send`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, paste the SPF value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Click **Save**.
+  </Step>
+</Steps>
+
+| IONOS field | SendKit value |
+|------------|---------------|
+| Type | `TXT` |
+| Hostname | `send` |
+| Value | Your SPF value from SendKit |
+
+### 3. MX record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add Record** and select **MX** as the record type.
+  </Step>
+  <Step title="Set the hostname">
+    In the **Hostname** field, enter `send`.
+  </Step>
+  <Step title="Set the mail server">
+    In the **Points to** field, paste the MX value from your SendKit domain detail page.
+  </Step>
+  <Step title="Set priority">
+    Set **Priority** to `10`.
+  </Step>
+  <Step title="Save">
+    Click **Save**.
+  </Step>
+</Steps>
+
+| IONOS field | SendKit value |
+|------------|---------------|
+| Type | `MX` |
+| Hostname | `send` |
+| Points to | Your MX value from SendKit |
+| Priority | `10` |
+
+### 4. DMARC record (optional)
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add Record** and select **TXT** as the record type.
+  </Step>
+  <Step title="Set the hostname">
+    In the **Hostname** field, enter `_dmarc`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, enter `v=DMARC1; p=none;`.
+  </Step>
+  <Step title="Save">
+    Click **Save**.
+  </Step>
+</Steps>
+
+## Verify your domain
+
+Go back to your [SendKit domain detail page](https://app.sendkit.dev) and click **Refresh**. IONOS DNS changes typically propagate within a few minutes.
+
+<Info>
+  If verification doesn't succeed immediately, wait a few minutes and try again. SendKit also checks automatically in the background.
+</Info>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Cannot add TXT records">
+    Make sure you're in the **DNS** section, not the **Mail** section. IONOS has separate sections for mail configuration and raw DNS records.
+  </Accordion>
+  <Accordion title="Existing MX records on the root domain">
+    The SendKit MX record goes on the `send` subdomain, not your root domain. It won't conflict with IONOS email or any existing MX records on your main domain.
+  </Accordion>
+</AccordionGroup>

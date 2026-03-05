@@ -164,7 +164,20 @@
             "group": "Domains",
             "pages": [
               "knowledge-base/domains",
-              "knowledge-base/domain-warmup"
+              "knowledge-base/domain-warmup",
+              "knowledge-base/cloudflare",
+              "knowledge-base/dreamhost",
+              "knowledge-base/gandi",
+              "knowledge-base/godaddy",
+              "knowledge-base/hetzner",
+              "knowledge-base/hostinger",
+              "knowledge-base/ionos",
+              "knowledge-base/namecheap",
+              "knowledge-base/porkbun",
+              "knowledge-base/route53",
+              "knowledge-base/squarespace",
+              "knowledge-base/strato",
+              "knowledge-base/vercel"
             ]
           },
           {

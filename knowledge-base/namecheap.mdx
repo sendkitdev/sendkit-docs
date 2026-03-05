@@ -1,0 +1,132 @@
+---
+title: "Namecheap"
+description: "Learn how to verify your domain on SendKit using Namecheap DNS."
+icon: "globe"
+---
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+1. A [SendKit account](https://app.sendkit.dev/register) with a domain added
+2. Access to your [Namecheap account](https://www.namecheap.com)
+3. Your domain's DNS records from the SendKit domain detail page
+
+## Add DNS records
+
+Log in to Namecheap, go to **Domain List**, click **Manage** next to your domain, then go to the **Advanced DNS** tab. Click **Add New Record** for each of the following.
+
+### 1. DKIM record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add New Record** and select **TXT Record**.
+  </Step>
+  <Step title="Set the host">
+    In the **Host** field, enter `sendkit._domainkey`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, paste the full DKIM value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Leave TTL as **Automatic** and click the green checkmark to save.
+  </Step>
+</Steps>
+
+| Namecheap field | SendKit value |
+|----------------|---------------|
+| Type | `TXT Record` |
+| Host | `sendkit._domainkey` |
+| Value | Your DKIM value from SendKit |
+| TTL | Automatic |
+
+### 2. SPF record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add New Record** and select **TXT Record**.
+  </Step>
+  <Step title="Set the host">
+    In the **Host** field, enter `send`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, paste the SPF value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Leave TTL as **Automatic** and click the green checkmark to save.
+  </Step>
+</Steps>
+
+| Namecheap field | SendKit value |
+|----------------|---------------|
+| Type | `TXT Record` |
+| Host | `send` |
+| Value | Your SPF value from SendKit |
+| TTL | Automatic |
+
+### 3. MX record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add New Record** and select **MX Record**.
+  </Step>
+  <Step title="Set the host">
+    In the **Host** field, enter `send`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, paste the MX value from your SendKit domain detail page.
+  </Step>
+  <Step title="Set priority">
+    Set **Priority** to `10`.
+  </Step>
+  <Step title="Save">
+    Leave TTL as **Automatic** and click the green checkmark to save.
+  </Step>
+</Steps>
+
+| Namecheap field | SendKit value |
+|----------------|---------------|
+| Type | `MX Record` |
+| Host | `send` |
+| Value | Your MX value from SendKit |
+| Priority | `10` |
+| TTL | Automatic |
+
+### 4. DMARC record (optional)
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add New Record** and select **TXT Record**.
+  </Step>
+  <Step title="Set the host">
+    In the **Host** field, enter `_dmarc`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, enter `v=DMARC1; p=none;`.
+  </Step>
+  <Step title="Save">
+    Leave TTL as **Automatic** and click the green checkmark to save.
+  </Step>
+</Steps>
+
+## Verify your domain
+
+Go back to your [SendKit domain detail page](https://app.sendkit.dev) and click **Refresh**. Namecheap DNS changes typically propagate within 30 minutes.
+
+<Info>
+  If verification doesn't succeed immediately, wait a few minutes and try again. SendKit also checks automatically in the background.
+</Info>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="DNS tab not showing records">
+    Make sure your domain is using **Namecheap BasicDNS** or **Namecheap PremiumDNS** as the nameserver. If you're using custom nameservers, you need to manage DNS at that provider instead.
+  </Accordion>
+  <Accordion title="Host field includes the full domain">
+    Namecheap automatically appends your domain to the host field. Enter only the subdomain part — e.g., `send` not `send.yourdomain.com`.
+  </Accordion>
+  <Accordion title="DKIM value appears cut off">
+    Namecheap may truncate the display of long TXT values, but the full value is stored. Paste the complete value from SendKit and save — it will work correctly.
+  </Accordion>
+</AccordionGroup>

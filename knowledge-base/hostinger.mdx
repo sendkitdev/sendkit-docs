@@ -1,0 +1,129 @@
+---
+title: "Hostinger"
+description: "Learn how to verify your domain on SendKit using Hostinger DNS."
+icon: "globe"
+---
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+1. A [SendKit account](https://app.sendkit.dev/register) with a domain added
+2. Access to your [Hostinger hPanel](https://hpanel.hostinger.com)
+3. Your domain's DNS records from the SendKit domain detail page
+
+## Add DNS records
+
+Log in to hPanel, go to **Domains**, click your domain, then navigate to **DNS / Nameservers > DNS Records**. Click **Add Record** for each of the following.
+
+### 1. DKIM record
+
+<Steps>
+  <Step title="Add a new record">
+    Select **TXT** as the record type.
+  </Step>
+  <Step title="Set the name">
+    In the **Name** field, enter `sendkit._domainkey` (Hostinger appends your domain automatically).
+  </Step>
+  <Step title="Set the value">
+    In the **TXT Value** field, paste the full DKIM value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Leave TTL as `14400` (default) and click **Add Record**.
+  </Step>
+</Steps>
+
+| Hostinger field | SendKit value |
+|----------------|---------------|
+| Type | `TXT` |
+| Name | `sendkit._domainkey` |
+| TXT Value | Your DKIM value from SendKit |
+| TTL | `14400` |
+
+### 2. SPF record
+
+<Steps>
+  <Step title="Add a new record">
+    Select **TXT** as the record type.
+  </Step>
+  <Step title="Set the name">
+    In the **Name** field, enter `send`.
+  </Step>
+  <Step title="Set the value">
+    In the **TXT Value** field, paste the SPF value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Leave TTL as `14400` and click **Add Record**.
+  </Step>
+</Steps>
+
+| Hostinger field | SendKit value |
+|----------------|---------------|
+| Type | `TXT` |
+| Name | `send` |
+| TXT Value | Your SPF value from SendKit |
+| TTL | `14400` |
+
+### 3. MX record
+
+<Steps>
+  <Step title="Add a new record">
+    Select **MX** as the record type.
+  </Step>
+  <Step title="Set the name">
+    In the **Name** field, enter `send`.
+  </Step>
+  <Step title="Set the mail server">
+    In the **Mail Server** field, paste the MX value from your SendKit domain detail page.
+  </Step>
+  <Step title="Set priority">
+    Set **Priority** to `10`.
+  </Step>
+  <Step title="Save">
+    Leave TTL as `14400` and click **Add Record**.
+  </Step>
+</Steps>
+
+| Hostinger field | SendKit value |
+|----------------|---------------|
+| Type | `MX` |
+| Name | `send` |
+| Mail Server | Your MX value from SendKit |
+| Priority | `10` |
+| TTL | `14400` |
+
+### 4. DMARC record (optional)
+
+<Steps>
+  <Step title="Add a new record">
+    Select **TXT** as the record type.
+  </Step>
+  <Step title="Set the name">
+    In the **Name** field, enter `_dmarc`.
+  </Step>
+  <Step title="Set the value">
+    In the **TXT Value** field, enter `v=DMARC1; p=none;`.
+  </Step>
+  <Step title="Save">
+    Leave TTL as `14400` and click **Add Record**.
+  </Step>
+</Steps>
+
+## Verify your domain
+
+Go back to your [SendKit domain detail page](https://app.sendkit.dev) and click **Refresh**. Hostinger DNS changes can take up to 30 minutes to propagate.
+
+<Info>
+  If verification doesn't succeed immediately, wait a few minutes and try again. SendKit also checks automatically in the background.
+</Info>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="DNS records not propagating">
+    Hostinger uses a default TTL of 14400 seconds (4 hours) for DNS records. While new records usually appear faster, full propagation can take up to 4 hours in some cases.
+  </Accordion>
+  <Accordion title="Cannot find DNS management">
+    Make sure your domain is using Hostinger nameservers. If you've pointed your nameservers elsewhere, manage DNS at that provider instead.
+  </Accordion>
+</AccordionGroup>

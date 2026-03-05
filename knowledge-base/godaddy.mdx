@@ -1,0 +1,132 @@
+---
+title: "GoDaddy"
+description: "Learn how to verify your domain on SendKit using GoDaddy DNS."
+icon: "globe"
+---
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+1. A [SendKit account](https://app.sendkit.dev/register) with a domain added
+2. Access to your [GoDaddy account](https://dcc.godaddy.com)
+3. Your domain's DNS records from the SendKit domain detail page
+
+## Add DNS records
+
+Log in to GoDaddy, go to **My Products > Domains**, click your domain, then go to **DNS > DNS Records**. Click **Add New Record** for each of the following.
+
+### 1. DKIM record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add New Record** and select **TXT** as the type.
+  </Step>
+  <Step title="Set the name">
+    In the **Name** field, enter `sendkit._domainkey`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, paste the full DKIM value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Leave TTL as the default and click **Save**.
+  </Step>
+</Steps>
+
+| GoDaddy field | SendKit value |
+|--------------|---------------|
+| Type | `TXT` |
+| Name | `sendkit._domainkey` |
+| Value | Your DKIM value from SendKit |
+| TTL | Default |
+
+### 2. SPF record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add New Record** and select **TXT** as the type.
+  </Step>
+  <Step title="Set the name">
+    In the **Name** field, enter `send`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, paste the SPF value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Leave TTL as the default and click **Save**.
+  </Step>
+</Steps>
+
+| GoDaddy field | SendKit value |
+|--------------|---------------|
+| Type | `TXT` |
+| Name | `send` |
+| Value | Your SPF value from SendKit |
+| TTL | Default |
+
+### 3. MX record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add New Record** and select **MX** as the type.
+  </Step>
+  <Step title="Set the name">
+    In the **Name** field, enter `send`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, paste the MX value from your SendKit domain detail page.
+  </Step>
+  <Step title="Set priority">
+    Set **Priority** to `10`.
+  </Step>
+  <Step title="Save">
+    Leave TTL as the default and click **Save**.
+  </Step>
+</Steps>
+
+| GoDaddy field | SendKit value |
+|--------------|---------------|
+| Type | `MX` |
+| Name | `send` |
+| Value | Your MX value from SendKit |
+| Priority | `10` |
+| TTL | Default |
+
+### 4. DMARC record (optional)
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add New Record** and select **TXT** as the type.
+  </Step>
+  <Step title="Set the name">
+    In the **Name** field, enter `_dmarc`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, enter `v=DMARC1; p=none;`.
+  </Step>
+  <Step title="Save">
+    Leave TTL as the default and click **Save**.
+  </Step>
+</Steps>
+
+## Verify your domain
+
+Go back to your [SendKit domain detail page](https://app.sendkit.dev) and click **Refresh**. GoDaddy DNS changes can take up to 30 minutes to propagate.
+
+<Info>
+  If verification doesn't succeed immediately, wait a few minutes and try again. SendKit also checks automatically in the background.
+</Info>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="TXT record value is truncated">
+    GoDaddy may truncate long TXT values in the display, but the full value is stored. Copy the value directly from SendKit and paste it — the record will work correctly.
+  </Accordion>
+  <Accordion title="Cannot find DNS management">
+    If your domain uses external nameservers, GoDaddy won't manage DNS for it. Check your nameserver settings under **DNS > Nameservers**.
+  </Accordion>
+  <Accordion title="Already have an MX record on the send subdomain">
+    You should only have one MX record on `send.yourdomain.com`. If there's a conflicting record, remove it before adding the SendKit MX record.
+  </Accordion>
+</AccordionGroup>

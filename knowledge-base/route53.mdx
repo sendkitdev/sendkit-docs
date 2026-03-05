@@ -1,0 +1,148 @@
+---
+title: "AWS Route 53"
+description: "Learn how to verify your domain on SendKit using AWS Route 53."
+icon: "cloud"
+---
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+1. A [SendKit account](https://app.sendkit.dev/register) with a domain added
+2. Access to your [AWS Management Console](https://console.aws.amazon.com/route53)
+3. Your domain's DNS records from the SendKit domain detail page
+
+## Add DNS records
+
+Log in to the AWS Console, go to **Route 53 > Hosted zones**, and select your domain. Click **Create record** for each of the following.
+
+### 1. DKIM record
+
+<Steps>
+  <Step title="Create a new record">
+    Click **Create record**. If using the wizard, switch to **Quick create record**.
+  </Step>
+  <Step title="Set the record name">
+    In the **Record name** field, enter `sendkit._domainkey`.
+  </Step>
+  <Step title="Select the type">
+    Choose **TXT** from the Record type dropdown.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, paste the DKIM value from SendKit **wrapped in double quotes**. For example: `"v=DKIM1; k=rsa; p=..."`.
+  </Step>
+  <Step title="Save">
+    Leave TTL as `3600` and click **Create records**.
+  </Step>
+</Steps>
+
+<Warning>
+  Route 53 requires TXT record values to be enclosed in **double quotes**. If you paste the value without quotes, the record will fail.
+</Warning>
+
+| Route 53 field | SendKit value |
+|---------------|---------------|
+| Record name | `sendkit._domainkey` |
+| Record type | `TXT` |
+| Value | `"your DKIM value from SendKit"` (with quotes) |
+| TTL | `3600` |
+
+### 2. SPF record
+
+<Steps>
+  <Step title="Create a new record">
+    Click **Create record**.
+  </Step>
+  <Step title="Set the record name">
+    Enter `send` in the **Record name** field.
+  </Step>
+  <Step title="Select the type">
+    Choose **TXT**.
+  </Step>
+  <Step title="Set the value">
+    Paste the SPF value from SendKit **wrapped in double quotes**.
+  </Step>
+  <Step title="Save">
+    Leave TTL as `3600` and click **Create records**.
+  </Step>
+</Steps>
+
+| Route 53 field | SendKit value |
+|---------------|---------------|
+| Record name | `send` |
+| Record type | `TXT` |
+| Value | `"your SPF value from SendKit"` (with quotes) |
+| TTL | `3600` |
+
+### 3. MX record
+
+<Steps>
+  <Step title="Create a new record">
+    Click **Create record**.
+  </Step>
+  <Step title="Set the record name">
+    Enter `send` in the **Record name** field.
+  </Step>
+  <Step title="Select the type">
+    Choose **MX**.
+  </Step>
+  <Step title="Set the value">
+    Enter the priority followed by the MX value: `10 your-mx-value-from-sendkit`.
+  </Step>
+  <Step title="Save">
+    Leave TTL as `3600` and click **Create records**.
+  </Step>
+</Steps>
+
+<Note>
+  In Route 53, MX records combine the priority and value in one field. Enter `10` followed by a space, then the MX value from SendKit.
+</Note>
+
+| Route 53 field | SendKit value |
+|---------------|---------------|
+| Record name | `send` |
+| Record type | `MX` |
+| Value | `10 your-mx-value-from-sendkit` |
+| TTL | `3600` |
+
+### 4. DMARC record (optional)
+
+<Steps>
+  <Step title="Create a new record">
+    Click **Create record**.
+  </Step>
+  <Step title="Set the record name">
+    Enter `_dmarc`.
+  </Step>
+  <Step title="Select the type">
+    Choose **TXT**.
+  </Step>
+  <Step title="Set the value">
+    Enter `"v=DMARC1; p=none;"` (with quotes).
+  </Step>
+  <Step title="Save">
+    Leave TTL as `3600` and click **Create records**.
+  </Step>
+</Steps>
+
+## Verify your domain
+
+Go back to your [SendKit domain detail page](https://app.sendkit.dev) and click **Refresh**. Route 53 DNS changes typically propagate within 60 seconds.
+
+<Info>
+  If verification doesn't succeed immediately, wait a minute and try again. SendKit also checks automatically in the background.
+</Info>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="TXT record not being detected">
+    Make sure your TXT values are wrapped in double quotes. Route 53 requires this for TXT records. Check the record in the console — the value should show with quotes.
+  </Accordion>
+  <Accordion title="MX record format">
+    Route 53 combines priority and value in a single field. Enter `10 your-mx-value` — not just the hostname. The `10` is the priority.
+  </Accordion>
+  <Accordion title="Hosted zone not found">
+    Make sure your domain's nameservers point to Route 53. If you registered the domain elsewhere, you need to update the nameservers at your registrar to the ones shown in Route 53.
+  </Accordion>
+</AccordionGroup>

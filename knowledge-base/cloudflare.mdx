@@ -1,0 +1,132 @@
+---
+title: "Cloudflare"
+description: "Learn how to verify your domain on SendKit using Cloudflare DNS."
+icon: "cloud"
+---
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+1. A [SendKit account](https://app.sendkit.dev/register) with a domain added
+2. Access to your [Cloudflare dashboard](https://dash.cloudflare.com)
+3. Your domain's DNS records from the SendKit domain detail page
+
+## Add DNS records
+
+Log in to your Cloudflare dashboard, select your domain, and go to **DNS > Records**. Click **Add record** for each of the following.
+
+### 1. DKIM record
+
+<Steps>
+  <Step title="Add a new TXT record">
+    Click **Add record** and select **TXT** as the type.
+  </Step>
+  <Step title="Set the name">
+    In the **Name** field, enter `sendkit._domainkey` (Cloudflare automatically appends your domain).
+  </Step>
+  <Step title="Set the value">
+    In the **Content** field, paste the full DKIM value from your SendKit domain detail page. It starts with `v=DKIM1; k=rsa; p=...`.
+  </Step>
+  <Step title="Save">
+    Leave TTL as **Auto** and click **Save**.
+  </Step>
+</Steps>
+
+| Cloudflare field | SendKit value |
+|-----------------|---------------|
+| Type | `TXT` |
+| Name | `sendkit._domainkey` |
+| Content | Your DKIM value from SendKit |
+| TTL | Auto |
+
+### 2. SPF record
+
+<Steps>
+  <Step title="Add a new TXT record">
+    Click **Add record** and select **TXT** as the type.
+  </Step>
+  <Step title="Set the name">
+    In the **Name** field, enter `send` (Cloudflare automatically appends your domain, making it `send.yourdomain.com`).
+  </Step>
+  <Step title="Set the value">
+    In the **Content** field, paste the SPF value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Leave TTL as **Auto** and click **Save**.
+  </Step>
+</Steps>
+
+| Cloudflare field | SendKit value |
+|-----------------|---------------|
+| Type | `TXT` |
+| Name | `send` |
+| Content | Your SPF value from SendKit |
+| TTL | Auto |
+
+### 3. MX record
+
+<Steps>
+  <Step title="Add a new MX record">
+    Click **Add record** and select **MX** as the type.
+  </Step>
+  <Step title="Set the name">
+    In the **Name** field, enter `send`.
+  </Step>
+  <Step title="Set the mail server">
+    In the **Mail server** field, paste the MX value from your SendKit domain detail page.
+  </Step>
+  <Step title="Set priority">
+    Set **Priority** to `10`.
+  </Step>
+  <Step title="Save">
+    Leave TTL as **Auto** and click **Save**.
+  </Step>
+</Steps>
+
+| Cloudflare field | SendKit value |
+|-----------------|---------------|
+| Type | `MX` |
+| Name | `send` |
+| Mail server | Your MX value from SendKit |
+| Priority | `10` |
+| TTL | Auto |
+
+### 4. DMARC record (optional)
+
+<Steps>
+  <Step title="Add a new TXT record">
+    Click **Add record** and select **TXT** as the type.
+  </Step>
+  <Step title="Set the name">
+    In the **Name** field, enter `_dmarc`.
+  </Step>
+  <Step title="Set the value">
+    In the **Content** field, enter `v=DMARC1; p=none;`.
+  </Step>
+  <Step title="Save">
+    Leave TTL as **Auto** and click **Save**.
+  </Step>
+</Steps>
+
+## Verify your domain
+
+Go back to your [SendKit domain detail page](https://app.sendkit.dev) and click **Refresh**. Cloudflare DNS typically propagates within a few minutes.
+
+<Info>
+  If verification doesn't succeed immediately, wait a few minutes and try again. SendKit also checks automatically in the background.
+</Info>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Proxy status warning">
+    Cloudflare's orange cloud proxy does **not** apply to TXT or MX records — only to A/AAAA/CNAME records. Your DNS records will work regardless of proxy settings.
+  </Accordion>
+  <Accordion title="DKIM record is too long">
+    Some Cloudflare interfaces may truncate long TXT values when displaying them, but the full value is stored correctly. Copy the value directly from SendKit and paste it — don't try to re-type it.
+  </Accordion>
+  <Accordion title="Already have an SPF record on the root domain">
+    The SendKit SPF record goes on the `send` subdomain, not your root domain. It won't conflict with any existing SPF record on `yourdomain.com`.
+  </Accordion>
+</AccordionGroup>

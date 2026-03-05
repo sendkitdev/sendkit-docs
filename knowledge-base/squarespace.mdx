@@ -1,0 +1,126 @@
+---
+title: "Squarespace"
+description: "Learn how to verify your domain on SendKit using Squarespace DNS."
+icon: "globe"
+---
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+1. A [SendKit account](https://app.sendkit.dev/register) with a domain added
+2. Access to your [Squarespace account](https://account.squarespace.com)
+3. Your domain's DNS records from the SendKit domain detail page
+
+## Add DNS records
+
+Log in to Squarespace, go to **Domains**, select your domain, then click **DNS > DNS Settings**. Click **Add Record** for each of the following.
+
+### 1. DKIM record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add Record** and select **TXT** as the record type.
+  </Step>
+  <Step title="Set the host">
+    In the **Host** field, enter `sendkit._domainkey`.
+  </Step>
+  <Step title="Set the data">
+    In the **Data** field, paste the full DKIM value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Click **Add**.
+  </Step>
+</Steps>
+
+| Squarespace field | SendKit value |
+|------------------|---------------|
+| Record type | `TXT` |
+| Host | `sendkit._domainkey` |
+| Data | Your DKIM value from SendKit |
+
+### 2. SPF record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add Record** and select **TXT** as the record type.
+  </Step>
+  <Step title="Set the host">
+    In the **Host** field, enter `send`.
+  </Step>
+  <Step title="Set the data">
+    In the **Data** field, paste the SPF value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Click **Add**.
+  </Step>
+</Steps>
+
+| Squarespace field | SendKit value |
+|------------------|---------------|
+| Record type | `TXT` |
+| Host | `send` |
+| Data | Your SPF value from SendKit |
+
+### 3. MX record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add Record** and select **MX** as the record type.
+  </Step>
+  <Step title="Set the host">
+    In the **Host** field, enter `send`.
+  </Step>
+  <Step title="Set the data">
+    In the **Data** field, paste the MX value from your SendKit domain detail page.
+  </Step>
+  <Step title="Set priority">
+    Set **Priority** to `10`.
+  </Step>
+  <Step title="Save">
+    Click **Add**.
+  </Step>
+</Steps>
+
+| Squarespace field | SendKit value |
+|------------------|---------------|
+| Record type | `MX` |
+| Host | `send` |
+| Data | Your MX value from SendKit |
+| Priority | `10` |
+
+### 4. DMARC record (optional)
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add Record** and select **TXT** as the record type.
+  </Step>
+  <Step title="Set the host">
+    In the **Host** field, enter `_dmarc`.
+  </Step>
+  <Step title="Set the data">
+    In the **Data** field, enter `v=DMARC1; p=none;`.
+  </Step>
+  <Step title="Save">
+    Click **Add**.
+  </Step>
+</Steps>
+
+## Verify your domain
+
+Go back to your [SendKit domain detail page](https://app.sendkit.dev) and click **Refresh**. Squarespace DNS changes can take up to 30 minutes to propagate.
+
+<Info>
+  If verification doesn't succeed immediately, wait a few minutes and try again. SendKit also checks automatically in the background.
+</Info>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Domain managed by Squarespace vs third party">
+    These instructions only apply if Squarespace manages your DNS. If you transferred your domain to Squarespace but use external nameservers, add the records at your DNS provider instead.
+  </Accordion>
+  <Accordion title="Limited record type support">
+    Squarespace supports TXT and MX records. If you don't see these options, make sure your domain is using Squarespace's built-in DNS.
+  </Accordion>
+</AccordionGroup>

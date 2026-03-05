@@ -1,0 +1,126 @@
+---
+title: "Porkbun"
+description: "Learn how to verify your domain on SendKit using Porkbun DNS."
+icon: "globe"
+---
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+1. A [SendKit account](https://app.sendkit.dev/register) with a domain added
+2. Access to your [Porkbun account](https://porkbun.com/account)
+3. Your domain's DNS records from the SendKit domain detail page
+
+## Add DNS records
+
+Log in to Porkbun, go to **Domain Management**, click **DNS** next to your domain. Click **Add Record** for each of the following.
+
+### 1. DKIM record
+
+<Steps>
+  <Step title="Add a new record">
+    Select **TXT** from the **Type** dropdown.
+  </Step>
+  <Step title="Set the host">
+    In the **Host** field, enter `sendkit._domainkey`.
+  </Step>
+  <Step title="Set the answer">
+    In the **Answer** field, paste the full DKIM value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Leave TTL as the default and click **Add**.
+  </Step>
+</Steps>
+
+| Porkbun field | SendKit value |
+|--------------|---------------|
+| Type | `TXT` |
+| Host | `sendkit._domainkey` |
+| Answer | Your DKIM value from SendKit |
+
+### 2. SPF record
+
+<Steps>
+  <Step title="Add a new record">
+    Select **TXT** from the **Type** dropdown.
+  </Step>
+  <Step title="Set the host">
+    In the **Host** field, enter `send`.
+  </Step>
+  <Step title="Set the answer">
+    In the **Answer** field, paste the SPF value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Leave TTL as the default and click **Add**.
+  </Step>
+</Steps>
+
+| Porkbun field | SendKit value |
+|--------------|---------------|
+| Type | `TXT` |
+| Host | `send` |
+| Answer | Your SPF value from SendKit |
+
+### 3. MX record
+
+<Steps>
+  <Step title="Add a new record">
+    Select **MX** from the **Type** dropdown.
+  </Step>
+  <Step title="Set the host">
+    In the **Host** field, enter `send`.
+  </Step>
+  <Step title="Set the answer">
+    In the **Answer** field, paste the MX value from your SendKit domain detail page.
+  </Step>
+  <Step title="Set priority">
+    Set **Priority** to `10`.
+  </Step>
+  <Step title="Save">
+    Leave TTL as the default and click **Add**.
+  </Step>
+</Steps>
+
+| Porkbun field | SendKit value |
+|--------------|---------------|
+| Type | `MX` |
+| Host | `send` |
+| Answer | Your MX value from SendKit |
+| Priority | `10` |
+
+### 4. DMARC record (optional)
+
+<Steps>
+  <Step title="Add a new record">
+    Select **TXT** from the **Type** dropdown.
+  </Step>
+  <Step title="Set the host">
+    In the **Host** field, enter `_dmarc`.
+  </Step>
+  <Step title="Set the answer">
+    In the **Answer** field, enter `v=DMARC1; p=none;`.
+  </Step>
+  <Step title="Save">
+    Leave TTL as the default and click **Add**.
+  </Step>
+</Steps>
+
+## Verify your domain
+
+Go back to your [SendKit domain detail page](https://app.sendkit.dev) and click **Refresh**. Porkbun DNS changes typically propagate within a few minutes.
+
+<Info>
+  If verification doesn't succeed immediately, wait a few minutes and try again. SendKit also checks automatically in the background.
+</Info>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Host field includes the full domain">
+    Porkbun automatically appends your domain to the host field. Enter only the subdomain part — e.g., `send` not `send.yourdomain.com`.
+  </Accordion>
+  <Accordion title="DKIM value too long to display">
+    Porkbun may truncate long values in the list view, but the full value is stored. Copy the DKIM value directly from SendKit and paste it — it will work correctly.
+  </Accordion>
+</AccordionGroup>

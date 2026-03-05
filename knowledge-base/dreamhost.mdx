@@ -1,0 +1,130 @@
+---
+title: "DreamHost"
+description: "Learn how to verify your domain on SendKit using DreamHost DNS."
+icon: "globe"
+---
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+1. A [SendKit account](https://app.sendkit.dev/register) with a domain added
+2. Access to your [DreamHost panel](https://panel.dreamhost.com)
+3. Your domain's DNS records from the SendKit domain detail page
+
+## Add DNS records
+
+Log in to the DreamHost panel and go to **Domains > DNS**. Select your domain, then click **Add Record** for each of the following.
+
+### 1. DKIM record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add Record** and select **TXT** as the type.
+  </Step>
+  <Step title="Set the name">
+    In the **Name** field, enter `sendkit._domainkey.yourdomain.com` (DreamHost requires the full hostname).
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, paste the full DKIM value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Click **Add Record**.
+  </Step>
+</Steps>
+
+<Warning>
+  DreamHost requires the full hostname including your domain. Enter `sendkit._domainkey.yourdomain.com`, not just `sendkit._domainkey`.
+</Warning>
+
+| DreamHost field | SendKit value |
+|----------------|---------------|
+| Type | `TXT` |
+| Name | `sendkit._domainkey.yourdomain.com` |
+| Value | Your DKIM value from SendKit |
+
+### 2. SPF record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add Record** and select **TXT** as the type.
+  </Step>
+  <Step title="Set the name">
+    In the **Name** field, enter `send.yourdomain.com`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, paste the SPF value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Click **Add Record**.
+  </Step>
+</Steps>
+
+| DreamHost field | SendKit value |
+|----------------|---------------|
+| Type | `TXT` |
+| Name | `send.yourdomain.com` |
+| Value | Your SPF value from SendKit |
+
+### 3. MX record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add Record** and select **MX** as the type.
+  </Step>
+  <Step title="Set the name">
+    In the **Name** field, enter `send.yourdomain.com`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, paste the MX value from your SendKit domain detail page.
+  </Step>
+  <Step title="Set priority">
+    Set **Priority** to `10`.
+  </Step>
+  <Step title="Save">
+    Click **Add Record**.
+  </Step>
+</Steps>
+
+| DreamHost field | SendKit value |
+|----------------|---------------|
+| Type | `MX` |
+| Name | `send.yourdomain.com` |
+| Value | Your MX value from SendKit |
+| Priority | `10` |
+
+### 4. DMARC record (optional)
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add Record** and select **TXT** as the type.
+  </Step>
+  <Step title="Set the name">
+    In the **Name** field, enter `_dmarc.yourdomain.com`.
+  </Step>
+  <Step title="Set the value">
+    In the **Value** field, enter `v=DMARC1; p=none;`.
+  </Step>
+  <Step title="Save">
+    Click **Add Record**.
+  </Step>
+</Steps>
+
+## Verify your domain
+
+Go back to your [SendKit domain detail page](https://app.sendkit.dev) and click **Refresh**. DreamHost DNS changes can take up to 30 minutes to propagate.
+
+<Info>
+  If verification doesn't succeed immediately, wait a few minutes and try again. SendKit also checks automatically in the background.
+</Info>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Record name format">
+    DreamHost requires the full hostname including your domain. Unlike most providers, it does not automatically append the domain to the name field.
+  </Accordion>
+  <Accordion title="DNS not managed by DreamHost">
+    If your nameservers point elsewhere, DreamHost won't serve your DNS records. Make sure your domain is using DreamHost nameservers or manage DNS at your active provider.
+  </Accordion>
+</AccordionGroup>

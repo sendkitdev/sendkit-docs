@@ -1,0 +1,120 @@
+---
+title: "Strato"
+description: "Learn how to verify your domain on SendKit using Strato DNS."
+icon: "globe"
+---
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+1. A [SendKit account](https://app.sendkit.dev/register) with a domain added
+2. Access to your [Strato customer area](https://www.strato.com/apps/CustomerService)
+3. Your domain's DNS records from the SendKit domain detail page
+
+## Add DNS records
+
+Log in to Strato, go to **Domains > Domain Management**, select your domain, then click **DNS Settings**. Add each of the following records.
+
+### 1. DKIM record
+
+<Steps>
+  <Step title="Go to TXT records">
+    In the DNS settings, find the **TXT Records** section.
+  </Step>
+  <Step title="Add a new TXT record">
+    Set the **Subdomain** to `sendkit._domainkey`.
+  </Step>
+  <Step title="Set the value">
+    Paste the full DKIM value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Click **Save** or **Accept**.
+  </Step>
+</Steps>
+
+| Strato field | SendKit value |
+|-------------|---------------|
+| Type | `TXT` |
+| Subdomain | `sendkit._domainkey` |
+| Value | Your DKIM value from SendKit |
+
+### 2. SPF record
+
+<Steps>
+  <Step title="Add a new TXT record">
+    In the **TXT Records** section, set the **Subdomain** to `send`.
+  </Step>
+  <Step title="Set the value">
+    Paste the SPF value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Click **Save** or **Accept**.
+  </Step>
+</Steps>
+
+| Strato field | SendKit value |
+|-------------|---------------|
+| Type | `TXT` |
+| Subdomain | `send` |
+| Value | Your SPF value from SendKit |
+
+### 3. MX record
+
+<Steps>
+  <Step title="Go to MX records">
+    In the DNS settings, find the **MX Records** section.
+  </Step>
+  <Step title="Add a new MX record">
+    Set the **Subdomain** to `send`.
+  </Step>
+  <Step title="Set the mail server">
+    Paste the MX value from your SendKit domain detail page.
+  </Step>
+  <Step title="Set priority">
+    Set **Priority** to `10`.
+  </Step>
+  <Step title="Save">
+    Click **Save** or **Accept**.
+  </Step>
+</Steps>
+
+| Strato field | SendKit value |
+|-------------|---------------|
+| Type | `MX` |
+| Subdomain | `send` |
+| Mail server | Your MX value from SendKit |
+| Priority | `10` |
+
+### 4. DMARC record (optional)
+
+<Steps>
+  <Step title="Add a new TXT record">
+    In the **TXT Records** section, set the **Subdomain** to `_dmarc`.
+  </Step>
+  <Step title="Set the value">
+    Enter `v=DMARC1; p=none;`.
+  </Step>
+  <Step title="Save">
+    Click **Save** or **Accept**.
+  </Step>
+</Steps>
+
+## Verify your domain
+
+Go back to your [SendKit domain detail page](https://app.sendkit.dev) and click **Refresh**. Strato DNS changes can take up to 30 minutes to propagate.
+
+<Info>
+  If verification doesn't succeed immediately, wait a few minutes and try again. SendKit also checks automatically in the background.
+</Info>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Limited DNS editing interface">
+    Strato's DNS interface is more limited than some providers. If you can't find the option to add TXT or MX records, make sure you're in **DNS Settings** (not email settings) and check that your hosting plan supports custom DNS records.
+  </Accordion>
+  <Accordion title="Changes take a long time">
+    Strato DNS propagation can be slower than other providers. If records aren't detected after 30 minutes, wait up to 2 hours before contacting support.
+  </Accordion>
+</AccordionGroup>

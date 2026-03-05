@@ -1,0 +1,129 @@
+---
+title: "Gandi"
+description: "Learn how to verify your domain on SendKit using Gandi DNS."
+icon: "globe"
+---
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+1. A [SendKit account](https://app.sendkit.dev/register) with a domain added
+2. Access to your [Gandi account](https://admin.gandi.net)
+3. Your domain's DNS records from the SendKit domain detail page
+
+## Add DNS records
+
+Log in to Gandi, go to **Domain**, select your domain, then click the **DNS Records** tab. Click **Add Record** for each of the following.
+
+### 1. DKIM record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add Record** and select **TXT** as the type.
+  </Step>
+  <Step title="Set the name">
+    In the **Name** field, enter `sendkit._domainkey`.
+  </Step>
+  <Step title="Set the value">
+    In the **Text Value** field, paste the full DKIM value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Leave TTL as the default (`10800`) and click **Create**.
+  </Step>
+</Steps>
+
+| Gandi field | SendKit value |
+|------------|---------------|
+| Type | `TXT` |
+| Name | `sendkit._domainkey` |
+| Text Value | Your DKIM value from SendKit |
+| TTL | `10800` |
+
+### 2. SPF record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add Record** and select **TXT** as the type.
+  </Step>
+  <Step title="Set the name">
+    In the **Name** field, enter `send`.
+  </Step>
+  <Step title="Set the value">
+    In the **Text Value** field, paste the SPF value from your SendKit domain detail page.
+  </Step>
+  <Step title="Save">
+    Leave TTL as the default and click **Create**.
+  </Step>
+</Steps>
+
+| Gandi field | SendKit value |
+|------------|---------------|
+| Type | `TXT` |
+| Name | `send` |
+| Text Value | Your SPF value from SendKit |
+| TTL | `10800` |
+
+### 3. MX record
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add Record** and select **MX** as the type.
+  </Step>
+  <Step title="Set the name">
+    In the **Name** field, enter `send`.
+  </Step>
+  <Step title="Set the hostname">
+    In the **Hostname** field, paste the MX value from your SendKit domain detail page.
+  </Step>
+  <Step title="Set priority">
+    Set **Priority** to `10`.
+  </Step>
+  <Step title="Save">
+    Leave TTL as the default and click **Create**.
+  </Step>
+</Steps>
+
+| Gandi field | SendKit value |
+|------------|---------------|
+| Type | `MX` |
+| Name | `send` |
+| Hostname | Your MX value from SendKit |
+| Priority | `10` |
+| TTL | `10800` |
+
+### 4. DMARC record (optional)
+
+<Steps>
+  <Step title="Add a new record">
+    Click **Add Record** and select **TXT** as the type.
+  </Step>
+  <Step title="Set the name">
+    In the **Name** field, enter `_dmarc`.
+  </Step>
+  <Step title="Set the value">
+    In the **Text Value** field, enter `v=DMARC1; p=none;`.
+  </Step>
+  <Step title="Save">
+    Leave TTL as the default and click **Create**.
+  </Step>
+</Steps>
+
+## Verify your domain
+
+Go back to your [SendKit domain detail page](https://app.sendkit.dev) and click **Refresh**. Gandi DNS changes typically propagate within a few minutes.
+
+<Info>
+  If verification doesn't succeed immediately, wait a few minutes and try again. SendKit also checks automatically in the background.
+</Info>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Using Gandi LiveDNS vs external DNS">
+    These instructions assume you're using Gandi's LiveDNS. If your domain uses external nameservers, manage DNS at that provider instead.
+  </Accordion>
+  <Accordion title="MX record hostname requires a trailing dot">
+    Some Gandi configurations require a trailing dot on MX hostnames (e.g., `mail.example.com.`). If verification fails, try adding a dot at the end of the MX value.
+  </Accordion>
+</AccordionGroup>
