@@ -99,6 +99,17 @@
             ]
           },
           {
+            "group": "Domains",
+            "pages": [
+              "api-reference/endpoint/create-domain",
+              "api-reference/endpoint/list-domains",
+              "api-reference/endpoint/get-domain",
+              "api-reference/endpoint/update-domain",
+              "api-reference/endpoint/delete-domain",
+              "api-reference/endpoint/verify-domain"
+            ]
+          },
+          {
             "group": "Suppressions",
             "pages": [
               "api-reference/endpoint/create-suppression",
